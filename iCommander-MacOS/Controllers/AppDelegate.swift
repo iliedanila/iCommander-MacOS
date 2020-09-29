@@ -14,7 +14,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+        
+        if let window = NSApp.mainWindow, let screen = NSScreen.main {
+            window.setFrame(screen.visibleFrame, display: true)
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -116,6 +119,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         // If we got here, it is time to quit.
         return .terminateNow
+    }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
     }
 
 }
