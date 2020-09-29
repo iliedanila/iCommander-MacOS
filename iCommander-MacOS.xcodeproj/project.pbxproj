@@ -55,15 +55,31 @@
 		4BDC06922523B59D00DF1AFF /* iCommander-MacOS */ = {
 			isa = PBXGroup;
 			children = (
-				4BDC06932523B59D00DF1AFF /* AppDelegate.swift */,
-				4BDC06952523B59D00DF1AFF /* ViewController.swift */,
+				4BDC06A82523B63B00DF1AFF /* Controllers */,
+				4BDC06A72523B63200DF1AFF /* Views */,
 				4BDC069A2523B59E00DF1AFF /* Assets.xcassets */,
-				4BDC069C2523B59E00DF1AFF /* Main.storyboard */,
 				4BDC069F2523B59E00DF1AFF /* Info.plist */,
 				4BDC06A02523B59E00DF1AFF /* iCommander_MacOS.entitlements */,
 				4BDC06972523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld */,
 			);
 			path = "iCommander-MacOS";
+			sourceTree = "<group>";
+		};
+		4BDC06A72523B63200DF1AFF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4BDC069C2523B59E00DF1AFF /* Main.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4BDC06A82523B63B00DF1AFF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4BDC06952523B59D00DF1AFF /* ViewController.swift */,
+				4BDC06932523B59D00DF1AFF /* AppDelegate.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,6 +292,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "iCommander-MacOS/iCommander_MacOS.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = NDU642L3S2;
@@ -297,6 +314,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "iCommander-MacOS/iCommander_MacOS.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = NDU642L3S2;
