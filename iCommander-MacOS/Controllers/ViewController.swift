@@ -12,10 +12,21 @@ class ViewController: NSViewController {
     @IBOutlet var leftTable: NSTableView!
     @IBOutlet var rightTable: NSTableView!
     
+    var tableDict: [NSTableView: Int] = [:]
+    
+    @IBAction func leftTableDoubleClick(_ sender: NSTableView) {
+        print("Left table: \(sender.clickedRow)")
+    }
+    
+    @IBAction func rightTableDoubleClick(_ sender: NSTableView) {
+        print("Right table: \(sender.clickedRow)")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        tableDict[leftTable] = 1
+        tableDict[rightTable] = 2
     }
 
     override var representedObject: Any? {
@@ -29,10 +40,12 @@ extension ViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
-        let identifier = NSUserInterfaceItemIdentifier(rawValue: Constants.Cell)
+        let cellText = "Table \(tableDict[tableView]!) Row \(row) Column 0"
+        let identifier = NSUserInterfaceItemIdentifier(rawValue: (tableColumn?.identifier.rawValue)!)
+        
         if let cell = tableView.makeView(withIdentifier: identifier, owner: self) as? NSTableCellView {
             
-            cell.textField?.stringValue = "Hello world"
+            cell.textField?.stringValue = cellText
             return cell
         }
         
