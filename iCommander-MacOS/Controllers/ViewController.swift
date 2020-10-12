@@ -7,26 +7,70 @@
 
 import Cocoa
 
+// MARK: - NSViewController
+
 class ViewController: NSViewController {
 
     @IBOutlet var leftTable: NSTableView!
     @IBOutlet var rightTable: NSTableView!
+    @IBOutlet var leftUpButton: NSButton!
+    @IBOutlet var rightUpButton: NSButton!
     
-    var tableDict: [NSTableView: Int] = [:]
+    var tableURLDict: [NSTableView: URL] = [:]
+    var tableContentDict: [NSTableView: [URL]] = [:]
     
     @IBAction func leftTableDoubleClick(_ sender: NSTableView) {
         print("Left table: \(sender.clickedRow)")
+        
+        if sender.clickedRow == -1 {
+            return
+        }
+        
+        let itemURL = tableContentDict[leftTable]![sender.clickedRow]
+        tableURLDict[leftTable] = itemURL
+
+        leftTable.reloadData()
+        leftTable.scrollRowToVisible(0)
     }
     
     @IBAction func rightTableDoubleClick(_ sender: NSTableView) {
         print("Right table: \(sender.clickedRow)")
+        
+        if sender.clickedRow == -1 {
+            return
+        }
+        
+        let itemURL = tableContentDict[rightTable]![sender.clickedRow]
+        tableURLDict[rightTable] = itemURL
+        
+        rightTable.reloadData()
+        rightTable.scrollRowToVisible(0)
+    }
+    
+    @IBAction func leftUpClicked(_ sender: NSButton) {
+        let currentUrl = tableURLDict[leftTable]
+        let parentUrl = currentUrl?.deletingLastPathComponent()
+        
+        tableURLDict[leftTable] = parentUrl
+        leftTable.reloadData()
+        leftTable.scrollRowToVisible(0)
+    }
+    @IBAction func rightUpClicked(_ sender: NSButton) {
+        let currentUrl = tableURLDict[rightTable]
+        let parentUrl = currentUrl?.deletingLastPathComponent()
+        
+        tableURLDict[rightTable] = parentUrl
+        rightTable.reloadData()
+        rightTable.scrollRowToVisible(0)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableDict[leftTable] = 1
-        tableDict[rightTable] = 2
+        tableURLDict[leftTable] = FileManager.default.homeDirectoryForCurrentUser
+        tableURLDict[rightTable] = FileManager.default.homeDirectoryForCurrentUser
+        tableContentDict[leftTable] = []
+        tableContentDict[rightTable] = []
     }
 
     override var representedObject: Any? {
@@ -36,16 +80,23 @@ class ViewController: NSViewController {
     }
 }
 
+// MARK: - NSTableViewDelegate
+
 extension ViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
-        let cellText = "Table \(tableDict[tableView]!) Row \(row) Column 0"
         let identifier = NSUserInterfaceItemIdentifier(rawValue: (tableColumn?.identifier.rawValue)!)
         
-        if let cell = tableView.makeView(withIdentifier: identifier, owner: self) as? NSTableCellView {
+        if let cell = tableView.makeView(withIdentifier: identifier, owner: nil) as? NSTableCellView {
             
-            cell.textField?.stringValue = cellText
+            let url = tableContentDict[tableView]![row]
+            let icon = NSWorkspace.shared.icon(forFile: url.path)
+            let name = url.lastPathComponent
+                        
+            cell.textField?.stringValue = name
+            cell.imageView?.image = icon
+
             return cell
         }
         
@@ -53,9 +104,20 @@ extension ViewController: NSTableViewDelegate {
     }
 }
 
+// MARK: - NSTableViewDataSource
+
 extension ViewController: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return 10
+        do {
+            let fileURLs = try FileManager.default.contentsOfDirectory(at: tableURLDict[tableView]!, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
+            
+            tableContentDict[tableView] = fileURLs
+                        
+            return fileURLs.count
+        } catch {
+            print("error")
+            return 0
+        }
     }
 }
