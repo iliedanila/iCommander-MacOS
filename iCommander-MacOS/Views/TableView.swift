@@ -7,7 +7,14 @@
 
 import Cocoa
 
+protocol TableViewDelegate {
+    func handleKeyRequest(_ tableView: NSTableView, _ keyCode: UInt16)
+    func currentPathChanged(_ tableView: NSTableView, _ path: String)
+}
+
 class TableView: NSTableView {
+    
+    var tableViewDelegate: TableViewDelegate?
     
     var currentURL: URL = FileManager.default.homeDirectoryForCurrentUser {
         didSet {
@@ -17,6 +24,8 @@ class TableView: NSTableView {
                 let fileURLs = try fileManager.contentsOfDirectory(at: currentURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
                 
                 currentFolderContents = fileURLs
+                
+                tableViewDelegate?.currentPathChanged(self, currentURL.path)
             } catch {
                 print("Unexpected error: \(error).")
             }
@@ -44,7 +53,11 @@ class TableView: NSTableView {
         
         if event.keyCode == Constants.KeyCodeEnter {
             currentURL = currentFolderContents[selectedRow]
+        } else if event.keyCode == Constants.KeyCodeDelete {
+            tableViewDelegate?.handleKeyRequest(self, event.keyCode)
         } else {
+            let identifierString = identifier?.rawValue ?? ""
+            print("\(identifierString) keyCode: \(event.keyCode)")
             super.keyDown(with: event)
         }
     }

@@ -15,6 +15,10 @@ class ViewController: NSViewController {
     @IBOutlet var rightTable: NSTableView!
     @IBOutlet var leftUpButton: NSButton!
     @IBOutlet var rightUpButton: NSButton!
+    @IBOutlet var leftPathTextField: NSTextField!
+    @IBOutlet var rightPathTextField: NSTextField!
+    
+    var tableToPath: [NSTableView : NSTextField] = [:]
     
     @IBAction func leftTableDoubleClick(_ sender: NSTableView) {
         print("Left table: \(sender.clickedRow)")
@@ -65,9 +69,16 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableToPath[leftTable] = leftPathTextField
+        tableToPath[rightTable] = rightPathTextField
+        
         if let leftTableView = leftTable as? TableView, let rightTableView = rightTable as? TableView {
             leftTableView.currentURL = FileManager.default.homeDirectoryForCurrentUser
             rightTableView.currentURL = FileManager.default.homeDirectoryForCurrentUser
+            leftTableView.tableViewDelegate = self
+            rightTableView.tableViewDelegate = self
+            leftPathTextField.stringValue = Constants.CurrentPath + leftTableView.currentURL.path
+            rightPathTextField.stringValue = Constants.CurrentPath + rightTableView.currentURL.path
         }
         
         leftTable.rowSizeStyle = .medium
@@ -114,5 +125,21 @@ extension ViewController: NSTableViewDataSource {
             return myTableView.currentFolderContents.count
         }
         return 0
+    }
+}
+
+// MARK: - TableViewDelegate
+extension ViewController: TableViewDelegate {
+    func currentPathChanged(_ tableView: NSTableView, _ path: String) {
+        var pathText = Constants.CurrentPath
+        pathText = pathText + path
+        tableToPath[tableView]?.stringValue = pathText
+    }
+    
+    func handleKeyRequest(_ tableView: NSTableView, _ keyCode: UInt16) {
+        if let myTableView = tableView as? TableView {
+            let parentUrl = myTableView.currentURL.deletingLastPathComponent()
+            myTableView.currentURL = parentUrl
+        }
     }
 }

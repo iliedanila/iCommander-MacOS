@@ -720,17 +720,17 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="314" height="437"/>
                                                 <subviews>
                                                     <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2R8-Yx-EkU">
-                                                        <rect key="frame" x="0.0" y="61" width="107" height="376"/>
+                                                        <rect key="frame" x="0.0" y="86" width="107" height="351"/>
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BQ6-Lq-Qc3">
-                                                                <rect key="frame" x="-6" y="348" width="76" height="32"/>
+                                                                <rect key="frame" x="-6" y="323" width="76" height="32"/>
                                                                 <buttonCell key="cell" type="push" title="Home" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9dL-Ro-Dpx">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                             </button>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fy9-1f-dKp">
-                                                                <rect key="frame" x="68" y="348" width="45" height="32"/>
+                                                                <rect key="frame" x="68" y="323" width="45" height="32"/>
                                                                 <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSGoBackTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cSM-Wg-G8u">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
@@ -750,21 +750,21 @@
                                                         </customSpacing>
                                                     </stackView>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zPL-wN-Tmv">
-                                                        <rect key="frame" x="-2" y="35" width="85" height="16"/>
-                                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Current Path:" id="Xry-pr-a6S">
+                                                        <rect key="frame" x="-2" y="60" width="85" height="16"/>
+                                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Current Path:" id="Xry-pr-a6S">
                                                             <font key="font" usesAppearanceFont="YES"/>
                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
                                                     <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZVq-ae-km5">
-                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="25"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="50"/>
                                                         <clipView key="contentView" id="41e-R9-d5K">
-                                                            <rect key="frame" x="0.0" y="0.0" width="314" height="25"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="314" height="50"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <tableView identifier="LeftTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Iot-m0-OHD" viewBased="YES" id="q3L-KJ-iO5" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="314" height="19"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="314" height="25"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1099,8 +1099,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="leftPathTextField" destination="zPL-wN-Tmv" id="Oxt-T2-tVK"/>
                         <outlet property="leftTable" destination="q3L-KJ-iO5" id="hnL-Bm-Zec"/>
                         <outlet property="leftUpButton" destination="Fy9-1f-dKp" id="IG3-IC-DlD"/>
+                        <outlet property="rightPathTextField" destination="acr-g6-RZb" id="CgC-ma-xyr"/>
                         <outlet property="rightTable" destination="Aqh-xu-Ors" id="tR7-ik-25e"/>
                         <outlet property="rightUpButton" destination="AY6-id-Prl" id="Wv2-qi-4IY"/>
                     </connections>
