@@ -41,10 +41,11 @@ class TableView: NSTableView {
     }
     
     override func keyDown(with event: NSEvent) {
-        super.keyDown(with: event)
         
-        let identifierString = identifier?.rawValue
-        let specialKey = event.specialKey?.rawValue ?? 0
-        print("Identifier: \(identifierString ?? "") Key pressed. Key code: \(event.keyCode) Special Key: \(specialKey)")
+        if event.keyCode == Constants.KeyCodeEnter {
+            currentURL = currentFolderContents[selectedRow]
+        } else {
+            super.keyDown(with: event)
+        }
     }
 }
