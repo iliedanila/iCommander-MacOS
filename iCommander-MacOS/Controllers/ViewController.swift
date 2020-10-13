@@ -55,6 +55,7 @@ class ViewController: NSViewController {
         leftTable.reloadData()
         leftTable.scrollRowToVisible(0)
     }
+    
     @IBAction func rightUpClicked(_ sender: NSButton) {
         let currentUrl = tableURLDict[rightTable]
         let parentUrl = currentUrl?.deletingLastPathComponent()
@@ -66,11 +67,14 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableURLDict[leftTable] = FileManager.default.homeDirectoryForCurrentUser
         tableURLDict[rightTable] = FileManager.default.homeDirectoryForCurrentUser
         tableContentDict[leftTable] = []
         tableContentDict[rightTable] = []
+
+        leftTable.rowSizeStyle = .medium
+        rightTable.rowSizeStyle = .medium
     }
 
     override var representedObject: Any? {
@@ -110,7 +114,10 @@ extension ViewController: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
         do {
-            let fileURLs = try FileManager.default.contentsOfDirectory(at: tableURLDict[tableView]!, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
+            let fileManager = FileManager.default
+            let currentPathUrl = tableURLDict[tableView]!
+            
+            let fileURLs = try fileManager.contentsOfDirectory(at: currentPathUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
             
             tableContentDict[tableView] = fileURLs
                         

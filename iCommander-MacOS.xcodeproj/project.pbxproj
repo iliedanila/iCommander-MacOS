@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4B6799962534B5B5009A159E /* TableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6799952534B5B5009A159E /* TableCellView.swift */; };
-		4BB65F63252BB53600FBC004 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB65F62252BB53600FBC004 /* FileManager.swift */; };
 		4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06932523B59D00DF1AFF /* AppDelegate.swift */; };
 		4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06952523B59D00DF1AFF /* ViewController.swift */; };
 		4BDC06992523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06972523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld */; };
@@ -18,8 +16,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4B6799952534B5B5009A159E /* TableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellView.swift; sourceTree = "<group>"; };
-		4BB65F62252BB53600FBC004 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		4BDC06902523B59D00DF1AFF /* iCommander-MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iCommander-MacOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BDC06932523B59D00DF1AFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BDC06952523B59D00DF1AFF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -76,7 +72,6 @@
 			isa = PBXGroup;
 			children = (
 				4BDC069C2523B59E00DF1AFF /* Main.storyboard */,
-				4B6799952534B5B5009A159E /* TableCellView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -94,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				4BE9FC192523D913001E5A33 /* Constants.swift */,
-				4BB65F62252BB53600FBC004 /* FileManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -168,10 +162,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BB65F63252BB53600FBC004 /* FileManager.swift in Sources */,
 				4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */,
 				4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */,
-				4B6799962534B5B5009A159E /* TableCellView.swift in Sources */,
 				4BDC06992523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld in Sources */,
 				4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */,
 			);
