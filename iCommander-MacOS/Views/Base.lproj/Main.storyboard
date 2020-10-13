@@ -763,7 +763,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="314" height="25"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Iot-m0-OHD" viewBased="YES" id="q3L-KJ-iO5">
+                                                                <tableView identifier="LeftTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Iot-m0-OHD" viewBased="YES" id="q3L-KJ-iO5" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="314" height="19"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -899,7 +899,7 @@
                                                             <rect key="frame" x="1" y="0.0" width="311" height="49"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="mBS-jC-ScP" viewBased="YES" id="Aqh-xu-Ors">
+                                                                <tableView identifier="RightTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="mBS-jC-ScP" viewBased="YES" id="Aqh-xu-Ors" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="311" height="24"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <size key="intercellSpacing" width="3" height="2"/>

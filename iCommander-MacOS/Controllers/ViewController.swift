@@ -16,9 +16,6 @@ class ViewController: NSViewController {
     @IBOutlet var leftUpButton: NSButton!
     @IBOutlet var rightUpButton: NSButton!
     
-    var tableURLDict: [NSTableView: URL] = [:]
-    var tableContentDict: [NSTableView: [URL]] = [:]
-    
     @IBAction func leftTableDoubleClick(_ sender: NSTableView) {
         print("Left table: \(sender.clickedRow)")
         
@@ -26,11 +23,13 @@ class ViewController: NSViewController {
             return
         }
         
-        let itemURL = tableContentDict[leftTable]![sender.clickedRow]
-        tableURLDict[leftTable] = itemURL
-
-        leftTable.reloadData()
-        leftTable.scrollRowToVisible(0)
+        if let myTableView = sender as? TableView {
+            let itemURL = myTableView.currentFolderContents[sender.clickedRow]
+            
+            if itemURL.hasDirectoryPath {
+                myTableView.currentURL = itemURL
+            }
+        }
     }
     
     @IBAction func rightTableDoubleClick(_ sender: NSTableView) {
@@ -40,39 +39,37 @@ class ViewController: NSViewController {
             return
         }
         
-        let itemURL = tableContentDict[rightTable]![sender.clickedRow]
-        tableURLDict[rightTable] = itemURL
-        
-        rightTable.reloadData()
-        rightTable.scrollRowToVisible(0)
+        if let myTableView = sender as? TableView {
+            let itemURL = myTableView.currentFolderContents[sender.clickedRow]
+            
+            if itemURL.hasDirectoryPath {
+                myTableView.currentURL = itemURL
+            }
+        }
     }
     
     @IBAction func leftUpClicked(_ sender: NSButton) {
-        let currentUrl = tableURLDict[leftTable]
-        let parentUrl = currentUrl?.deletingLastPathComponent()
-        
-        tableURLDict[leftTable] = parentUrl
-        leftTable.reloadData()
-        leftTable.scrollRowToVisible(0)
+        if let myTableView = leftTable as? TableView {
+            let parentUrl = myTableView.currentURL.deletingLastPathComponent()
+            myTableView.currentURL = parentUrl
+        }
     }
     
     @IBAction func rightUpClicked(_ sender: NSButton) {
-        let currentUrl = tableURLDict[rightTable]
-        let parentUrl = currentUrl?.deletingLastPathComponent()
-        
-        tableURLDict[rightTable] = parentUrl
-        rightTable.reloadData()
-        rightTable.scrollRowToVisible(0)
+        if let myTableView = rightTable as? TableView {
+            let parentUrl = myTableView.currentURL.deletingLastPathComponent()
+            myTableView.currentURL = parentUrl
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableURLDict[leftTable] = FileManager.default.homeDirectoryForCurrentUser
-        tableURLDict[rightTable] = FileManager.default.homeDirectoryForCurrentUser
-        tableContentDict[leftTable] = []
-        tableContentDict[rightTable] = []
-
+        if let leftTableView = leftTable as? TableView, let rightTableView = rightTable as? TableView {
+            leftTableView.currentURL = FileManager.default.homeDirectoryForCurrentUser
+            rightTableView.currentURL = FileManager.default.homeDirectoryForCurrentUser
+        }
+        
         leftTable.rowSizeStyle = .medium
         rightTable.rowSizeStyle = .medium
     }
@@ -94,16 +91,16 @@ extension ViewController: NSTableViewDelegate {
         
         if let cell = tableView.makeView(withIdentifier: identifier, owner: nil) as? NSTableCellView {
             
-            let url = tableContentDict[tableView]![row]
-            let icon = NSWorkspace.shared.icon(forFile: url.path)
-            let name = url.lastPathComponent
-                        
-            cell.textField?.stringValue = name
-            cell.imageView?.image = icon
-
-            return cell
+            if let myTableView = tableView as? TableView {
+                let url = myTableView.currentFolderContents[row]
+                let icon = NSWorkspace.shared.icon(forFile: url.path)
+                let name = url.lastPathComponent
+                cell.textField?.stringValue = name
+                cell.imageView?.image = icon
+                
+                return cell
+            }
         }
-        
         return nil
     }
 }
@@ -113,18 +110,9 @@ extension ViewController: NSTableViewDelegate {
 extension ViewController: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        do {
-            let fileManager = FileManager.default
-            let currentPathUrl = tableURLDict[tableView]!
-            
-            let fileURLs = try fileManager.contentsOfDirectory(at: currentPathUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
-            
-            tableContentDict[tableView] = fileURLs
-                        
-            return fileURLs.count
-        } catch {
-            print("error")
-            return 0
+        if let myTableView = tableView as? TableView {
+            return myTableView.currentFolderContents.count
         }
+        return 0
     }
 }
