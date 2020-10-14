@@ -11,5 +11,6 @@ struct Constants {
     static let Cell = "Cell"
     static let KeyCodeEnter = 36
     static let KeyCodeDelete = 51
+    static let KeyCodeUp = 126
     static let CurrentPath = "Current Path: "
 }

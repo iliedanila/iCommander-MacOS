@@ -136,7 +136,7 @@ extension ViewController: TableViewDelegate {
         tableToPath[tableView]?.stringValue = pathText
     }
     
-    func handleKeyRequest(_ tableView: NSTableView, _ keyCode: UInt16) {
+    func goToParent(_ tableView: NSTableView) {
         if let myTableView = tableView as? TableView {
             let parentUrl = myTableView.currentURL.deletingLastPathComponent()
             myTableView.currentURL = parentUrl

@@ -8,7 +8,7 @@
 import Cocoa
 
 protocol TableViewDelegate {
-    func handleKeyRequest(_ tableView: NSTableView, _ keyCode: UInt16)
+    func goToParent(_ tableView: NSTableView)
     func currentPathChanged(_ tableView: NSTableView, _ path: String)
 }
 
@@ -36,7 +36,7 @@ class TableView: NSTableView {
             reloadData()
         }
     }
-
+    
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
     }
@@ -58,8 +58,10 @@ class TableView: NSTableView {
             } else {
                 NSWorkspace.shared.open(itemUrl)
             }
-        } else if event.keyCode == Constants.KeyCodeDelete {
-            tableViewDelegate?.handleKeyRequest(self, event.keyCode)
+        } else if
+            event.keyCode == Constants.KeyCodeDelete ||
+            event.keyCode == Constants.KeyCodeUp && event.modifierFlags.contains(.command) {
+                tableViewDelegate?.goToParent(self)
         } else {
             let identifierString = identifier?.rawValue ?? ""
             print("\(identifierString) keyCode: \(event.keyCode)")
