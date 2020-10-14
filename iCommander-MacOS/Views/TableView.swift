@@ -52,7 +52,12 @@ class TableView: NSTableView {
     override func keyDown(with event: NSEvent) {
         
         if event.keyCode == Constants.KeyCodeEnter {
-            currentURL = currentFolderContents[selectedRow]
+            let itemUrl = currentFolderContents[selectedRow]
+            if itemUrl.hasDirectoryPath {
+                currentURL = itemUrl
+            } else {
+                NSWorkspace.shared.open(itemUrl)
+            }
         } else if event.keyCode == Constants.KeyCodeDelete {
             tableViewDelegate?.handleKeyRequest(self, event.keyCode)
         } else {
