@@ -63,9 +63,22 @@ class TableView: NSTableView {
             event.keyCode == Constants.KeyCodeUp && event.modifierFlags.contains(.command) {
                 tableViewDelegate?.goToParent(self)
         } else {
-            let identifierString = identifier?.rawValue ?? ""
-            print("\(identifierString) keyCode: \(event.keyCode)")
             super.keyDown(with: event)
         }
+    }
+    
+    override func menu(for event: NSEvent) -> NSMenu? {
+        let pointInView = convert(event.locationInWindow, from: nil)
+        let identifierString = identifier?.rawValue ?? ""
+        print("\(identifierString) - Row right-clicked: \(row(at: pointInView))")
+        let isDirectory = currentFolderContents[row(at: pointInView)].hasDirectoryPath
+        
+        if isDirectory {
+            print("is a folder")
+        } else {
+            print("is a file")
+        }
+        
+        return nil
     }
 }

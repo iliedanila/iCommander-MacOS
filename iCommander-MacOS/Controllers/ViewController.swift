@@ -20,25 +20,7 @@ class ViewController: NSViewController {
     
     var tableToPath: [NSTableView : NSTextField] = [:]
     
-    @IBAction func leftTableDoubleClick(_ sender: NSTableView) {
-        print("Left table: \(sender.clickedRow)")
-        
-        if sender.clickedRow == -1 {
-            return
-        }
-        
-        if let myTableView = sender as? TableView {
-            let itemURL = myTableView.currentFolderContents[sender.clickedRow]
-            
-            if itemURL.hasDirectoryPath {
-                myTableView.currentURL = itemURL
-            }
-        }
-    }
-    
-    @IBAction func rightTableDoubleClick(_ sender: NSTableView) {
-        print("Right table: \(sender.clickedRow)")
-        
+    @IBAction func tableDoubleClick(_ sender: NSTableView) {
         if sender.clickedRow == -1 {
             return
         }
