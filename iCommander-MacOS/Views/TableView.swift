@@ -10,7 +10,7 @@ import Cocoa
 protocol TableViewDelegate {
     var urlMenu: URL? { get set }
     func goToParent(_ tableView: NSTableView)
-    func currentPathChanged(_ tableView: NSTableView, _ path: String)
+    func currentPathChanged(_ tableView: NSTableView, _ path: URL)
 }
 
 class TableView: NSTableView {
@@ -25,8 +25,7 @@ class TableView: NSTableView {
                 let fileURLs = try fileManager.contentsOfDirectory(at: currentURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
                 
                 currentFolderContents = fileURLs
-                
-                tableViewDelegate?.currentPathChanged(self, currentURL.path)
+                tableViewDelegate?.currentPathChanged(self, currentURL)
             } catch {
                 print("Unexpected error: \(error).")
             }

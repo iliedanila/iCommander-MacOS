@@ -15,11 +15,11 @@ class ViewController: NSViewController {
     @IBOutlet var rightTable: NSTableView!
     @IBOutlet var leftUpButton: NSButton!
     @IBOutlet var rightUpButton: NSButton!
-    @IBOutlet var leftPathTextField: NSTextField!
-    @IBOutlet var rightPathTextField: NSTextField!
     @IBOutlet var tableMenu: NSMenu!
+    @IBOutlet var leftPathStackView: NSStackView!
+    @IBOutlet var rightPathStackView: NSStackView!
     
-    var tableToPath: [NSTableView : NSTextField] = [:]
+    var tableToPath: [NSTableView : NSStackView] = [:]
     var urlRightClicked: URL? = nil
     
     @IBAction func tableDoubleClick(_ sender: NSTableView) {
@@ -53,16 +53,17 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableToPath[leftTable] = leftPathTextField
-        tableToPath[rightTable] = rightPathTextField
+        tableToPath[leftTable] = leftPathStackView
+        tableToPath[rightTable] = rightPathStackView
         
         if let leftTableView = leftTable as? TableView, let rightTableView = rightTable as? TableView {
             leftTableView.currentURL = FileManager.default.homeDirectoryForCurrentUser
             rightTableView.currentURL = FileManager.default.homeDirectoryForCurrentUser
             leftTableView.tableViewDelegate = self
             rightTableView.tableViewDelegate = self
-            leftPathTextField.stringValue = Constants.CurrentPath + leftTableView.currentURL.path
-            rightPathTextField.stringValue = Constants.CurrentPath + rightTableView.currentURL.path
+            
+            currentPathChanged(leftTable, FileManager.default.homeDirectoryForCurrentUser)
+            currentPathChanged(rightTable, FileManager.default.homeDirectoryForCurrentUser)
         }
         
         leftTable.rowSizeStyle = .medium
@@ -123,10 +124,38 @@ extension ViewController: TableViewDelegate {
         }
     }
     
-    func currentPathChanged(_ tableView: NSTableView, _ path: String) {
-        var pathText = Constants.CurrentPath
-        pathText = pathText + path
-        tableToPath[tableView]?.stringValue = pathText
+    func currentPathChanged(_ tableView: NSTableView, _ path: URL) {
+        let currentStackView = tableToPath[tableView]!
+        let views = currentStackView.arrangedSubviews
+        for view in views {
+            currentStackView.removeView(view)
+        }
+
+        var pathComponents = path.pathComponents
+        for index in 1..<pathComponents.count {
+            pathComponents[index] = pathComponents[index] + "/"
+        }
+        
+        var currentPath = ""
+        for index in 0..<pathComponents.count {
+            currentPath = currentPath + pathComponents[index]
+            let currentUrl = URL(fileURLWithPath: currentPath)
+            
+            let textField = TextField()
+            textField.textFieldDelegate = self
+            textField.path = currentUrl
+            textField.tableViewAssociated = tableView
+            
+            textField.stringValue = pathComponents[index]
+            textField.isEditable = false
+            textField.isSelectable = false
+            textField.isBezeled = false
+            textField.isBordered = false
+            textField.backgroundColor = .none
+            textField.drawsBackground = false
+            textField.isEnabled = true
+            currentStackView.insertView(textField, at: index, in: .leading)
+        }
     }
     
     func goToParent(_ tableView: NSTableView) {
@@ -150,5 +179,18 @@ extension ViewController: NSMenuDelegate {
         let nameOfFile = urlRightClicked?.lastPathComponent ?? ""
         print("doing nothing...for \(nameOfFile)")
         urlRightClicked = nil
+    }
+}
+
+// MARK: - TextFieldDelegate
+extension ViewController: TextFieldDelegate {
+    func pathRequested(_ textField: NSTextField, _ path: URL?, _ tableView: NSTableView?) {
+        if let myNSTableView = tableView {
+            if let myTableView = myNSTableView as? TableView {
+                if let newUrl = path {
+                    myTableView.currentURL = newUrl
+                }
+            }
+        }
     }
 }

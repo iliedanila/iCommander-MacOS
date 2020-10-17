@@ -714,13 +714,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="637" height="458"/>
                                 <subviews>
                                     <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Taq-up-Pmg">
-                                        <rect key="frame" x="0.0" y="351" width="637" height="107"/>
+                                        <rect key="frame" x="0.0" y="317" width="637" height="141"/>
                                         <subviews>
                                             <stackView distribution="fillProportionally" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="11g-rp-oKD">
-                                                <rect key="frame" x="0.0" y="0.0" width="314" height="107"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="314" height="141"/>
                                                 <subviews>
                                                     <stackView orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2R8-Yx-EkU">
-                                                        <rect key="frame" x="0.0" y="86" width="314" height="21"/>
+                                                        <rect key="frame" x="0.0" y="120" width="314" height="21"/>
                                                         <beginningViews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BQ6-Lq-Qc3">
                                                                 <rect key="frame" x="-6" y="-7" width="76" height="32"/>
@@ -756,21 +756,13 @@
                                                             <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
-                                                    <stackView orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fZq-XS-cLg">
-                                                        <rect key="frame" x="0.0" y="60" width="314" height="16"/>
+                                                    <stackView orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fZq-XS-cLg">
+                                                        <rect key="frame" x="0.0" y="60" width="314" height="50"/>
                                                         <beginningViews>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zPL-wN-Tmv">
-                                                                <rect key="frame" x="-2" y="0.0" width="85" height="16"/>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zPL-wN-Tmv">
+                                                                <rect key="frame" x="-2" y="34" width="85" height="16"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Current Path:" id="Xry-pr-a6S">
                                                                     <font key="font" usesAppearanceFont="YES"/>
-                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6aq-Lr-PYg">
-                                                                <rect key="frame" x="89" y="0.0" width="73" height="16"/>
-                                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Actual Path" id="FC6-Ex-ddg">
-                                                                    <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
@@ -778,8 +770,6 @@
                                                         </beginningViews>
                                                         <constraints>
                                                             <constraint firstItem="zPL-wN-Tmv" firstAttribute="top" secondItem="fZq-XS-cLg" secondAttribute="top" id="3Rg-tm-oxz"/>
-                                                            <constraint firstItem="6aq-Lr-PYg" firstAttribute="bottom" secondItem="fZq-XS-cLg" secondAttribute="bottom" id="CUJ-JR-T6a"/>
-                                                            <constraint firstItem="6aq-Lr-PYg" firstAttribute="top" secondItem="fZq-XS-cLg" secondAttribute="top" id="F45-1I-BVM"/>
                                                             <constraint firstItem="zPL-wN-Tmv" firstAttribute="leading" secondItem="fZq-XS-cLg" secondAttribute="leading" id="JGE-jn-Vz9"/>
                                                             <constraint firstItem="zPL-wN-Tmv" firstAttribute="top" secondItem="fZq-XS-cLg" secondAttribute="top" id="Lj9-lL-nqQ"/>
                                                             <constraint firstItem="zPL-wN-Tmv" firstAttribute="bottom" secondItem="fZq-XS-cLg" secondAttribute="bottom" id="M4a-UL-Xxs"/>
@@ -788,10 +778,8 @@
                                                         </constraints>
                                                         <visibilityPriorities>
                                                             <integer value="1000"/>
-                                                            <integer value="1000"/>
                                                         </visibilityPriorities>
                                                         <customSpacing>
-                                                            <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
@@ -902,10 +890,10 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fillProportionally" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nNA-k5-OYN">
-                                                <rect key="frame" x="324" y="0.0" width="313" height="107"/>
+                                                <rect key="frame" x="324" y="0.0" width="313" height="141"/>
                                                 <subviews>
                                                     <stackView orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YRG-l2-V7L">
-                                                        <rect key="frame" x="0.0" y="86" width="313" height="21"/>
+                                                        <rect key="frame" x="0.0" y="120" width="313" height="21"/>
                                                         <beginningViews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TOv-z7-pP5">
                                                                 <rect key="frame" x="-6" y="-7" width="76" height="32"/>
@@ -941,21 +929,13 @@
                                                             <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
-                                                    <stackView orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nhW-Gd-UbI">
-                                                        <rect key="frame" x="0.0" y="60" width="313" height="16"/>
+                                                    <stackView orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nhW-Gd-UbI">
+                                                        <rect key="frame" x="0.0" y="60" width="313" height="50"/>
                                                         <beginningViews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="acr-g6-RZb">
-                                                                <rect key="frame" x="-2" y="0.0" width="85" height="16"/>
+                                                                <rect key="frame" x="-2" y="34" width="85" height="16"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Current Path:" id="ImC-77-wQd">
                                                                     <font key="font" usesAppearanceFont="YES"/>
-                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                </textFieldCell>
-                                                            </textField>
-                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vmn-ch-APw">
-                                                                <rect key="frame" x="89" y="0.0" width="73" height="16"/>
-                                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Actual Path" id="5il-YF-7Y1">
-                                                                    <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
@@ -963,17 +943,13 @@
                                                         </beginningViews>
                                                         <constraints>
                                                             <constraint firstItem="acr-g6-RZb" firstAttribute="bottom" secondItem="nhW-Gd-UbI" secondAttribute="bottom" id="431-TH-qEl"/>
-                                                            <constraint firstItem="vmn-ch-APw" firstAttribute="top" secondItem="nhW-Gd-UbI" secondAttribute="top" id="aoB-E4-cZu"/>
-                                                            <constraint firstAttribute="bottom" secondItem="vmn-ch-APw" secondAttribute="bottom" id="m8M-aC-tAI"/>
                                                             <constraint firstItem="acr-g6-RZb" firstAttribute="top" secondItem="nhW-Gd-UbI" secondAttribute="top" id="pi0-6V-6hs"/>
                                                             <constraint firstItem="acr-g6-RZb" firstAttribute="leading" secondItem="nhW-Gd-UbI" secondAttribute="leading" id="yxh-R5-gCI"/>
                                                         </constraints>
                                                         <visibilityPriorities>
                                                             <integer value="1000"/>
-                                                            <integer value="1000"/>
                                                         </visibilityPriorities>
                                                         <customSpacing>
-                                                            <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
@@ -1105,7 +1081,7 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fillEqually" orientation="horizontal" alignment="bottom" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R5J-aI-us0">
-                                        <rect key="frame" x="0.0" y="0.0" width="637" height="351"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="637" height="317"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dYt-gt-JGt">
                                                 <rect key="frame" x="-6" y="-7" width="115" height="32"/>
@@ -1194,10 +1170,10 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="leftPathTextField" destination="zPL-wN-Tmv" id="Oxt-T2-tVK"/>
+                        <outlet property="leftPathStackView" destination="fZq-XS-cLg" id="vGS-Ma-FFW"/>
                         <outlet property="leftTable" destination="q3L-KJ-iO5" id="hnL-Bm-Zec"/>
                         <outlet property="leftUpButton" destination="Fy9-1f-dKp" id="IG3-IC-DlD"/>
-                        <outlet property="rightPathTextField" destination="acr-g6-RZb" id="CgC-ma-xyr"/>
+                        <outlet property="rightPathStackView" destination="nhW-Gd-UbI" id="mi0-eu-Jke"/>
                         <outlet property="rightTable" destination="Aqh-xu-Ors" id="tR7-ik-25e"/>
                         <outlet property="rightUpButton" destination="AY6-id-Prl" id="Wv2-qi-4IY"/>
                         <outlet property="tableMenu" destination="2qZ-gA-SXG" id="nHh-ae-jgL"/>
