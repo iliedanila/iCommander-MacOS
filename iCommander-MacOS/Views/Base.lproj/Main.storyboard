@@ -823,6 +823,7 @@
                                                                         <action trigger="doubleAction" selector="tableDoubleClick:" target="XfG-lQ-9wD" id="Ju5-uC-nSs"/>
                                                                         <outlet property="dataSource" destination="XfG-lQ-9wD" id="HgM-lA-ZFb"/>
                                                                         <outlet property="delegate" destination="XfG-lQ-9wD" id="jML-do-LnC"/>
+                                                                        <outlet property="menu" destination="2qZ-gA-SXG" id="97d-Nu-Mhv"/>
                                                                     </connections>
                                                                 </tableView>
                                                             </subviews>
@@ -959,6 +960,7 @@
                                                                         <action trigger="doubleAction" selector="tableDoubleClick:" target="XfG-lQ-9wD" id="GDF-5t-ceo"/>
                                                                         <outlet property="dataSource" destination="XfG-lQ-9wD" id="yj1-mO-jis"/>
                                                                         <outlet property="delegate" destination="XfG-lQ-9wD" id="T1f-eS-ofc"/>
+                                                                        <outlet property="menu" destination="2qZ-gA-SXG" id="Z8N-XO-wma"/>
                                                                     </connections>
                                                                 </tableView>
                                                             </subviews>
@@ -1105,9 +1107,26 @@
                         <outlet property="rightPathTextField" destination="acr-g6-RZb" id="CgC-ma-xyr"/>
                         <outlet property="rightTable" destination="Aqh-xu-Ors" id="tR7-ik-25e"/>
                         <outlet property="rightUpButton" destination="AY6-id-Prl" id="Wv2-qi-4IY"/>
+                        <outlet property="tableMenu" destination="2qZ-gA-SXG" id="nHh-ae-jgL"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="2qZ-gA-SXG">
+                    <items>
+                        <menuItem title="Item 1" id="0As-g9-yPg">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                        <menuItem title="Item 2" id="ofg-aW-w4A">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                        <menuItem title="Item 3" id="Yp3-O5-wQh">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                    </items>
+                    <connections>
+                        <outlet property="delegate" destination="XfG-lQ-9wD" id="t6I-N3-VRS"/>
+                    </connections>
+                </menu>
             </objects>
             <point key="canvasLocation" x="76" y="804"/>
         </scene>

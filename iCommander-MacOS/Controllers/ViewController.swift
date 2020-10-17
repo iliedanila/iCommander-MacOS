@@ -17,8 +17,10 @@ class ViewController: NSViewController {
     @IBOutlet var rightUpButton: NSButton!
     @IBOutlet var leftPathTextField: NSTextField!
     @IBOutlet var rightPathTextField: NSTextField!
+    @IBOutlet var tableMenu: NSMenu!
     
     var tableToPath: [NSTableView : NSTextField] = [:]
+    var urlRightClicked: URL? = nil
     
     @IBAction func tableDoubleClick(_ sender: NSTableView) {
         if sender.clickedRow == -1 {
@@ -112,6 +114,15 @@ extension ViewController: NSTableViewDataSource {
 
 // MARK: - TableViewDelegate
 extension ViewController: TableViewDelegate {
+    var urlMenu: URL? {
+        get {
+            return urlRightClicked
+        }
+        set {
+            urlRightClicked = newValue
+        }
+    }
+    
     func currentPathChanged(_ tableView: NSTableView, _ path: String) {
         var pathText = Constants.CurrentPath
         pathText = pathText + path
@@ -123,5 +134,21 @@ extension ViewController: TableViewDelegate {
             let parentUrl = myTableView.currentURL.deletingLastPathComponent()
             myTableView.currentURL = parentUrl
         }
+    }
+}
+
+// MARK: - NSMenuDelegate
+extension ViewController: NSMenuDelegate {
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        menu.removeAllItems()
+
+        menu.addItem(withTitle: "1st menu item", action: #selector(doNothing), keyEquivalent: "")
+        menu.addItem(withTitle: "2nd menu item", action: #selector(doNothing), keyEquivalent: "")
+    }
+    
+    @objc func doNothing() {
+        let nameOfFile = urlRightClicked?.lastPathComponent ?? ""
+        print("doing nothing...for \(nameOfFile)")
+        urlRightClicked = nil
     }
 }

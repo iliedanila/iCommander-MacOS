@@ -8,6 +8,7 @@
 import Cocoa
 
 protocol TableViewDelegate {
+    var urlMenu: URL? { get set }
     func goToParent(_ tableView: NSTableView)
     func currentPathChanged(_ tableView: NSTableView, _ path: String)
 }
@@ -69,16 +70,10 @@ class TableView: NSTableView {
     
     override func menu(for event: NSEvent) -> NSMenu? {
         let pointInView = convert(event.locationInWindow, from: nil)
-        let identifierString = identifier?.rawValue ?? ""
-        print("\(identifierString) - Row right-clicked: \(row(at: pointInView))")
-        let isDirectory = currentFolderContents[row(at: pointInView)].hasDirectoryPath
+        let url = currentFolderContents[row(at: pointInView)]
         
-        if isDirectory {
-            print("is a folder")
-        } else {
-            print("is a file")
-        }
+        tableViewDelegate?.urlMenu = url
         
-        return nil
+        return super.menu(for: event)
     }
 }
