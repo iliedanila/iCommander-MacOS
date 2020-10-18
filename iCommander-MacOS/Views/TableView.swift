@@ -10,6 +10,7 @@ import Cocoa
 protocol TableViewDelegate {
     var urlMenu: URL? { get set }
     func goToParent(_ tableView: NSTableView)
+    func focusNextTable(_ tableView: NSTableView)
     func currentPathChanged(_ tableView: NSTableView, _ path: URL)
 }
 
@@ -62,7 +63,11 @@ class TableView: NSTableView {
             event.keyCode == Constants.KeyCodeDelete ||
             event.keyCode == Constants.KeyCodeUp && event.modifierFlags.contains(.command) {
                 tableViewDelegate?.goToParent(self)
+        } else if event.keyCode == Constants.KeyCodetab {
+            tableViewDelegate?.focusNextTable(self)
+            super.keyDown(with: event)
         } else {
+            print("\(event.keyCode) has been pressed.")
             super.keyDown(with: event)
         }
     }

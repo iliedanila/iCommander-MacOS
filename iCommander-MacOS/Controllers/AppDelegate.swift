@@ -17,6 +17,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if let window = NSApp.mainWindow, let screen = NSScreen.main {
             window.setFrame(screen.visibleFrame, display: true)
+            if let viewController = window.contentViewController as? ViewController {
+                viewController.handleMaximize()
+            }
+            print("Maximized the app")
         }
     }
 

@@ -16,7 +16,7 @@ class TextField: NSTextField {
     var path: URL? = nil
     var previousColor: NSColor? = nil
     var tableViewAssociated: NSTableView? = nil
-    var textFieldDelegate: TextFieldDelegate? = nil
+    var textFieldDelegate: TextFieldDelegate? = nil 
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)

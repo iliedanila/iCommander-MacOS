@@ -64,16 +64,38 @@ class ViewController: NSViewController {
             
             currentPathChanged(leftTable, FileManager.default.homeDirectoryForCurrentUser)
             currentPathChanged(rightTable, FileManager.default.homeDirectoryForCurrentUser)
+            
+            print(leftTable.tableColumns[0].width)
+            print(leftTable.tableColumns[1].width)
+            print(leftTable.tableColumns[2].width)
         }
         
         leftTable.rowSizeStyle = .medium
-        rightTable.rowSizeStyle = .medium
+        rightTable.rowSizeStyle = .medium        
     }
 
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }
+    }
+    
+    func handleMaximize() {
+        resizeTableViewColumns(leftTable)
+        resizeTableViewColumns(rightTable)
+    }
+    
+    func resizeTableViewColumns(_ tableView: NSTableView) {
+        var tableWidth: CGFloat = 0
+        for column in tableView.tableColumns {
+            tableWidth = tableWidth + column.width
+        }
+        
+        tableView.tableColumns[0].width = 5 * tableWidth / 8
+        tableView.tableColumns[1].width = 2 * tableWidth / 8
+        tableView.tableColumns[2].width = tableWidth / 8
+        
+        tableView.needsDisplay = true
     }
 }
 
@@ -89,15 +111,59 @@ extension ViewController: NSTableViewDelegate {
             
             if let myTableView = tableView as? TableView {
                 let url = myTableView.currentFolderContents[row]
-                let icon = NSWorkspace.shared.icon(forFile: url.path)
-                let name = url.lastPathComponent
-                cell.textField?.stringValue = name
-                cell.imageView?.image = icon
+                
+                switch tableColumn?.title {
+                case Constants.NameColumn:
+                    let icon = NSWorkspace.shared.icon(forFile: url.path)
+                    let name = url.lastPathComponent
+                    cell.textField?.stringValue = name
+                    cell.imageView?.image = icon
+                case Constants.SizeColumn:
+                    cell.textField?.stringValue = getFileSize(url)
+                case Constants.DateColumn:
+                    cell.textField?.stringValue = getFileDate(url)
+                default:
+                    print("Column not recognized")
+                }
+                
                 
                 return cell
             }
         }
         return nil
+    }
+    
+    func getFileSize(_ forURL: URL) -> String {
+        
+        if forURL.hasDirectoryPath {
+            return "DIR"
+        }
+        
+        do {
+            let resourceValues = try forURL.resourceValues(forKeys: [.fileSizeKey])
+            if let filesize = resourceValues.fileSize {
+                let size = ByteCountFormatter().string(fromByteCount: Int64(filesize))
+                return size
+            }
+        } catch {
+            print(error)
+        }
+        return ""
+    }
+    
+    func getFileDate(_ forURL: URL) -> String {
+        do {
+            let resourceValues = try forURL.resourceValues(forKeys: [.contentModificationDateKey])
+            if let dateModified = resourceValues.contentModificationDate {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
+                let dateString = dateFormatter.string(from: dateModified)
+                return dateString
+            }
+        } catch {
+            print(error)
+        }
+        return ""
     }
 }
 
@@ -115,6 +181,14 @@ extension ViewController: NSTableViewDataSource {
 
 // MARK: - TableViewDelegate
 extension ViewController: TableViewDelegate {
+    func focusNextTable(_ tableView: NSTableView) {
+        if tableView == leftTable {
+            // Focus right table
+        } else {
+            // Focus left table
+        }
+    }
+    
     var urlMenu: URL? {
         get {
             return urlRightClicked
@@ -130,6 +204,10 @@ extension ViewController: TableViewDelegate {
         for view in views {
             currentStackView.removeView(view)
         }
+        
+        let firstTextField = NSTextField()
+        setupTextField(firstTextField, Constants.CurrentPath)
+        currentStackView.insertView(firstTextField, at: 0, in: .leading)
 
         var pathComponents = path.pathComponents
         for index in 1..<pathComponents.count {
@@ -142,19 +220,11 @@ extension ViewController: TableViewDelegate {
             let currentUrl = URL(fileURLWithPath: currentPath)
             
             let textField = TextField()
+            setupTextField(textField, pathComponents[index])
             textField.textFieldDelegate = self
             textField.path = currentUrl
             textField.tableViewAssociated = tableView
-            
-            textField.stringValue = pathComponents[index]
-            textField.isEditable = false
-            textField.isSelectable = false
-            textField.isBezeled = false
-            textField.isBordered = false
-            textField.backgroundColor = .none
-            textField.drawsBackground = false
-            textField.isEnabled = true
-            currentStackView.insertView(textField, at: index, in: .leading)
+            currentStackView.insertView(textField, at: index + 1, in: .leading)
         }
     }
     
@@ -163,6 +233,19 @@ extension ViewController: TableViewDelegate {
             let parentUrl = myTableView.currentURL.deletingLastPathComponent()
             myTableView.currentURL = parentUrl
         }
+    }
+    
+    func setupTextField(_ textField: NSTextField, _ stringValue: String) {
+        textField.stringValue = stringValue
+        textField.isEditable = false
+        textField.isSelectable = false
+        textField.isBezeled = false
+        textField.isBordered = false
+        textField.backgroundColor = .none
+        textField.drawsBackground = false
+        textField.isEnabled = true
+        let fontName = textField.font?.fontName ?? ""
+        textField.font = NSFont(name: fontName, size: 15)
     }
 }
 
