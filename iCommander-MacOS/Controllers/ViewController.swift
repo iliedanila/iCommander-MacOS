@@ -64,10 +64,6 @@ class ViewController: NSViewController {
             
             currentPathChanged(leftTable, FileManager.default.homeDirectoryForCurrentUser)
             currentPathChanged(rightTable, FileManager.default.homeDirectoryForCurrentUser)
-            
-            print(leftTable.tableColumns[0].width)
-            print(leftTable.tableColumns[1].width)
-            print(leftTable.tableColumns[2].width)
         }
         
         leftTable.rowSizeStyle = .medium
@@ -176,6 +172,10 @@ extension ViewController: NSTableViewDataSource {
             return myTableView.currentFolderContents.count
         }
         return 0
+    }
+    
+    func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
+        print(oldDescriptors)
     }
 }
 
