@@ -8,35 +8,16 @@
 import Cocoa
 
 protocol TableViewDelegate {
-    var urlMenu: URL? { get set }
+    var rowForMenu: Int? { get set }
     func goToParent(_ tableView: NSTableView)
     func focusNextTable(_ tableView: NSTableView)
     func currentPathChanged(_ tableView: NSTableView, _ path: URL)
+    func handleEnterPressed(_ forRow: Int)
 }
 
 class TableView: NSTableView {
     
     var tableViewDelegate: TableViewDelegate?
-    
-    var currentURL: URL = FileManager.default.homeDirectoryForCurrentUser {
-        didSet {
-            do {
-                let fileManager = FileManager.default
-                
-                let fileURLs = try fileManager.contentsOfDirectory(at: currentURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
-                
-                currentFolderContents = fileURLs
-                tableViewDelegate?.currentPathChanged(self, currentURL)
-            } catch {
-                print("Unexpected error: \(error).")
-            }
-        }
-    }
-    var currentFolderContents: [URL] = [] {
-        didSet {
-            reloadData()
-        }
-    }
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
@@ -53,12 +34,7 @@ class TableView: NSTableView {
     override func keyDown(with event: NSEvent) {
         
         if event.keyCode == Constants.KeyCodeEnter {
-            let itemUrl = currentFolderContents[selectedRow]
-            if itemUrl.hasDirectoryPath {
-                currentURL = itemUrl
-            } else {
-                NSWorkspace.shared.open(itemUrl)
-            }
+            tableViewDelegate?.handleEnterPressed(selectedRow)
         } else if
             event.keyCode == Constants.KeyCodeDelete ||
             event.keyCode == Constants.KeyCodeUp && event.modifierFlags.contains(.command) {
@@ -74,9 +50,9 @@ class TableView: NSTableView {
     
     override func menu(for event: NSEvent) -> NSMenu? {
         let pointInView = convert(event.locationInWindow, from: nil)
-        let url = currentFolderContents[row(at: pointInView)]
+        let rowforMenu = row(at: pointInView)
         
-        tableViewDelegate?.urlMenu = url
+        tableViewDelegate?.rowForMenu = rowforMenu
         
         return super.menu(for: event)
     }

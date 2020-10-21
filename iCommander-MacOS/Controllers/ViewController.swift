@@ -20,33 +20,48 @@ class ViewController: NSViewController {
     @IBOutlet var rightPathStackView: NSStackView!
     
     var tableToPath: [NSTableView : NSStackView] = [:]
-    var urlRightClicked: URL? = nil
+    var rowIndexForMenu: Int? = nil
+    var leftTableDataSource: TableDataSource = TableDataSource()
+    var rightTableDataSource: TableDataSource = TableDataSource()
+    var tableToDataSource: [NSTableView : TableDataSource] = [:]
+    
+    @IBAction func tableClicked(_ sender: NSTableView) {
+        if sender.clickedRow == -1 && sender.clickedColumn != -1 {
+            if let tableData = tableToDataSource[sender] {
+                tableData.sort(sender.sortDescriptors[0].key!)
+                sender.reloadData()
+            }
+        }
+    }
+    
     
     @IBAction func tableDoubleClick(_ sender: NSTableView) {
         if sender.clickedRow == -1 {
             return
         }
         
-        if let myTableView = sender as? TableView {
-            let itemURL = myTableView.currentFolderContents[sender.clickedRow]
-            
+        if let tableData = tableToDataSource[sender] {
+            let itemURL = tableData.tableElements[sender.clickedRow].url
             if itemURL.hasDirectoryPath {
-                myTableView.currentURL = itemURL
+                tableData.currentUrl = itemURL
+                sender.reloadData()
             }
         }
     }
     
     @IBAction func leftUpClicked(_ sender: NSButton) {
-        if let myTableView = leftTable as? TableView {
-            let parentUrl = myTableView.currentURL.deletingLastPathComponent()
-            myTableView.currentURL = parentUrl
+        if let tableData = tableToDataSource[leftTable] {
+            let parentUrl = tableData.currentUrl.deletingLastPathComponent()
+            tableData.currentUrl = parentUrl
+            leftTable.reloadData()
         }
     }
     
     @IBAction func rightUpClicked(_ sender: NSButton) {
-        if let myTableView = rightTable as? TableView {
-            let parentUrl = myTableView.currentURL.deletingLastPathComponent()
-            myTableView.currentURL = parentUrl
+        if let tableData = tableToDataSource[rightTable] {
+            let parentUrl = tableData.currentUrl.deletingLastPathComponent()
+            tableData.currentUrl = parentUrl
+            rightTable.reloadData()
         }
     }
     
@@ -55,10 +70,13 @@ class ViewController: NSViewController {
         
         tableToPath[leftTable] = leftPathStackView
         tableToPath[rightTable] = rightPathStackView
+        tableToDataSource[leftTable] = leftTableDataSource
+        tableToDataSource[rightTable] = rightTableDataSource
+        
+        leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
+        rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         
         if let leftTableView = leftTable as? TableView, let rightTableView = rightTable as? TableView {
-            leftTableView.currentURL = FileManager.default.homeDirectoryForCurrentUser
-            rightTableView.currentURL = FileManager.default.homeDirectoryForCurrentUser
             leftTableView.tableViewDelegate = self
             rightTableView.tableViewDelegate = self
             
@@ -105,61 +123,23 @@ extension ViewController: NSTableViewDelegate {
         
         if let cell = tableView.makeView(withIdentifier: identifier, owner: nil) as? NSTableCellView {
             
-            if let myTableView = tableView as? TableView {
-                let url = myTableView.currentFolderContents[row]
-                
-                switch tableColumn?.title {
-                case Constants.NameColumn:
-                    let icon = NSWorkspace.shared.icon(forFile: url.path)
-                    let name = url.lastPathComponent
-                    cell.textField?.stringValue = name
-                    cell.imageView?.image = icon
-                case Constants.SizeColumn:
-                    cell.textField?.stringValue = getFileSize(url)
-                case Constants.DateColumn:
-                    cell.textField?.stringValue = getFileDate(url)
-                default:
-                    print("Column not recognized")
-                }
-                
-                
-                return cell
+            let dataSource = tableToDataSource[tableView]
+            let element = dataSource!.tableElements[row]
+            switch tableColumn?.title {
+            case Constants.NameColumn:
+                cell.textField?.stringValue = element.name
+                cell.imageView?.image = NSWorkspace.shared.icon(forFile: element.url.path)
+            case Constants.SizeColumn:
+                cell.textField?.stringValue = element.sizeString
+            case Constants.DateColumn:
+                cell.textField?.stringValue = element.dateModified
+            default:
+                print("Column not recognized")
             }
+            
+            return cell
         }
         return nil
-    }
-    
-    func getFileSize(_ forURL: URL) -> String {
-        
-        if forURL.hasDirectoryPath {
-            return "DIR"
-        }
-        
-        do {
-            let resourceValues = try forURL.resourceValues(forKeys: [.fileSizeKey])
-            if let filesize = resourceValues.fileSize {
-                let size = ByteCountFormatter().string(fromByteCount: Int64(filesize))
-                return size
-            }
-        } catch {
-            print(error)
-        }
-        return ""
-    }
-    
-    func getFileDate(_ forURL: URL) -> String {
-        do {
-            let resourceValues = try forURL.resourceValues(forKeys: [.contentModificationDateKey])
-            if let dateModified = resourceValues.contentModificationDate {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
-                let dateString = dateFormatter.string(from: dateModified)
-                return dateString
-            }
-        } catch {
-            print(error)
-        }
-        return ""
     }
 }
 
@@ -168,33 +148,33 @@ extension ViewController: NSTableViewDelegate {
 extension ViewController: NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        if let myTableView = tableView as? TableView {
-            return myTableView.currentFolderContents.count
+        if let dataSource = tableToDataSource[tableView] {
+            return dataSource.tableElements.count
         }
         return 0
-    }
-    
-    func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
-        print(oldDescriptors)
     }
 }
 
 // MARK: - TableViewDelegate
 extension ViewController: TableViewDelegate {
+    var rowForMenu: Int? {
+        get {
+            return self.rowIndexForMenu
+        }
+        set {
+            self.rowIndexForMenu = newValue
+        }
+    }
+    
+    func handleEnterPressed(_ forRow: Int) {
+        
+    }
+    
     func focusNextTable(_ tableView: NSTableView) {
         if tableView == leftTable {
             // Focus right table
         } else {
             // Focus left table
-        }
-    }
-    
-    var urlMenu: URL? {
-        get {
-            return urlRightClicked
-        }
-        set {
-            urlRightClicked = newValue
         }
     }
     
@@ -229,9 +209,9 @@ extension ViewController: TableViewDelegate {
     }
     
     func goToParent(_ tableView: NSTableView) {
-        if let myTableView = tableView as? TableView {
-            let parentUrl = myTableView.currentURL.deletingLastPathComponent()
-            myTableView.currentURL = parentUrl
+        if let tableData = tableToDataSource[tableView] {
+            let parentUrl = tableData.currentUrl.deletingLastPathComponent()
+            tableData.currentUrl = parentUrl
         }
     }
     
@@ -259,21 +239,18 @@ extension ViewController: NSMenuDelegate {
     }
     
     @objc func doNothing() {
-        let nameOfFile = urlRightClicked?.lastPathComponent ?? ""
-        print("doing nothing...for \(nameOfFile)")
-        urlRightClicked = nil
     }
 }
 
 // MARK: - TextFieldDelegate
 extension ViewController: TextFieldDelegate {
     func pathRequested(_ textField: NSTextField, _ path: URL?, _ tableView: NSTableView?) {
-        if let myNSTableView = tableView {
-            if let myTableView = myNSTableView as? TableView {
-                if let newUrl = path {
-                    myTableView.currentURL = newUrl
-                }
+        
+        if let nsTableView = tableView, let tableData = tableToDataSource[nsTableView] {
+            if let newUrl = path {
+                tableData.currentUrl = newUrl
+                nsTableView.reloadData()
             }
-        }
+        }        
     }
 }
