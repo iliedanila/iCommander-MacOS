@@ -21,8 +21,8 @@ class ViewController: NSViewController {
     
     var tableToPath: [NSTableView : NSStackView] = [:]
     var rowIndexForMenu: Int? = nil
-    var leftTableDataSource: TableDataSource = TableDataSource()
-    var rightTableDataSource: TableDataSource = TableDataSource()
+    var leftTableDataSource: TableDataSource = TableDataSource(.Left)
+    var rightTableDataSource: TableDataSource = TableDataSource(.Right)
     var tableToDataSource: [NSTableView : TableDataSource] = [:]
     
     @IBAction func tableClicked(_ sender: NSTableView) {
@@ -45,6 +45,8 @@ class ViewController: NSViewController {
             if itemURL.hasDirectoryPath {
                 tableData.currentUrl = itemURL
                 sender.reloadData()
+            } else {
+                NSWorkspace.shared.open(itemURL)
             }
         }
     }
@@ -73,15 +75,18 @@ class ViewController: NSViewController {
         tableToDataSource[leftTable] = leftTableDataSource
         tableToDataSource[rightTable] = rightTableDataSource
         
+        leftTableDataSource.delegate = self
+        rightTableDataSource.delegate = self
+        
         leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         
         if let leftTableView = leftTable as? TableView, let rightTableView = rightTable as? TableView {
             leftTableView.tableViewDelegate = self
             rightTableView.tableViewDelegate = self
-            
-            currentPathChanged(leftTable, FileManager.default.homeDirectoryForCurrentUser)
-            currentPathChanged(rightTable, FileManager.default.homeDirectoryForCurrentUser)
+
+            leftTable.reloadData()
+            rightTable.reloadData()
         }
         
         leftTable.rowSizeStyle = .medium
@@ -166,8 +171,17 @@ extension ViewController: TableViewDelegate {
         }
     }
     
-    func handleEnterPressed(_ forRow: Int) {
-        
+    func handleEnterPressed(_ tableView: NSTableView, _ forRow: Int) {
+        if let dataSource = tableToDataSource[tableView] {
+            let element = dataSource.tableElements[forRow]
+            
+            if element.isDirectory {
+                dataSource.currentUrl = element.url
+                tableView.reloadData()
+            } else {
+                NSWorkspace.shared.open(element.url)
+            }
+        }
     }
     
     func focusNextTable(_ tableView: NSTableView) {
@@ -178,40 +192,11 @@ extension ViewController: TableViewDelegate {
         }
     }
     
-    func currentPathChanged(_ tableView: NSTableView, _ path: URL) {
-        let currentStackView = tableToPath[tableView]!
-        let views = currentStackView.arrangedSubviews
-        for view in views {
-            currentStackView.removeView(view)
-        }
-        
-        let firstTextField = NSTextField()
-        setupTextField(firstTextField, Constants.CurrentPath)
-        currentStackView.insertView(firstTextField, at: 0, in: .leading)
-
-        var pathComponents = path.pathComponents
-        for index in 1..<pathComponents.count {
-            pathComponents[index] = pathComponents[index] + "/"
-        }
-        
-        var currentPath = ""
-        for index in 0..<pathComponents.count {
-            currentPath = currentPath + pathComponents[index]
-            let currentUrl = URL(fileURLWithPath: currentPath)
-            
-            let textField = TextField()
-            setupTextField(textField, pathComponents[index])
-            textField.textFieldDelegate = self
-            textField.path = currentUrl
-            textField.tableViewAssociated = tableView
-            currentStackView.insertView(textField, at: index + 1, in: .leading)
-        }
-    }
-    
     func goToParent(_ tableView: NSTableView) {
         if let tableData = tableToDataSource[tableView] {
             let parentUrl = tableData.currentUrl.deletingLastPathComponent()
             tableData.currentUrl = parentUrl
+            tableView.reloadData()
         }
     }
     
@@ -252,5 +237,41 @@ extension ViewController: TextFieldDelegate {
                 nsTableView.reloadData()
             }
         }        
+    }
+}
+
+// MARK: - DataSourceDelegate
+extension ViewController: DataSourceDelegate {
+    func handlePathChanged(_ dataSource: TableDataSource, _ newUrl: URL) {
+        if let stackView = dataSource.location == .Left ? leftPathStackView : rightPathStackView {
+            
+            let views = stackView.arrangedSubviews
+            for view in views {
+                stackView.removeView(view)
+            }
+            
+            let firstTextField = NSTextField()
+            setupTextField(firstTextField, Constants.CurrentPath)
+            stackView.insertView(firstTextField, at: 0, in: .leading)
+
+            var pathComponents = newUrl.pathComponents
+            for index in 1..<pathComponents.count {
+                pathComponents[index] = pathComponents[index] + "/"
+            }
+            
+            var currentPath = ""
+            for index in 0..<pathComponents.count {
+                currentPath = currentPath + pathComponents[index]
+                let currentUrl = URL(fileURLWithPath: currentPath)
+                
+                let textField = TextField()
+                setupTextField(textField, pathComponents[index])
+                textField.textFieldDelegate = self
+                textField.path = currentUrl
+                let tableView = dataSource.location == .Left ? leftTable : rightTable
+                textField.tableViewAssociated = tableView
+                stackView.insertView(textField, at: index + 1, in: .leading)
+            }
+        }
     }
 }

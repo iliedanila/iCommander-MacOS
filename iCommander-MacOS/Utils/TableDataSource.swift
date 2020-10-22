@@ -17,7 +17,24 @@ struct TableElement {
     let isDirectory: Bool
 }
 
+enum Location {
+    case Left
+    case Right
+}
+
+protocol DataSourceDelegate {
+    func handlePathChanged(_ dataSource: TableDataSource, _ newUrl: URL)
+}
+
 class TableDataSource {
+    
+    var delegate: DataSourceDelegate?
+    var location: Location
+    
+    init(_ aLocation: Location) {
+        location = aLocation
+    }
+    
     var currentUrl: URL = FileManager.default.homeDirectoryForCurrentUser {
         didSet
         {
@@ -27,7 +44,6 @@ class TableDataSource {
                 let fileURLs = try fileManager.contentsOfDirectory(at: currentUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
                 
                 folderContents = fileURLs
-//                tableViewDelegate?.currentPathChanged(self, currentUrl)
             } catch {
                 print("Error while getting folder contents: \(error).")
             }
@@ -38,7 +54,6 @@ class TableDataSource {
         didSet {
             tableElements = []
             for url in folderContents {
-//                let icon = NSWorkspace.shared.icon(forFile: url.path)
                 let name = url.lastPathComponent
                 let isDirectory = url.hasDirectoryPath
                 let fileSize = isDirectory ? nil : getFileSize(url)
@@ -48,7 +63,7 @@ class TableDataSource {
                 tableElements.append(TableElement(name: name, url: url, size: fileSize, sizeString: fileSizeString, dateModified: dateModified, isDirectory: isDirectory))
             }
             
-            // TODO: notify
+            delegate?.handlePathChanged(self, currentUrl)
         }
     }
     

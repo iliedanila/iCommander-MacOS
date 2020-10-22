@@ -11,8 +11,7 @@ protocol TableViewDelegate {
     var rowForMenu: Int? { get set }
     func goToParent(_ tableView: NSTableView)
     func focusNextTable(_ tableView: NSTableView)
-    func currentPathChanged(_ tableView: NSTableView, _ path: URL)
-    func handleEnterPressed(_ forRow: Int)
+    func handleEnterPressed(_ tableView: NSTableView, _ forRow: Int)
 }
 
 class TableView: NSTableView {
@@ -34,7 +33,7 @@ class TableView: NSTableView {
     override func keyDown(with event: NSEvent) {
         
         if event.keyCode == Constants.KeyCodeEnter {
-            tableViewDelegate?.handleEnterPressed(selectedRow)
+            tableViewDelegate?.handleEnterPressed(self, selectedRow)
         } else if
             event.keyCode == Constants.KeyCodeDelete ||
             event.keyCode == Constants.KeyCodeUp && event.modifierFlags.contains(.command) {
