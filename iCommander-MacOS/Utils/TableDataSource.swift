@@ -30,6 +30,8 @@ class TableDataSource {
     
     var delegate: DataSourceDelegate?
     var location: Location
+    var sortColumn: String? = nil
+    var isAscending: Bool? = nil
     
     init(_ aLocation: Location) {
         location = aLocation
@@ -43,50 +45,29 @@ class TableDataSource {
                 
                 let fileURLs = try fileManager.contentsOfDirectory(at: currentUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
                 
-                folderContents = fileURLs
+                tableElements = []
+                for url in fileURLs {
+                    let name = url.lastPathComponent
+                    let isDirectory = url.hasDirectoryPath
+                    let fileSize = isDirectory ? nil : getFileSize(url)
+                    let fileSizeString = isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(fileSize!))
+                    let dateModified = getFileDate(url)
+                    
+                    tableElements.append(TableElement(name: name, url: url, size: fileSize, sizeString: fileSizeString, dateModified: dateModified, isDirectory: isDirectory))
+                }
+                
+                if let column = sortColumn, let ascending = isAscending {
+                    sort(column, ascending)
+                }
+                
+                delegate?.handlePathChanged(self, currentUrl)
             } catch {
                 print("Error while getting folder contents: \(error).")
             }
         }
     }
     
-    var folderContents: [URL] = [] {
-        didSet {
-            tableElements = []
-            for url in folderContents {
-                let name = url.lastPathComponent
-                let isDirectory = url.hasDirectoryPath
-                let fileSize = isDirectory ? nil : getFileSize(url)
-                let fileSizeString = isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(fileSize!))
-                let dateModified = getFileDate(url)
-                
-                tableElements.append(TableElement(name: name, url: url, size: fileSize, sizeString: fileSizeString, dateModified: dateModified, isDirectory: isDirectory))
-            }
-            
-            delegate?.handlePathChanged(self, currentUrl)
-        }
-    }
-    
     var tableElements: [TableElement] = []
-    
-    func sort(_ column: String) {
-        tableElements.sort { (left, right) -> Bool in
-            switch column {
-            case Constants.NameColumn:
-                if left.isDirectory && right.isDirectory {
-                    return left.name < right.name
-                } else if left.isDirectory {
-                    return true
-                } else if right.isDirectory {
-                    return false
-                } else {
-                    return left.name < right.name
-                }
-            default:
-                return left.name < right.name
-            }
-        }
-    }
     
     func getFileSize(_ forURL: URL) -> Int? {
         
@@ -112,5 +93,50 @@ class TableDataSource {
             print("Error while getting file date: \(error)")
         }
         return ""
+    }
+    
+    func sort(_ column: String, _ ascending: Bool) {
+        sortColumn = column
+        isAscending = ascending
+        
+        tableElements.sort { (left, right) -> Bool in
+            switch column {
+            
+            case Constants.NameColumn:
+                if left.isDirectory && right.isDirectory ||
+                    !left.isDirectory && !right.isDirectory {
+                    return lesser(left.name, right.name, ascending)
+                } else if left.isDirectory {
+                    return true
+                } else {
+                    return false
+                }
+                
+            case Constants.SizeColumn:
+                if let leftSize = left.size, let rightSize = right.size {
+                    return lesser(leftSize, rightSize, ascending)
+                } else if left.isDirectory && right.isDirectory {
+                    return lesser(left.name, right.name, true)
+                } else if left.isDirectory {
+                    return true
+                } else {
+                    return false
+                }
+                
+            case Constants.DateColumn:
+                return lesser(left.dateModified, right.dateModified, ascending)
+                
+            default:
+                return left.name < right.name
+            }
+        }
+    }
+    
+    func lesser<T: Comparable>(_ first: T, _ second: T, _ ascending: Bool) -> Bool {
+        if ascending {
+            return first < second
+        } else {
+            return first > second
+        }
     }
 }

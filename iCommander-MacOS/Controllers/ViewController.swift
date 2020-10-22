@@ -28,7 +28,9 @@ class ViewController: NSViewController {
     @IBAction func tableClicked(_ sender: NSTableView) {
         if sender.clickedRow == -1 && sender.clickedColumn != -1 {
             if let tableData = tableToDataSource[sender] {
-                tableData.sort(sender.sortDescriptors[0].key!)
+                for sortDescriptor in sender.sortDescriptors {
+                    tableData.sort(sortDescriptor.key!, sortDescriptor.ascending)
+                }
                 sender.reloadData()
             }
         }
@@ -84,6 +86,9 @@ class ViewController: NSViewController {
         if let leftTableView = leftTable as? TableView, let rightTableView = rightTable as? TableView {
             leftTableView.tableViewDelegate = self
             rightTableView.tableViewDelegate = self
+            
+            leftTableDataSource.sort(Constants.NameColumn, true)
+            rightTableDataSource.sort(Constants.NameColumn, true)
 
             leftTable.reloadData()
             rightTable.reloadData()
@@ -243,6 +248,8 @@ extension ViewController: TextFieldDelegate {
 // MARK: - DataSourceDelegate
 extension ViewController: DataSourceDelegate {
     func handlePathChanged(_ dataSource: TableDataSource, _ newUrl: URL) {
+        
+        let tableView = dataSource.location == .Left ? leftTable : rightTable        
         if let stackView = dataSource.location == .Left ? leftPathStackView : rightPathStackView {
             
             let views = stackView.arrangedSubviews
@@ -268,7 +275,6 @@ extension ViewController: DataSourceDelegate {
                 setupTextField(textField, pathComponents[index])
                 textField.textFieldDelegate = self
                 textField.path = currentUrl
-                let tableView = dataSource.location == .Left ? leftTable : rightTable
                 textField.tableViewAssociated = tableView
                 stackView.insertView(textField, at: index + 1, in: .leading)
             }
