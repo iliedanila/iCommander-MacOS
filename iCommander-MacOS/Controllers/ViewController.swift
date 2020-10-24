@@ -98,7 +98,7 @@ class ViewController: NSViewController {
         }
         
         leftTable.rowSizeStyle = .medium
-        rightTable.rowSizeStyle = .medium        
+        rightTable.rowSizeStyle = .medium
     }
 
     override var representedObject: Any? {
@@ -195,8 +195,10 @@ extension ViewController: TableViewDelegate {
     func focusNextTable(_ tableView: NSTableView) {
         if tableView == leftTable {
             // Focus right table
+            leftTable.nextKeyView = rightTable
         } else {
             // Focus left table
+            rightTable.nextKeyView = leftTable
         }
     }
     
