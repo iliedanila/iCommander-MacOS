@@ -28,8 +28,11 @@ class ViewController: NSViewController {
     @IBAction func tableClicked(_ sender: NSTableView) {
         if sender.clickedRow == -1 && sender.clickedColumn != -1 {
             if let tableData = tableToDataSource[sender] {
-                for sortDescriptor in sender.sortDescriptors {
-                    tableData.sort(sortDescriptor.key!, sortDescriptor.ascending)
+                print("Sort descriptor count: \(sender.sortDescriptors.count)")
+                let sortDescriptor = sender.sortDescriptors[0]
+                if let key = sortDescriptor.key {
+                    print("Sort - Key: \(key) ascending: \(sortDescriptor.ascending)")
+                    tableData.sort(key, sortDescriptor.ascending)
                 }
                 sender.reloadData()
             }

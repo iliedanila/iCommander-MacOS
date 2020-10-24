@@ -114,13 +114,13 @@ class TableDataSource {
                 
             case Constants.SizeColumn:
                 if let leftSize = left.size, let rightSize = right.size {
-                    return lesser(leftSize, rightSize, ascending)
+                    return lesser(leftSize, rightSize, ascending) // (file ? file)
                 } else if left.isDirectory && right.isDirectory {
-                    return lesser(left.name, right.name, true)
+                    return lesser(left.name, right.name, ascending) // (folder ? folder)
                 } else if left.isDirectory {
-                    return true
+                    return true // (directory ? file)
                 } else {
-                    return false
+                    return false // (file ? directory)
                 }
                 
             case Constants.DateColumn:
