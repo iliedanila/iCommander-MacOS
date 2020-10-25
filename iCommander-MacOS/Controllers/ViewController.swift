@@ -18,6 +18,14 @@ class ViewController: NSViewController {
     @IBOutlet var tableMenu: NSMenu!
     @IBOutlet var leftPathStackView: NSStackView!
     @IBOutlet var rightPathStackView: NSStackView!
+    @IBOutlet var leftHomeButton: NSButton!
+    @IBOutlet var rightHomeButton: NSButton!
+    @IBOutlet var F3ViewButton: NSButton!
+    @IBOutlet var F4EditButton: NSButton!
+    @IBOutlet var F5CopyButton: NSButton!
+    @IBOutlet var F6MoveButton: NSButton!
+    @IBOutlet var F7NewFolderButton: NSButton!
+    @IBOutlet var F8DeleteButton: NSButton!
     
     var tableToPath: [NSTableView : NSStackView] = [:]
     var rowIndexForMenu: Int? = nil
@@ -38,7 +46,6 @@ class ViewController: NSViewController {
             }
         }
     }
-    
     
     @IBAction func tableDoubleClick(_ sender: NSTableView) {
         if sender.clickedRow == -1 {
@@ -72,6 +79,16 @@ class ViewController: NSViewController {
         }
     }
     
+    @IBAction func homeButtonClicked(_ sender: NSButton) {
+        if sender == leftHomeButton {
+            leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
+            leftTable.reloadData()
+        } else {
+            rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
+            rightTable.reloadData()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -101,12 +118,6 @@ class ViewController: NSViewController {
         rightTable.rowSizeStyle = .medium
     }
 
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-    
     func handleMaximize() {
         resizeTableViewColumns(leftTable)
         resizeTableViewColumns(rightTable)
@@ -221,6 +232,35 @@ extension ViewController: TableViewDelegate {
         textField.isEnabled = true
         let fontName = textField.font?.fontName ?? ""
         textField.font = NSFont(name: fontName, size: 15)
+    }
+    
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        if let tableView = notification.object as? NSTableView {
+            let dataSource = tableToDataSource[tableView]
+            
+            if tableView.selectedRow == -1 {
+                return
+            }
+            
+            if let element = dataSource?.tableElements[tableView.selectedRow] {
+                switch element.isDirectory {
+                case true:
+                    F3ViewButton.isEnabled = false
+                    F4EditButton.isEnabled = false
+                    F5CopyButton.isEnabled = true
+                    F6MoveButton.isEnabled = true
+                    F7NewFolderButton.isEnabled = true
+                    F8DeleteButton.isEnabled = true
+                case false:
+                    F3ViewButton.isEnabled = true
+                    F4EditButton.isEnabled = true
+                    F5CopyButton.isEnabled = true
+                    F6MoveButton.isEnabled = true
+                    F7NewFolderButton.isEnabled = true
+                    F8DeleteButton.isEnabled = true
+                }
+            }
+        }
     }
 }
 
