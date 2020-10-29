@@ -207,9 +207,11 @@ extension ViewController: TableViewDelegate {
         if tableView == leftTable {
             // Focus right table
             leftTable.nextKeyView = rightTable
+            refreshButtonsState(rightTable, rightTable.selectedRow)
         } else {
             // Focus left table
             rightTable.nextKeyView = leftTable
+            refreshButtonsState(leftTable, leftTable.selectedRow)
         }
     }
     
@@ -236,29 +238,33 @@ extension ViewController: TableViewDelegate {
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         if let tableView = notification.object as? NSTableView {
-            let dataSource = tableToDataSource[tableView]
-            
             if tableView.selectedRow == -1 {
                 return
             }
             
-            if let element = dataSource?.tableElements[tableView.selectedRow] {
-                switch element.isDirectory {
-                case true:
-                    F3ViewButton.isEnabled = false
-                    F4EditButton.isEnabled = false
-                    F5CopyButton.isEnabled = true
-                    F6MoveButton.isEnabled = true
-                    F7NewFolderButton.isEnabled = true
-                    F8DeleteButton.isEnabled = true
-                case false:
-                    F3ViewButton.isEnabled = true
-                    F4EditButton.isEnabled = true
-                    F5CopyButton.isEnabled = true
-                    F6MoveButton.isEnabled = true
-                    F7NewFolderButton.isEnabled = true
-                    F8DeleteButton.isEnabled = true
-                }
+            refreshButtonsState(tableView, tableView.selectedRow)
+        }
+    }
+    
+    func refreshButtonsState(_ tableView: NSTableView, _ row: Int) {
+        let dataSource = tableToDataSource[tableView]
+        
+        if let element = dataSource?.tableElements[tableView.selectedRow] {
+            switch element.isDirectory {
+            case true:
+                F3ViewButton.isEnabled = false
+                F4EditButton.isEnabled = false
+                F5CopyButton.isEnabled = true
+                F6MoveButton.isEnabled = true
+                F7NewFolderButton.isEnabled = true
+                F8DeleteButton.isEnabled = true
+            case false:
+                F3ViewButton.isEnabled = true
+                F4EditButton.isEnabled = true
+                F5CopyButton.isEnabled = true
+                F6MoveButton.isEnabled = true
+                F7NewFolderButton.isEnabled = true
+                F8DeleteButton.isEnabled = true
             }
         }
     }
