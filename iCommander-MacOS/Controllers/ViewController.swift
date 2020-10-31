@@ -26,12 +26,18 @@ class ViewController: NSViewController {
     @IBOutlet var F6MoveButton: NSButton!
     @IBOutlet var F7NewFolderButton: NSButton!
     @IBOutlet var F8DeleteButton: NSButton!
+    @IBOutlet var leftDriveButton: NSPopUpButton!
+    @IBOutlet var rightDriveButton: NSPopUpButton!
     
     var tableToPath: [NSTableView : NSStackView] = [:]
     var rowIndexForMenu: Int? = nil
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
     var rightTableDataSource: TableDataSource = TableDataSource(.Right)
     var tableToDataSource: [NSTableView : TableDataSource] = [:]
+    
+    @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
+        print(sender.titleOfSelectedItem ?? "")
+    }
     
     @IBAction func tableClicked(_ sender: NSTableView) {
         if sender.clickedRow == -1 && sender.clickedColumn != -1 {
@@ -116,6 +122,24 @@ class ViewController: NSViewController {
         
         leftTable.rowSizeStyle = .medium
         rightTable.rowSizeStyle = .medium
+        
+        populateDriveList()
+                
+        let notificationCenter = NSWorkspace.shared.notificationCenter
+        notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didMountNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didUnmountNotification, object: nil)
+    }
+    
+    func populateDriveList() {
+        leftDriveButton.removeAllItems()
+        rightDriveButton.removeAllItems()
+        
+        if let mountedVolumes = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [], options: [.skipHiddenVolumes]) {
+            for mountedVolume in mountedVolumes {
+                leftDriveButton.addItem(withTitle: mountedVolume.lastPathComponent)
+                rightDriveButton.addItem(withTitle: mountedVolume.lastPathComponent)
+            }
+        }
     }
 
     func handleMaximize() {
@@ -134,6 +158,10 @@ class ViewController: NSViewController {
         tableView.tableColumns[2].width = tableWidth / 8
         
         tableView.needsDisplay = true
+    }
+    
+    @objc func handleDriveChange(_ notification: NSNotification) {
+        populateDriveList()
     }
 }
 
@@ -247,6 +275,10 @@ extension ViewController: TableViewDelegate {
     }
     
     func refreshButtonsState(_ tableView: NSTableView, _ row: Int) {
+        if tableView.selectedRow == -1 {
+            return
+        }
+        
         let dataSource = tableToDataSource[tableView]
         
         if let element = dataSource?.tableElements[tableView.selectedRow] {

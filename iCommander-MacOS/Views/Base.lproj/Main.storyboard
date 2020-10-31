@@ -714,13 +714,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="920" height="458"/>
                                 <subviews>
                                     <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Taq-up-Pmg">
-                                        <rect key="frame" x="0.0" y="317" width="920" height="141"/>
+                                        <rect key="frame" x="0.0" y="346" width="920" height="112"/>
                                         <subviews>
                                             <stackView distribution="fillProportionally" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="11g-rp-oKD">
-                                                <rect key="frame" x="0.0" y="0.0" width="463" height="141"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="463" height="112"/>
                                                 <subviews>
                                                     <stackView orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2R8-Yx-EkU">
-                                                        <rect key="frame" x="0.0" y="120" width="463" height="21"/>
+                                                        <rect key="frame" x="0.0" y="91" width="463" height="21"/>
                                                         <beginningViews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BQ6-Lq-Qc3">
                                                                 <rect key="frame" x="-6" y="-7" width="76" height="32"/>
@@ -742,6 +742,31 @@
                                                                     <action selector="leftUpClicked:" target="XfG-lQ-9wD" id="qf4-SJ-mdl"/>
                                                                 </connections>
                                                             </button>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uga-Cr-pV0">
+                                                                <rect key="frame" x="115" y="5" width="46" height="16"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Drives:" id="Fgq-RN-Xao">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hQj-YT-W4A">
+                                                                <rect key="frame" x="167" y="-3" width="80" height="25"/>
+                                                                <popUpButtonCell key="cell" type="push" title="Drive 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="YVz-Iu-Pa2" id="Ttf-r6-lLl">
+                                                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="menu"/>
+                                                                    <menu key="menu" id="d3g-FE-uav">
+                                                                        <items>
+                                                                            <menuItem title="Drive 1" state="on" id="YVz-Iu-Pa2"/>
+                                                                            <menuItem title="Item 2" id="S2k-gP-V3n"/>
+                                                                            <menuItem title="Item 3" id="xoJ-6k-Hv2"/>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpButtonCell>
+                                                                <connections>
+                                                                    <action selector="handleDriveButton:" target="XfG-lQ-9wD" id="dHn-DA-0ee"/>
+                                                                </connections>
+                                                            </popUpButton>
                                                         </beginningViews>
                                                         <constraints>
                                                             <constraint firstItem="BQ6-Lq-Qc3" firstAttribute="bottom" secondItem="2R8-Yx-EkU" secondAttribute="bottom" id="FvJ-Qm-1FH"/>
@@ -753,17 +778,21 @@
                                                         <visibilityPriorities>
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
                                                         </visibilityPriorities>
                                                         <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
                                                     <stackView orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fZq-XS-cLg">
-                                                        <rect key="frame" x="0.0" y="60" width="463" height="50"/>
+                                                        <rect key="frame" x="0.0" y="35" width="463" height="46"/>
                                                         <beginningViews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zPL-wN-Tmv">
-                                                                <rect key="frame" x="-2" y="34" width="85" height="16"/>
+                                                                <rect key="frame" x="-2" y="30" width="85" height="16"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Current Path:" id="Xry-pr-a6S">
                                                                     <font key="font" usesAppearanceFont="YES"/>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -784,13 +813,13 @@
                                                         </customSpacing>
                                                     </stackView>
                                                     <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZVq-ae-km5">
-                                                        <rect key="frame" x="0.0" y="0.0" width="463" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="463" height="25"/>
                                                         <clipView key="contentView" id="41e-R9-d5K">
-                                                            <rect key="frame" x="0.0" y="0.0" width="463" height="50"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="463" height="25"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <tableView identifier="LeftTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Iot-m0-OHD" viewBased="YES" id="q3L-KJ-iO5" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="463" height="25"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="463" height="19"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -957,10 +986,10 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fillProportionally" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nNA-k5-OYN">
-                                                <rect key="frame" x="473" y="0.0" width="447" height="141"/>
+                                                <rect key="frame" x="473" y="0.0" width="447" height="112"/>
                                                 <subviews>
                                                     <stackView orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YRG-l2-V7L">
-                                                        <rect key="frame" x="0.0" y="120" width="447" height="21"/>
+                                                        <rect key="frame" x="0.0" y="91" width="447" height="21"/>
                                                         <beginningViews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TOv-z7-pP5">
                                                                 <rect key="frame" x="-6" y="-7" width="76" height="32"/>
@@ -982,6 +1011,31 @@
                                                                     <action selector="rightUpClicked:" target="XfG-lQ-9wD" id="3ts-FQ-xxb"/>
                                                                 </connections>
                                                             </button>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0pf-yN-sJ3">
+                                                                <rect key="frame" x="115" y="5" width="46" height="16"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Drives:" id="91q-a6-Isu">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="toC-8z-akX">
+                                                                <rect key="frame" x="167" y="-3" width="80" height="25"/>
+                                                                <popUpButtonCell key="cell" type="push" title="Drive 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1Wy-wC-nww" id="hBn-x3-lsd">
+                                                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="menu"/>
+                                                                    <menu key="menu" id="oGM-LA-c1R">
+                                                                        <items>
+                                                                            <menuItem title="Drive 1" state="on" id="1Wy-wC-nww"/>
+                                                                            <menuItem title="Item 2" id="0nF-tl-8fG"/>
+                                                                            <menuItem title="Item 3" id="vTY-ef-DvR"/>
+                                                                        </items>
+                                                                    </menu>
+                                                                </popUpButtonCell>
+                                                                <connections>
+                                                                    <action selector="handleDriveButton:" target="XfG-lQ-9wD" id="9Np-AT-ksz"/>
+                                                                </connections>
+                                                            </popUpButton>
                                                         </beginningViews>
                                                         <constraints>
                                                             <constraint firstItem="TOv-z7-pP5" firstAttribute="leading" secondItem="YRG-l2-V7L" secondAttribute="leading" id="IOI-6S-3Az"/>
@@ -993,17 +1047,21 @@
                                                         <visibilityPriorities>
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
                                                         </visibilityPriorities>
                                                         <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                         </customSpacing>
                                                     </stackView>
                                                     <stackView orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nhW-Gd-UbI">
-                                                        <rect key="frame" x="0.0" y="60" width="447" height="50"/>
+                                                        <rect key="frame" x="0.0" y="60" width="447" height="21"/>
                                                         <beginningViews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acr-g6-RZb">
-                                                                <rect key="frame" x="-2" y="34" width="85" height="16"/>
+                                                                <rect key="frame" x="-2" y="5" width="85" height="16"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Current Path:" id="ImC-77-wQd">
                                                                     <font key="font" usesAppearanceFont="YES"/>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1215,7 +1273,7 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fillEqually" orientation="horizontal" alignment="bottom" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R5J-aI-us0">
-                                        <rect key="frame" x="0.0" y="0.0" width="920" height="317"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="920" height="346"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dYt-gt-JGt">
                                                 <rect key="frame" x="-6" y="-7" width="165" height="32"/>
@@ -1310,10 +1368,12 @@
                         <outlet property="F6MoveButton" destination="jtf-ln-1NF" id="yM5-cV-P4k"/>
                         <outlet property="F7NewFolderButton" destination="SFB-EK-5Jg" id="84a-YF-KLo"/>
                         <outlet property="F8DeleteButton" destination="lLn-1K-2Pz" id="z9Y-CG-5gQ"/>
+                        <outlet property="leftDriveButton" destination="hQj-YT-W4A" id="0kY-bq-bGz"/>
                         <outlet property="leftHomeButton" destination="BQ6-Lq-Qc3" id="evn-XD-KXL"/>
                         <outlet property="leftPathStackView" destination="fZq-XS-cLg" id="vGS-Ma-FFW"/>
                         <outlet property="leftTable" destination="q3L-KJ-iO5" id="hnL-Bm-Zec"/>
                         <outlet property="leftUpButton" destination="Fy9-1f-dKp" id="IG3-IC-DlD"/>
+                        <outlet property="rightDriveButton" destination="toC-8z-akX" id="vb5-kC-l3i"/>
                         <outlet property="rightHomeButton" destination="TOv-z7-pP5" id="ZL5-YI-YiZ"/>
                         <outlet property="rightPathStackView" destination="nhW-Gd-UbI" id="mi0-eu-Jke"/>
                         <outlet property="rightTable" destination="Aqh-xu-Ors" id="tR7-ik-25e"/>
