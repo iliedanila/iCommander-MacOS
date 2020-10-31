@@ -34,9 +34,14 @@ class ViewController: NSViewController {
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
     var rightTableDataSource: TableDataSource = TableDataSource(.Right)
     var tableToDataSource: [NSTableView : TableDataSource] = [:]
+    var indexDrivePath: [Int : URL] = [:]
     
     @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
-        print(sender.titleOfSelectedItem ?? "")
+        if sender == leftDriveButton {
+            leftTableDataSource.currentUrl = indexDrivePath[sender.indexOfSelectedItem]!
+        } else {
+            rightTableDataSource.currentUrl = indexDrivePath[sender.indexOfSelectedItem]!
+        }
     }
     
     @IBAction func tableClicked(_ sender: NSTableView) {
@@ -62,7 +67,6 @@ class ViewController: NSViewController {
             let itemURL = tableData.tableElements[sender.clickedRow].url
             if itemURL.hasDirectoryPath {
                 tableData.currentUrl = itemURL
-                sender.reloadData()
             } else {
                 NSWorkspace.shared.open(itemURL)
             }
@@ -73,7 +77,6 @@ class ViewController: NSViewController {
         if let tableData = tableToDataSource[leftTable] {
             let parentUrl = tableData.currentUrl.deletingLastPathComponent()
             tableData.currentUrl = parentUrl
-            leftTable.reloadData()
         }
     }
     
@@ -81,17 +84,14 @@ class ViewController: NSViewController {
         if let tableData = tableToDataSource[rightTable] {
             let parentUrl = tableData.currentUrl.deletingLastPathComponent()
             tableData.currentUrl = parentUrl
-            rightTable.reloadData()
         }
     }
     
     @IBAction func homeButtonClicked(_ sender: NSButton) {
         if sender == leftHomeButton {
             leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
-            leftTable.reloadData()
         } else {
             rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
-            rightTable.reloadData()
         }
     }
     
@@ -133,11 +133,16 @@ class ViewController: NSViewController {
     func populateDriveList() {
         leftDriveButton.removeAllItems()
         rightDriveButton.removeAllItems()
+        indexDrivePath.removeAll()
         
         if let mountedVolumes = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [], options: [.skipHiddenVolumes]) {
+            
+            var index: Int = 0
             for mountedVolume in mountedVolumes {
                 leftDriveButton.addItem(withTitle: mountedVolume.lastPathComponent)
                 rightDriveButton.addItem(withTitle: mountedVolume.lastPathComponent)
+                indexDrivePath[index] = mountedVolume
+                index = index + 1
             }
         }
     }
@@ -224,7 +229,6 @@ extension ViewController: TableViewDelegate {
             
             if element.isDirectory {
                 dataSource.currentUrl = element.url
-                tableView.reloadData()
             } else {
                 NSWorkspace.shared.open(element.url)
             }
@@ -247,7 +251,6 @@ extension ViewController: TableViewDelegate {
         if let tableData = tableToDataSource[tableView] {
             let parentUrl = tableData.currentUrl.deletingLastPathComponent()
             tableData.currentUrl = parentUrl
-            tableView.reloadData()
         }
     }
     
@@ -322,7 +325,7 @@ extension ViewController: TextFieldDelegate {
         if let nsTableView = tableView, let tableData = tableToDataSource[nsTableView] {
             if let newUrl = path {
                 tableData.currentUrl = newUrl
-                nsTableView.reloadData()
+//                nsTableView.reloadData()
             }
         }        
     }
@@ -334,7 +337,6 @@ extension ViewController: DataSourceDelegate {
         
         let tableView = dataSource.location == .Left ? leftTable : rightTable        
         if let stackView = dataSource.location == .Left ? leftPathStackView : rightPathStackView {
-            
             let views = stackView.arrangedSubviews
             for view in views {
                 stackView.removeView(view)
@@ -362,5 +364,6 @@ extension ViewController: DataSourceDelegate {
                 stackView.insertView(textField, at: index + 1, in: .leading)
             }
         }
+        tableView?.reloadData()
     }
 }
