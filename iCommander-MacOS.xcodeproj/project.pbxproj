@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4B1765A12535C1FA00B9C8E2 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1765A02535C1FA00B9C8E2 /* TableView.swift */; };
+		4B5DFBCE254F607F000B45BB /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5DFBCD254F607F000B45BB /* WindowController.swift */; };
 		4B89F3A1253F50F4008CDE5C /* TableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */; };
 		4B9B364E253B6BD500706A2F /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9B364D253B6BD500706A2F /* TextField.swift */; };
 		4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06932523B59D00DF1AFF /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		4B1765A02535C1FA00B9C8E2 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		4B5DFBCD254F607F000B45BB /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableDataSource.swift; sourceTree = "<group>"; };
 		4B9B364D253B6BD500706A2F /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		4BDC06902523B59D00DF1AFF /* iCommander-MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iCommander-MacOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +91,7 @@
 			children = (
 				4BDC06952523B59D00DF1AFF /* ViewController.swift */,
 				4BDC06932523B59D00DF1AFF /* AppDelegate.swift */,
+				4B5DFBCD254F607F000B45BB /* WindowController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -176,6 +179,7 @@
 				4B1765A12535C1FA00B9C8E2 /* TableView.swift in Sources */,
 				4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */,
 				4B9B364E253B6BD500706A2F /* TextField.swift in Sources */,
+				4B5DFBCE254F607F000B45BB /* WindowController.swift in Sources */,
 				4BDC06992523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld in Sources */,
 				4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */,
 			);

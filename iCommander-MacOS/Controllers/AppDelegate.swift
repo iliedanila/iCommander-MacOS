@@ -20,7 +20,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if let viewController = window.contentViewController as? ViewController {
                 viewController.handleMaximize()
             }
-            print("Maximized the app")
         }
     }
 

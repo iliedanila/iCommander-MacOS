@@ -9,6 +9,7 @@ import Foundation
 
 struct Constants {
     static let Cell = "Cell"
+    static let KeyCodeR = 15
     static let KeyCodeEnter = 36
     static let KeyCodetab = 48
     static let KeyCodeDelete = 51

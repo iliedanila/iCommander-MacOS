@@ -42,7 +42,10 @@ class TableView: NSTableView {
             super.keyDown(with: event)
         } else if event.keyCode == Constants.KeyCodeDelete && event.modifierFlags.contains(.command){
             tableViewDelegate?.deleteItem(self, selectedRow)
+        } else if event.keyCode == Constants.KeyCodeR && event.modifierFlags.contains(.command){
+            reloadData()
         } else {
+            print("Key down: \(event.keyCode)")
             super.keyDown(with: event)
         }
     }
