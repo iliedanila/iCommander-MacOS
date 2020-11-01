@@ -35,6 +35,7 @@ class ViewController: NSViewController {
     var rightTableDataSource: TableDataSource = TableDataSource(.Right)
     var tableToDataSource: [NSTableView : TableDataSource] = [:]
     var indexDrivePath: [Int : URL] = [:]
+    var lastSelectedRow: [NSTableView : Int] = [:]
     
     @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
         if sender == leftDriveButton {
@@ -105,6 +106,8 @@ class ViewController: NSViewController {
         
         leftTableDataSource.delegate = self
         rightTableDataSource.delegate = self
+        lastSelectedRow[leftTable] = 0
+        lastSelectedRow[rightTable] = 0
         
         leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
@@ -294,9 +297,14 @@ extension ViewController: TableViewDelegate {
     func tableViewSelectionDidChange(_ notification: Notification) {
         if let tableView = notification.object as? NSTableView {
             if tableView.selectedRow == -1 {
+                if tableView.selectedColumn == -1 {
+                    let rowIndex = lastSelectedRow[tableView]!
+                    tableView.selectRowIndexes([rowIndex], byExtendingSelection: false)
+                }
                 return
             }
             
+            lastSelectedRow[tableView] = tableView.selectedRow
             refreshButtonsState(tableView, tableView.selectedRow)
         }
     }
