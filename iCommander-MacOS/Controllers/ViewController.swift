@@ -214,6 +214,30 @@ extension ViewController: NSTableViewDataSource {
 
 // MARK: - TableViewDelegate
 extension ViewController: TableViewDelegate {
+    func deleteItem(_ tableView: NSTableView, _ row: Int) {
+        if let dataSource = tableToDataSource[tableView] {
+            let element = dataSource.tableElements[row]
+            
+            if dialogOkCancel("Are you sure you want to delete \(element.name)?") {
+                do {
+                    try FileManager.default.trashItem(at: element.url, resultingItemURL: nil)
+                    tableView.reloadData()
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func dialogOkCancel(_ text: String) -> Bool {
+        let alert = NSAlert()
+        alert.messageText = text
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "OK")
+        alert.addButton(withTitle: "Cancel")
+        return alert.runModal() == .alertFirstButtonReturn
+    }
+    
     var rowForMenu: Int? {
         get {
             return self.rowIndexForMenu
