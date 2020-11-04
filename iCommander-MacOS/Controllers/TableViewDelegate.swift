@@ -72,11 +72,16 @@ extension ViewController: TableViewDelegate {
     }
     
     func handleEnterPressed(_ tableView: NSTableView, _ forRow: Int) {
+        if forRow == -1 {
+            return
+        }
+        
         if let dataSource = tableToDataSource[tableView] {
             let element = dataSource.tableElements[forRow]
             
             if element.isDirectory {
                 dataSource.currentUrl = element.url
+                
             } else {
                 NSWorkspace.shared.open(element.url)
             }

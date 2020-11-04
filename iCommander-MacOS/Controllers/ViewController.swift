@@ -115,9 +115,6 @@ class ViewController: NSViewController {
             
             leftTableDataSource.sort(Constants.NameColumn, true)
             rightTableDataSource.sort(Constants.NameColumn, true)
-
-            leftTable.reloadData()
-            rightTable.reloadData()
         }
         
         leftTable.rowSizeStyle = .medium
