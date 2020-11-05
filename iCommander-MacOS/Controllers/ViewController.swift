@@ -12,8 +12,6 @@ class ViewController: NSViewController {
 
     @IBOutlet var leftTable: NSTableView!
     @IBOutlet var rightTable: NSTableView!
-    @IBOutlet var leftUpButton: NSButton!
-    @IBOutlet var rightUpButton: NSButton!
     @IBOutlet var tableMenu: NSMenu!
     @IBOutlet var leftPathStackView: NSStackView!
     @IBOutlet var rightPathStackView: NSStackView!
@@ -71,18 +69,9 @@ class ViewController: NSViewController {
         }
     }
     
-    @IBAction func leftUpClicked(_ sender: NSButton) {
-        if let tableData = tableToDataSource[leftTable] {
-            let parentUrl = tableData.currentUrl.deletingLastPathComponent()
-            tableData.currentUrl = parentUrl
-        }
-    }
-    
-    @IBAction func rightUpClicked(_ sender: NSButton) {
-        if let tableData = tableToDataSource[rightTable] {
-            let parentUrl = tableData.currentUrl.deletingLastPathComponent()
-            tableData.currentUrl = parentUrl
-        }
+
+    @IBAction func handleNavigate(_ sender: NSButton) {
+        print(sender.identifier?.rawValue ?? "")
     }
     
     @IBAction func homeButtonClicked(_ sender: NSButton) {

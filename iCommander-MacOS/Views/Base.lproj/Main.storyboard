@@ -700,8 +700,9 @@
                         <touchBarItems>
                             <touchBarItem id="caO-zT-SRO">
                                 <viewController key="viewController" id="pbG-Fg-o82">
-                                    <button key="view" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zXP-x9-jH3">
+                                    <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zXP-x9-jH3">
                                         <rect key="frame" x="0.0" y="0.0" width="144" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Hello touch bar :)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="S04-Bg-SV6">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -753,18 +754,28 @@
                                                                     <action selector="homeButtonClicked:" target="XfG-lQ-9wD" id="pqi-wR-DPI"/>
                                                                 </connections>
                                                             </button>
-                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fy9-1f-dKp">
+                                                            <button identifier="LeftBackButton" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Fy9-1f-dKp">
                                                                 <rect key="frame" x="68" y="-7" width="45" height="32"/>
                                                                 <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSGoBackTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cSM-Wg-G8u">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                                 <connections>
-                                                                    <action selector="leftUpClicked:" target="XfG-lQ-9wD" id="qf4-SJ-mdl"/>
+                                                                    <action selector="handleNavigate:" target="XfG-lQ-9wD" id="QBz-kA-ewT"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button identifier="LeftForwardButton" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IDr-L6-usr">
+                                                                <rect key="frame" x="111" y="-7" width="45" height="32"/>
+                                                                <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSGoForwardTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mg8-Iq-x7d">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="handleNavigate:" target="XfG-lQ-9wD" id="Gg0-CX-hhb"/>
                                                                 </connections>
                                                             </button>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uga-Cr-pV0">
-                                                                <rect key="frame" x="115" y="5" width="46" height="16"/>
+                                                                <rect key="frame" x="158" y="5" width="46" height="16"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Drives:" id="Fgq-RN-Xao">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -772,7 +783,7 @@
                                                                 </textFieldCell>
                                                             </textField>
                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hQj-YT-W4A">
-                                                                <rect key="frame" x="167" y="-3" width="80" height="25"/>
+                                                                <rect key="frame" x="210" y="-3" width="80" height="25"/>
                                                                 <popUpButtonCell key="cell" type="push" title="Drive 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="YVz-Iu-Pa2" id="Ttf-r6-lLl">
                                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="menu"/>
@@ -801,8 +812,10 @@
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
+                                                            <integer value="1000"/>
                                                         </visibilityPriorities>
                                                         <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
@@ -1022,18 +1035,28 @@
                                                                     <action selector="homeButtonClicked:" target="XfG-lQ-9wD" id="tiE-gq-EUE"/>
                                                                 </connections>
                                                             </button>
-                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AY6-id-Prl">
+                                                            <button identifier="RightBackButton" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AY6-id-Prl">
                                                                 <rect key="frame" x="68" y="-7" width="45" height="32"/>
                                                                 <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSGoBackTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2YV-kv-7CL">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                                 <connections>
-                                                                    <action selector="rightUpClicked:" target="XfG-lQ-9wD" id="3ts-FQ-xxb"/>
+                                                                    <action selector="handleNavigate:" target="XfG-lQ-9wD" id="eDw-FE-k3e"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button identifier="RightForwardButton" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HD6-37-spa">
+                                                                <rect key="frame" x="111" y="-7" width="45" height="32"/>
+                                                                <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSGoForwardTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aLD-sI-j2F">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="handleNavigate:" target="XfG-lQ-9wD" id="xis-Te-2CO"/>
                                                                 </connections>
                                                             </button>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0pf-yN-sJ3">
-                                                                <rect key="frame" x="115" y="5" width="46" height="16"/>
+                                                                <rect key="frame" x="158" y="5" width="46" height="16"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Drives:" id="91q-a6-Isu">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1041,7 +1064,7 @@
                                                                 </textFieldCell>
                                                             </textField>
                                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="toC-8z-akX">
-                                                                <rect key="frame" x="167" y="-3" width="80" height="25"/>
+                                                                <rect key="frame" x="210" y="-3" width="80" height="25"/>
                                                                 <popUpButtonCell key="cell" type="push" title="Drive 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1Wy-wC-nww" id="hBn-x3-lsd">
                                                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="menu"/>
@@ -1070,8 +1093,10 @@
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>
+                                                            <integer value="1000"/>
                                                         </visibilityPriorities>
                                                         <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
                                                             <real value="3.4028234663852886e+38"/>
@@ -1393,12 +1418,10 @@
                         <outlet property="leftHomeButton" destination="BQ6-Lq-Qc3" id="evn-XD-KXL"/>
                         <outlet property="leftPathStackView" destination="fZq-XS-cLg" id="vGS-Ma-FFW"/>
                         <outlet property="leftTable" destination="q3L-KJ-iO5" id="hnL-Bm-Zec"/>
-                        <outlet property="leftUpButton" destination="Fy9-1f-dKp" id="IG3-IC-DlD"/>
                         <outlet property="rightDriveButton" destination="toC-8z-akX" id="vb5-kC-l3i"/>
                         <outlet property="rightHomeButton" destination="TOv-z7-pP5" id="ZL5-YI-YiZ"/>
                         <outlet property="rightPathStackView" destination="nhW-Gd-UbI" id="mi0-eu-Jke"/>
                         <outlet property="rightTable" destination="Aqh-xu-Ors" id="tR7-ik-25e"/>
-                        <outlet property="rightUpButton" destination="AY6-id-Prl" id="Wv2-qi-4IY"/>
                         <outlet property="tableMenu" destination="2qZ-gA-SXG" id="nHh-ae-jgL"/>
                     </connections>
                 </viewController>
@@ -1415,5 +1438,6 @@
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
         <image name="NSGoBackTemplate" width="9" height="12"/>
+        <image name="NSGoForwardTemplate" width="9" height="12"/>
     </resources>
 </document>
