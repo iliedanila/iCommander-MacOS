@@ -11,9 +11,10 @@ import Cocoa
 extension ViewController: TextFieldDelegate {
     func pathRequested(_ textField: NSTextField, _ path: URL?, _ tableView: NSTableView?) {
         
-        if let nsTableView = tableView, let tableData = tableToDataSource[nsTableView] {
+        if let nsTableView = tableView, let tableData = tableToDataSource[nsTableView], let locationHistory = tableToLocationHistory[nsTableView] {
             if let newUrl = path {
                 tableData.currentUrl = newUrl
+                locationHistory.addDirectoryToHistory(newUrl)
             }
         }
     }
