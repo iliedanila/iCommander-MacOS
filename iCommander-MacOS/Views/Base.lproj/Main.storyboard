@@ -954,7 +954,7 @@
                                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                                             <prototypeCellViews>
                                                                                 <tableCellView id="FfE-dW-wbX">
-                                                                                    <rect key="frame" x="424.5" y="1" width="36" height="17"/>
+                                                                                    <rect key="frame" x="425" y="1" width="36" height="17"/>
                                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                     <subviews>
                                                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OCZ-0H-SmI">
@@ -1414,11 +1414,15 @@
                         <outlet property="F6MoveButton" destination="jtf-ln-1NF" id="yM5-cV-P4k"/>
                         <outlet property="F7NewFolderButton" destination="SFB-EK-5Jg" id="84a-YF-KLo"/>
                         <outlet property="F8DeleteButton" destination="lLn-1K-2Pz" id="z9Y-CG-5gQ"/>
+                        <outlet property="leftBackButton" destination="Fy9-1f-dKp" id="aCv-nf-bHv"/>
                         <outlet property="leftDriveButton" destination="hQj-YT-W4A" id="0kY-bq-bGz"/>
+                        <outlet property="leftForwardButton" destination="IDr-L6-usr" id="ljO-vb-Wxt"/>
                         <outlet property="leftHomeButton" destination="BQ6-Lq-Qc3" id="evn-XD-KXL"/>
                         <outlet property="leftPathStackView" destination="fZq-XS-cLg" id="vGS-Ma-FFW"/>
                         <outlet property="leftTable" destination="q3L-KJ-iO5" id="hnL-Bm-Zec"/>
+                        <outlet property="rightBackButton" destination="AY6-id-Prl" id="i58-N3-RNX"/>
                         <outlet property="rightDriveButton" destination="toC-8z-akX" id="vb5-kC-l3i"/>
+                        <outlet property="rightForwardButton" destination="HD6-37-spa" id="Lx8-xF-kbR"/>
                         <outlet property="rightHomeButton" destination="TOv-z7-pP5" id="ZL5-YI-YiZ"/>
                         <outlet property="rightPathStackView" destination="nhW-Gd-UbI" id="mi0-eu-Jke"/>
                         <outlet property="rightTable" destination="Aqh-xu-Ors" id="tR7-ik-25e"/>

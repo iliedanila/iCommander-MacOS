@@ -25,12 +25,19 @@ class ViewController: NSViewController {
     @IBOutlet var F8DeleteButton: NSButton!
     @IBOutlet var leftDriveButton: NSPopUpButton!
     @IBOutlet var rightDriveButton: NSPopUpButton!
+    @IBOutlet var leftBackButton: NSButton!
+    @IBOutlet var leftForwardButton: NSButton!
+    @IBOutlet var rightBackButton: NSButton!
+    @IBOutlet var rightForwardButton: NSButton!
     
     var tableToPath: [NSTableView : NSStackView] = [:]
     var rowIndexForMenu: Int? = nil
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
     var rightTableDataSource: TableDataSource = TableDataSource(.Right)
+    var leftLocationHistory: LocationHistory = LocationHistory(.Left)
+    var rightLocationHistory: LocationHistory = LocationHistory(.Right)
     var tableToDataSource: [NSTableView : TableDataSource] = [:]
+    var tableToLocationHistory: [NSTableView : LocationHistory] = [:]
     var indexDrivePath: [Int : URL] = [:]
     var lastSelectedRow: [NSTableView : Int] = [:]
     
@@ -59,19 +66,30 @@ class ViewController: NSViewController {
             return
         }
         
-        if let tableData = tableToDataSource[sender] {
+        if let tableData = tableToDataSource[sender], let locationHistory = tableToLocationHistory[sender] {
             let itemURL = tableData.tableElements[sender.clickedRow].url
             if itemURL.hasDirectoryPath {
                 tableData.currentUrl = itemURL
+                locationHistory.addDirectoryToHistory(itemURL)
             } else {
                 NSWorkspace.shared.open(itemURL)
             }
         }
     }
-    
 
     @IBAction func handleNavigate(_ sender: NSButton) {
-        print(sender.identifier?.rawValue ?? "")
+        switch sender {
+        case leftBackButton:
+            leftLocationHistory.handleBackPressed()
+        case leftForwardButton:
+            leftLocationHistory.handleForwardPressed()
+        case rightBackButton:
+            rightLocationHistory.handleBackPressed()
+        case rightForwardButton:
+            rightLocationHistory.handleForwardPressed()
+        default:
+            print("Unknown button")
+        }
     }
     
     @IBAction func homeButtonClicked(_ sender: NSButton) {
@@ -89,14 +107,21 @@ class ViewController: NSViewController {
         tableToPath[rightTable] = rightPathStackView
         tableToDataSource[leftTable] = leftTableDataSource
         tableToDataSource[rightTable] = rightTableDataSource
+        tableToLocationHistory[leftTable] = leftLocationHistory
+        tableToLocationHistory[rightTable] = rightLocationHistory
         
         leftTableDataSource.delegate = self
         rightTableDataSource.delegate = self
+        leftLocationHistory.delegate = self
+        rightLocationHistory.delegate = self
         lastSelectedRow[leftTable] = 0
         lastSelectedRow[rightTable] = 0
         
         leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
+        
+        leftLocationHistory.addDirectoryToHistory(leftTableDataSource.currentUrl)
+        rightLocationHistory.addDirectoryToHistory(rightTableDataSource.currentUrl)
         
         if let leftTableView = leftTable as? TableView, let rightTableView = rightTable as? TableView {
             leftTableView.tableViewDelegate = self

@@ -42,7 +42,7 @@ extension ViewController: TableViewDelegate {
         if let dataSource = tableToDataSource[tableView] {
             let element = dataSource.tableElements[row]
             
-            if dialogOkCancel("Are you sure you want to delete \(element.name)?") {
+            if showDialog("Are you sure you want to delete \(element.name)?") {
                 do {
                     try FileManager.default.trashItem(at: element.url, resultingItemURL: nil)
                     tableView.reloadData()
@@ -53,7 +53,7 @@ extension ViewController: TableViewDelegate {
         }
     }
     
-    func dialogOkCancel(_ text: String) -> Bool {
+    func showDialog(_ text: String) -> Bool {
         let alert = NSAlert()
         alert.messageText = text
         alert.alertStyle = .warning
@@ -76,11 +76,12 @@ extension ViewController: TableViewDelegate {
             return
         }
         
-        if let dataSource = tableToDataSource[tableView] {
+        if let dataSource = tableToDataSource[tableView], let locationHistory = tableToLocationHistory[tableView] {
             let element = dataSource.tableElements[forRow]
             
             if element.isDirectory {
                 dataSource.currentUrl = element.url
+                locationHistory.addDirectoryToHistory(element.url)
                 
             } else {
                 NSWorkspace.shared.open(element.url)

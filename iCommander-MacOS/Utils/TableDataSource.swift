@@ -17,11 +17,6 @@ struct TableElement {
     let isDirectory: Bool
 }
 
-enum Location {
-    case Left
-    case Right
-}
-
 protocol DataSourceDelegate {
     func handlePathChanged(_ dataSource: TableDataSource, _ newUrl: URL)
 }
@@ -29,14 +24,14 @@ protocol DataSourceDelegate {
 class TableDataSource {
     
     var delegate: DataSourceDelegate?
-    var location: Location
+    var location: LocationOnScreen
     var sortColumn: String? = nil
     var isAscending: Bool? = nil
-    
-    init(_ aLocation: Location) {
+
+    init(_ aLocation: LocationOnScreen) {
         location = aLocation
     }
-    
+        
     var currentUrl: URL = FileManager.default.homeDirectoryForCurrentUser {
         didSet
         {

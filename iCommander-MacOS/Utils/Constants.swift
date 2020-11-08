@@ -19,3 +19,8 @@ struct Constants {
     static let NameColumn = "Name"
     static let SizeColumn = "Size"
 }
+
+enum LocationOnScreen {
+    case Left
+    case Right
+}

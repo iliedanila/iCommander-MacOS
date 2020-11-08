@@ -16,6 +16,8 @@
 		4B5DFBDD2550B78E000B45BB /* DataSourceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5DFBDC2550B78E000B45BB /* DataSourceDelegate.swift */; };
 		4B89F3A1253F50F4008CDE5C /* TableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */; };
 		4B9B364E253B6BD500706A2F /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9B364D253B6BD500706A2F /* TextField.swift */; };
+		4BA94F632556ECB1005CFAA2 /* LocationHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA94F622556ECB1005CFAA2 /* LocationHistory.swift */; };
+		4BA94F6625574234005CFAA2 /* LocationHistoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */; };
 		4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06932523B59D00DF1AFF /* AppDelegate.swift */; };
 		4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06952523B59D00DF1AFF /* ViewController.swift */; };
 		4BDC06992523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06972523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld */; };
@@ -34,6 +36,8 @@
 		4B5DFBDC2550B78E000B45BB /* DataSourceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceDelegate.swift; sourceTree = "<group>"; };
 		4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableDataSource.swift; sourceTree = "<group>"; };
 		4B9B364D253B6BD500706A2F /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		4BA94F622556ECB1005CFAA2 /* LocationHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHistory.swift; sourceTree = "<group>"; };
+		4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHistoryDelegate.swift; sourceTree = "<group>"; };
 		4BDC06902523B59D00DF1AFF /* iCommander-MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iCommander-MacOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BDC06932523B59D00DF1AFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BDC06952523B59D00DF1AFF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +111,7 @@
 				4B5DFBD62550B6D1000B45BB /* TableViewDataSource.swift */,
 				4B5DFBD92550B759000B45BB /* TextFieldDelegate.swift */,
 				4B5DFBDC2550B78E000B45BB /* DataSourceDelegate.swift */,
+				4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -116,6 +121,7 @@
 			children = (
 				4BE9FC192523D913001E5A33 /* Constants.swift */,
 				4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */,
+				4BA94F622556ECB1005CFAA2 /* LocationHistory.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -194,8 +200,10 @@
 				4B5DFBDA2550B759000B45BB /* TextFieldDelegate.swift in Sources */,
 				4B89F3A1253F50F4008CDE5C /* TableDataSource.swift in Sources */,
 				4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */,
+				4BA94F632556ECB1005CFAA2 /* LocationHistory.swift in Sources */,
 				4B5DFBD12550B639000B45BB /* MenuDelegate.swift in Sources */,
 				4B5DFBDD2550B78E000B45BB /* DataSourceDelegate.swift in Sources */,
+				4BA94F6625574234005CFAA2 /* LocationHistoryDelegate.swift in Sources */,
 				4B1765A12535C1FA00B9C8E2 /* TableView.swift in Sources */,
 				4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */,
 				4B9B364E253B6BD500706A2F /* TextField.swift in Sources */,
