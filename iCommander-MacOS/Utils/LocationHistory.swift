@@ -9,6 +9,7 @@ import Foundation
 
 protocol LocationHistoryDelegate {
     func goToDirectory(_ locationHistory: LocationHistory, _ url: URL, _ hasBack: Bool, _ hasForward: Bool)
+    func updateBackForward(_ locationHistory: LocationHistory, _ hasBack: Bool, _ hasForward: Bool)
 }
 
 class LocationHistory {
@@ -38,5 +39,6 @@ class LocationHistory {
     func addDirectoryToHistory(_ url: URL) {
         locations.append(url)
         currentPosition = locations.count - 1
+        delegate?.updateBackForward(self, currentPosition > 0, currentPosition < locations.count - 1)
     }
 }
