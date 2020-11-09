@@ -146,14 +146,25 @@ class ViewController: NSViewController {
         rightDriveButton.removeAllItems()
         indexDrivePath.removeAll()
         
-        if let mountedVolumes = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [], options: [.skipHiddenVolumes]) {
-            
+        let keys = Set<URLResourceKey>([.volumeNameKey, .isVolumeKey, .volumeIsBrowsableKey])
+        let fileManager = FileManager.default
+        
+        
+        
+        if let mountedVolumesUrls = fileManager.mountedVolumeURLs(includingResourceValuesForKeys: Array(keys), options: []) {
             var index: Int = 0
-            for mountedVolume in mountedVolumes {
-                leftDriveButton.addItem(withTitle: mountedVolume.lastPathComponent)
-                rightDriveButton.addItem(withTitle: mountedVolume.lastPathComponent)
-                indexDrivePath[index] = mountedVolume
-                index = index + 1
+            for volumeUrl in mountedVolumesUrls {
+                do {
+                    let resourceValues = try volumeUrl.resourceValues(forKeys: keys)
+                    if resourceValues.isVolume != nil && resourceValues.isVolume == true {
+                        leftDriveButton.addItem(withTitle: resourceValues.volumeName!)
+                        rightDriveButton.addItem(withTitle: resourceValues.volumeName!)
+                        indexDrivePath[index] = volumeUrl
+                        index = index + 1
+                    }
+                } catch {
+                    print(error)
+                }
             }
         }
     }
