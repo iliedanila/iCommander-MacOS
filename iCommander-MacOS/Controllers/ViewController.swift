@@ -147,11 +147,10 @@ class ViewController: NSViewController {
         indexDrivePath.removeAll()
         
         let keys = Set<URLResourceKey>([.volumeNameKey, .isVolumeKey, .volumeIsBrowsableKey])
+        let option: FileManager.VolumeEnumerationOptions = .skipHiddenVolumes
         let fileManager = FileManager.default
         
-        
-        
-        if let mountedVolumesUrls = fileManager.mountedVolumeURLs(includingResourceValuesForKeys: Array(keys), options: []) {
+        if let mountedVolumesUrls = fileManager.mountedVolumeURLs(includingResourceValuesForKeys: Array(keys), options: option) {
             var index: Int = 0
             for volumeUrl in mountedVolumesUrls {
                 do {
@@ -172,6 +171,9 @@ class ViewController: NSViewController {
     func handleMaximize() {
         resizeTableViewColumns(leftTable)
         resizeTableViewColumns(rightTable)
+        
+        leftTable.needsDisplay = true
+        rightTable.needsDisplay = true
     }
     
     func resizeTableViewColumns(_ tableView: NSTableView) {
@@ -183,8 +185,6 @@ class ViewController: NSViewController {
         tableView.tableColumns[0].width = 5 * tableWidth / 8
         tableView.tableColumns[1].width = 2 * tableWidth / 8
         tableView.tableColumns[2].width = tableWidth / 8
-        
-        tableView.needsDisplay = true
     }
     
     @objc func handleDriveChange(_ notification: NSNotification) {

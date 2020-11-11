@@ -12,7 +12,14 @@ class WindowController: NSWindowController {
     @IBOutlet var helloButton: NSButton!
     
     override func windowDidLoad() {
-        super.windowDidLoad()    
+        super.windowDidLoad()
+        
+        if let myWindow = window, let screen = NSScreen.main {
+            myWindow.setFrame(screen.visibleFrame, display: true)
+            if let viewController = myWindow.contentViewController as? ViewController {
+                viewController.handleMaximize()
+            }
+        }        
     }
     
     @IBAction func sayHello(_ sender: NSButton) {

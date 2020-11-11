@@ -10,17 +10,7 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    
-
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        
-        if let window = NSApp.mainWindow, let screen = NSScreen.main {
-            window.setFrame(screen.visibleFrame, display: true)
-            if let viewController = window.contentViewController as? ViewController {
-                viewController.handleMaximize()
-            }
-        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

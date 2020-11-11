@@ -60,6 +60,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B1438DA255BD361002B7FDF /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				4B5DFBD92550B759000B45BB /* TextFieldDelegate.swift */,
+				4B5DFBD32550B69C000B45BB /* TableViewDelegate.swift */,
+				4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */,
+				4B5DFBDC2550B78E000B45BB /* DataSourceDelegate.swift */,
+				4B5DFBD62550B6D1000B45BB /* TableViewDataSource.swift */,
+				4B5DFBD02550B639000B45BB /* MenuDelegate.swift */,
+				4BDC06932523B59D00DF1AFF /* AppDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
 		4BDC06872523B59D00DF1AFF = {
 			isa = PBXGroup;
 			children = (
@@ -79,9 +93,10 @@
 		4BDC06922523B59D00DF1AFF /* iCommander-MacOS */ = {
 			isa = PBXGroup;
 			children = (
-				4BE9FC182523D902001E5A33 /* Utils */,
-				4BDC06A82523B63B00DF1AFF /* Controllers */,
 				4BDC06A72523B63200DF1AFF /* Views */,
+				4BDC06A82523B63B00DF1AFF /* Controllers */,
+				4B1438DA255BD361002B7FDF /* Delegates */,
+				4BE9FC182523D902001E5A33 /* Utils */,
 				4BDC069A2523B59E00DF1AFF /* Assets.xcassets */,
 				4BDC069F2523B59E00DF1AFF /* Info.plist */,
 				4BDC06A02523B59E00DF1AFF /* iCommander_MacOS.entitlements */,
@@ -104,14 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				4BDC06952523B59D00DF1AFF /* ViewController.swift */,
-				4BDC06932523B59D00DF1AFF /* AppDelegate.swift */,
 				4B5DFBCD254F607F000B45BB /* WindowController.swift */,
-				4B5DFBD02550B639000B45BB /* MenuDelegate.swift */,
-				4B5DFBD32550B69C000B45BB /* TableViewDelegate.swift */,
-				4B5DFBD62550B6D1000B45BB /* TableViewDataSource.swift */,
-				4B5DFBD92550B759000B45BB /* TextFieldDelegate.swift */,
-				4B5DFBDC2550B78E000B45BB /* DataSourceDelegate.swift */,
-				4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
