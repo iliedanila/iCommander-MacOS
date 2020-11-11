@@ -177,10 +177,7 @@ class ViewController: NSViewController {
     }
     
     func resizeTableViewColumns(_ tableView: NSTableView) {
-        var tableWidth: CGFloat = 0
-        for column in tableView.tableColumns {
-            tableWidth = tableWidth + column.width
-        }
+        let tableWidth: CGFloat = tableView.visibleRect.width
         
         tableView.tableColumns[0].width = 5 * tableWidth / 8
         tableView.tableColumns[1].width = 2 * tableWidth / 8
