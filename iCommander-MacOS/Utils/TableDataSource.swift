@@ -27,42 +27,64 @@ class TableDataSource {
     var location: LocationOnScreen
     var sortColumn: String? = nil
     var isAscending: Bool? = nil
-
+    var tableElements: [TableElement] = []
+    
     init(_ aLocation: LocationOnScreen) {
         location = aLocation
     }
-        
+    
     var currentUrl: URL = FileManager.default.homeDirectoryForCurrentUser {
         didSet
         {
-            do {
-                let fileManager = FileManager.default
-                
-                let fileURLs = try fileManager.contentsOfDirectory(at: currentUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
-                
-                tableElements = []
-                for url in fileURLs {
-                    let name = url.lastPathComponent
-                    let isDirectory = url.hasDirectoryPath
-                    let fileSize = isDirectory ? nil : getFileSize(url)
-                    let fileSizeString = isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(fileSize!))
-                    let dateModified = getFileDate(url)
-                    
-                    tableElements.append(TableElement(name: name, url: url, size: fileSize, sizeString: fileSizeString, dateModified: dateModified, isDirectory: isDirectory))
-                }
-                
-                if let column = sortColumn, let ascending = isAscending {
-                    sort(column, ascending)
-                }
-                
-                delegate?.handlePathChanged(self, currentUrl)
-            } catch {
-                print("Error while getting folder contents: \(error).")
+            tableElements = []
+            
+            addParentFolder(currentUrl)
+            
+            addFolderContents(currentUrl)
+            
+            if let column = sortColumn, let ascending = isAscending {
+                sort(column, ascending)
             }
+            
+            delegate?.handlePathChanged(self, currentUrl)
         }
     }
     
-    var tableElements: [TableElement] = []
+    func addParentFolder(_ url: URL) {
+        let parentUrl = url.deletingLastPathComponent()
+        
+        if !FileManager.default.contentsEqual(atPath: url.path, andPath: parentUrl.path) {
+            let name = ".."
+            let fileSize: Int? = nil
+            let fileSizeString = "Dir"
+            let dateModified = getFileDate(parentUrl)
+            
+            tableElements.append(TableElement(name: name, url: parentUrl, size: fileSize, sizeString: fileSizeString, dateModified: dateModified, isDirectory: true))
+        }
+    }
+    
+    func addFolderContents(_ url: URL) {
+        do {
+            let fileManager = FileManager.default
+            
+            let fileURLs = try fileManager.contentsOfDirectory(at: currentUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
+            
+            
+            for url in fileURLs {
+                let name = url.lastPathComponent
+                let isDirectory = url.hasDirectoryPath
+                let fileSize = isDirectory ? nil : getFileSize(url)
+                let fileSizeString = isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(fileSize!))
+                let dateModified = getFileDate(url)
+                
+                tableElements.append(TableElement(name: name, url: url, size: fileSize, sizeString: fileSizeString, dateModified: dateModified, isDirectory: isDirectory))
+            }
+            
+            
+        } catch {
+            print("Error while getting folder contents: \(error).")
+        }
+    }
     
     func getFileSize(_ forURL: URL) -> Int? {
         
@@ -95,8 +117,15 @@ class TableDataSource {
         isAscending = ascending
         
         tableElements.sort { (left, right) -> Bool in
-            switch column {
             
+            if left.name == ".." {
+                return true
+            }
+            if right.name == ".." {
+                return false
+            }
+            
+            switch column {
             case Constants.NameColumn:
                 if left.isDirectory && right.isDirectory ||
                     !left.isDirectory && !right.isDirectory {
