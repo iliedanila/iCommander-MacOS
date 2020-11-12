@@ -1,2 +1,6 @@
 
 iCommander-MacOS.xcodeproj/xcuserdata/ilie.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+
+*.xcuserstate
+
+.DS_Store
