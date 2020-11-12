@@ -174,6 +174,9 @@ class ViewController: NSViewController {
         
         leftTable.needsDisplay = true
         rightTable.needsDisplay = true
+        
+        leftTable.reloadData()  // Important to have the row height properly
+        rightTable.reloadData() // computed because depend on table visible rect.
     }
     
     func resizeTableViewColumns(_ tableView: NSTableView) {

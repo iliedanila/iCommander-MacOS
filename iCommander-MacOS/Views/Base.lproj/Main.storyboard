@@ -733,10 +733,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fillProportionally" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sud-VT-Ldr">
-                                <rect key="frame" x="0.0" y="0.0" width="930" height="458"/>
+                                <rect key="frame" x="0.0" y="0.0" width="931" height="458"/>
                                 <subviews>
                                     <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Taq-up-Pmg">
-                                        <rect key="frame" x="0.0" y="318" width="930" height="140"/>
+                                        <rect key="frame" x="0.0" y="318" width="931" height="140"/>
                                         <subviews>
                                             <stackView distribution="fillProportionally" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="11g-rp-oKD">
                                                 <rect key="frame" x="0.0" y="0.0" width="468" height="140"/>
@@ -852,7 +852,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="468" height="50"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <tableView identifier="LeftTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="medium" headerView="Iot-m0-OHD" viewBased="YES" id="q3L-KJ-iO5" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
+                                                                <tableView identifier="LeftTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="24" headerView="Iot-m0-OHD" viewBased="YES" id="q3L-KJ-iO5" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="468" height="25"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -1025,10 +1025,10 @@
                                                 </customSpacing>
                                             </stackView>
                                             <stackView distribution="fillProportionally" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nNA-k5-OYN">
-                                                <rect key="frame" x="478" y="0.0" width="452" height="140"/>
+                                                <rect key="frame" x="478" y="0.0" width="453" height="140"/>
                                                 <subviews>
                                                     <stackView orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YRG-l2-V7L">
-                                                        <rect key="frame" x="0.0" y="120" width="452" height="20"/>
+                                                        <rect key="frame" x="0.0" y="120" width="453" height="20"/>
                                                         <beginningViews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TOv-z7-pP5">
                                                                 <rect key="frame" x="-7" y="-7" width="70" height="32"/>
@@ -1109,7 +1109,7 @@
                                                         </customSpacing>
                                                     </stackView>
                                                     <stackView orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nhW-Gd-UbI">
-                                                        <rect key="frame" x="0.0" y="60" width="452" height="50"/>
+                                                        <rect key="frame" x="0.0" y="60" width="453" height="50"/>
                                                         <beginningViews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acr-g6-RZb">
                                                                 <rect key="frame" x="-2" y="34" width="85" height="16"/>
@@ -1133,13 +1133,13 @@
                                                         </customSpacing>
                                                     </stackView>
                                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfq-xS-6Zw">
-                                                        <rect key="frame" x="0.0" y="0.0" width="452" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="453" height="50"/>
                                                         <clipView key="contentView" id="LuY-OR-MYI">
-                                                            <rect key="frame" x="1" y="1" width="450" height="48"/>
+                                                            <rect key="frame" x="1" y="1" width="451" height="48"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <tableView identifier="RightTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="medium" headerView="mBS-jC-ScP" viewBased="YES" id="Aqh-xu-Ors" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="450" height="23"/>
+                                                                <tableView identifier="RightTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" rowHeight="24" headerView="mBS-jC-ScP" viewBased="YES" id="Aqh-xu-Ors" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="451" height="23"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1279,7 +1279,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </scroller>
                                                         <tableHeaderView key="headerView" wantsLayer="YES" id="mBS-jC-ScP">
-                                                            <rect key="frame" x="0.0" y="0.0" width="450" height="25"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="451" height="25"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </tableHeaderView>
                                                     </scrollView>
@@ -1324,7 +1324,7 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fillEqually" orientation="horizontal" alignment="bottom" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R5J-aI-us0">
-                                        <rect key="frame" x="0.0" y="0.0" width="930" height="318"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="931" height="318"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dYt-gt-JGt">
                                                 <rect key="frame" x="-7" y="-7" width="168" height="32"/>
@@ -1334,14 +1334,14 @@
                                                 </buttonCell>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g0D-nz-Bl2">
-                                                <rect key="frame" x="148" y="-7" width="168" height="32"/>
+                                                <rect key="frame" x="148" y="-7" width="169" height="32"/>
                                                 <buttonCell key="cell" type="push" title="F4 Edit" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="X6a-lN-Yac">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NJr-8L-gfp">
-                                                <rect key="frame" x="303" y="-7" width="169" height="32"/>
+                                                <rect key="frame" x="304" y="-7" width="168" height="32"/>
                                                 <buttonCell key="cell" type="push" title="F5 Copy" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Fs8-g8-Ypq">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -1355,14 +1355,14 @@
                                                 </buttonCell>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SFB-EK-5Jg">
-                                                <rect key="frame" x="614" y="-7" width="168" height="32"/>
+                                                <rect key="frame" x="614" y="-7" width="169" height="32"/>
                                                 <buttonCell key="cell" type="push" title="F7 New Folder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mwa-yY-vbl">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lLn-1K-2Pz">
-                                                <rect key="frame" x="769" y="-7" width="168" height="32"/>
+                                                <rect key="frame" x="770" y="-7" width="168" height="32"/>
                                                 <buttonCell key="cell" type="push" title="F8 Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hMT-AV-hLz">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
