@@ -37,17 +37,20 @@ class TableDataSource {
     var currentUrl: URL = FileManager.default.homeDirectoryForCurrentUser {
         didSet
         {
-            tableElements = []
-            
-            addParentFolder(currentUrl)
-            
-            addFolderContents(currentUrl)
-            
-            if let column = sortColumn, let ascending = isAscending {
-                sort(column, ascending)
-            }
+            refreshData()
             
             delegate?.handlePathChanged(self, currentUrl)
+        }
+    }
+    
+    func refreshData() {
+        
+        tableElements = []
+        addParentFolder(currentUrl)
+        addFolderContents(currentUrl)
+        
+        if let column = sortColumn, let ascending = isAscending {
+            sort(column, ascending)
         }
     }
     

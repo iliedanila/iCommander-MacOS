@@ -10,6 +10,7 @@ import Cocoa
 protocol TableViewDelegate {
 //    var rowForMenu: Int? { get set }
     func goToParent(_ tableView: NSTableView)
+    func refreshDataSource(_ tableView: NSTableView)
     func focusNextTable(_ tableView: NSTableView)
     func handleEnterPressed(_ tableView: NSTableView, _ row: Int)
     func deleteItem(_ tableView: NSTableView, _ row: Int)
@@ -24,6 +25,8 @@ class TableView: NSTableView {
     }
     
     override func reloadData() {
+        tableViewDelegate?.refreshDataSource(self)
+        
         super.reloadData()
         
         if selectedRowIndexes.count == 0 {

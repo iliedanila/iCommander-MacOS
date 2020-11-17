@@ -7,9 +7,15 @@
 
 import Foundation
 
+protocol FileOperationsDelegate {
+    func fileOperationCompleted(_ error: Error?)
+}
+
 class FileOperations {
     
-    static func copyFile(_ sourceItem: TableElement, _ destinationDirectory: URL) {
+    var delegate: FileOperationsDelegate?
+    
+    func copyFile(_ sourceItem: TableElement, _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
             let destinationURL = destinationDirectory.appendingPathComponent(sourceItem.name)
             
@@ -25,6 +31,8 @@ class FileOperations {
                     inputStream.read(buffer, maxLength: 1024)
                     outputStream.write(buffer, maxLength: 1024)
                 }
+                
+                self.delegate?.fileOperationCompleted(nil)
             }
         }
     }

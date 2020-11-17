@@ -36,12 +36,20 @@ extension ViewController: NSTableViewDelegate {
     }
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return tableView.visibleRect.width / 32
+        return tableView.visibleRect.width / 35
     }
 }
 
 // MARK: - TableViewDelegate
 extension ViewController: TableViewDelegate {
+    
+    func refreshDataSource(_ tableView: NSTableView) {
+        if let dataSource = tableToDataSource[tableView] {
+            dataSource.refreshData()
+        }
+    }
+    
+    
     func deleteItem(_ tableView: NSTableView, _ row: Int) {
         if let dataSource = tableToDataSource[tableView] {
             let element = dataSource.tableElements[row]

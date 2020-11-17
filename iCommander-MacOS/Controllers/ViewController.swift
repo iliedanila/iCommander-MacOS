@@ -39,6 +39,7 @@ class ViewController: NSViewController {
     var tableToLocationHistory: [NSTableView : LocationHistory] = [:]
     var indexDrivePath: [Int : URL] = [:]
     var currentActiveTable: NSTableView? = nil
+    var fileOperations = FileOperations()
     
     @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
         if sender == leftDriveButton {
@@ -56,7 +57,7 @@ class ViewController: NSViewController {
                 let sourceItem = dataSource.tableElements[sourceTable.selectedRow]
                 let destinationUrl = tableToDataSource[destinationTable!]!.currentUrl
                 
-                FileOperations.copyFile(sourceItem, destinationUrl)
+                fileOperations.copyFile(sourceItem, destinationUrl)
             }
         }
     }
@@ -127,6 +128,7 @@ class ViewController: NSViewController {
         rightTableDataSource.delegate = self
         leftLocationHistory.delegate = self
         rightLocationHistory.delegate = self
+        fileOperations.delegate = self
         
         leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
