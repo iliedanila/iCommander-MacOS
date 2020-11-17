@@ -8,7 +8,7 @@
 import Cocoa
 
 protocol TableViewDelegate {
-    var rowForMenu: Int? { get set }
+//    var rowForMenu: Int? { get set }
     func goToParent(_ tableView: NSTableView)
     func focusNextTable(_ tableView: NSTableView)
     func handleEnterPressed(_ tableView: NSTableView, _ row: Int)
@@ -54,7 +54,7 @@ class TableView: NSTableView {
         let pointInView = convert(event.locationInWindow, from: nil)
         let rowforMenu = row(at: pointInView)
         
-        tableViewDelegate?.rowForMenu = rowforMenu
+//        tableViewDelegate?.rowForMenu = rowforMenu
         
         return super.menu(for: event)
     }

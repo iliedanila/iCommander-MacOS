@@ -66,15 +66,6 @@ extension ViewController: TableViewDelegate {
         return alert.runModal() == .alertFirstButtonReturn
     }
     
-    var rowForMenu: Int? {
-        get {
-            return self.rowIndexForMenu
-        }
-        set {
-            self.rowIndexForMenu = newValue
-        }
-    }
-    
     func handleEnterPressed(_ tableView: NSTableView, _ forRow: Int) {
         if forRow == -1 {
             return
@@ -97,10 +88,12 @@ extension ViewController: TableViewDelegate {
         if tableView == leftTable {
             // Focus right table
             leftTable.nextKeyView = rightTable
+            currentActiveTable = rightTable
             refreshButtonsState(rightTable, rightTable.selectedRow)
         } else {
             // Focus left table
             rightTable.nextKeyView = leftTable
+            currentActiveTable = leftTable
             refreshButtonsState(leftTable, leftTable.selectedRow)
         }
     }
@@ -127,15 +120,6 @@ extension ViewController: TableViewDelegate {
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         if let tableView = notification.object as? NSTableView {
-            if tableView.selectedRow == -1 {
-                if tableView.selectedColumn == -1 {
-                    let rowIndex = lastSelectedRow[tableView]!
-                    tableView.selectRowIndexes([rowIndex], byExtendingSelection: false)
-                }
-                return
-            }
-            
-            lastSelectedRow[tableView] = tableView.selectedRow
             refreshButtonsState(tableView, tableView.selectedRow)
         }
     }

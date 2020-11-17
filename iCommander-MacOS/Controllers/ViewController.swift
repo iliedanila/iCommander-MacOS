@@ -31,7 +31,6 @@ class ViewController: NSViewController {
     @IBOutlet var rightForwardButton: NSButton!
     
     var tableToPath: [NSTableView : NSStackView] = [:]
-    var rowIndexForMenu: Int? = nil
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
     var rightTableDataSource: TableDataSource = TableDataSource(.Right)
     var leftLocationHistory: LocationHistory = LocationHistory(.Left)
@@ -39,13 +38,26 @@ class ViewController: NSViewController {
     var tableToDataSource: [NSTableView : TableDataSource] = [:]
     var tableToLocationHistory: [NSTableView : LocationHistory] = [:]
     var indexDrivePath: [Int : URL] = [:]
-    var lastSelectedRow: [NSTableView : Int] = [:]
+    var currentActiveTable: NSTableView? = nil
     
     @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
         if sender == leftDriveButton {
             leftTableDataSource.currentUrl = indexDrivePath[sender.indexOfSelectedItem]!
         } else {
             rightTableDataSource.currentUrl = indexDrivePath[sender.indexOfSelectedItem]!
+        }
+    }
+    
+    @IBAction func functionButtonClicked(_ sender: NSButton) {
+        if sender == F5CopyButton {
+            if let sourceTable = currentActiveTable {
+                let destinationTable = sourceTable == leftTable ? rightTable : leftTable
+                let dataSource = tableToDataSource[sourceTable]!
+                let sourceItem = dataSource.tableElements[sourceTable.selectedRow]
+                let destinationUrl = tableToDataSource[destinationTable!]!.currentUrl
+                
+                FileOperations.copyFile(sourceItem, destinationUrl)
+            }
         }
     }
     
@@ -59,6 +71,7 @@ class ViewController: NSViewController {
                 sender.reloadData()
             }
         }
+        currentActiveTable = sender
     }
     
     @IBAction func tableDoubleClick(_ sender: NSTableView) {
@@ -114,8 +127,6 @@ class ViewController: NSViewController {
         rightTableDataSource.delegate = self
         leftLocationHistory.delegate = self
         rightLocationHistory.delegate = self
-        lastSelectedRow[leftTable] = 0
-        lastSelectedRow[rightTable] = 0
         
         leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser

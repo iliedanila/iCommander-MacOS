@@ -15,6 +15,7 @@ struct TableElement {
     let sizeString: String
     let dateModified: String
     let isDirectory: Bool
+    let volumeID: Any?
 }
 
 protocol DataSourceDelegate {
@@ -57,9 +58,17 @@ class TableDataSource {
             let name = ".."
             let fileSize: Int? = nil
             let fileSizeString = "Dir"
-            let dateModified = getFileDate(parentUrl)
+            let dateModified = getFileModifiedDate(parentUrl)
             
-            tableElements.append(TableElement(name: name, url: parentUrl, size: fileSize, sizeString: fileSizeString, dateModified: dateModified, isDirectory: true))
+            tableElements.append(
+                TableElement(
+                    name: name,
+                    url: parentUrl,
+                    size: fileSize,
+                    sizeString: fileSizeString,
+                    dateModified: dateModified,
+                    isDirectory: true,
+                    volumeID: getVolumeID(parentUrl)))
         }
     }
     
@@ -75,14 +84,30 @@ class TableDataSource {
                 let isDirectory = url.hasDirectoryPath
                 let fileSize = isDirectory ? nil : getFileSize(url)
                 let fileSizeString = isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(fileSize!))
-                let dateModified = getFileDate(url)
+                let dateModified = getFileModifiedDate(url)
                 
-                tableElements.append(TableElement(name: name, url: url, size: fileSize, sizeString: fileSizeString, dateModified: dateModified, isDirectory: isDirectory))
+                tableElements.append(
+                    TableElement(
+                        name: name,
+                        url: url,
+                        size: fileSize,
+                        sizeString: fileSizeString,
+                        dateModified: dateModified,
+                        isDirectory: isDirectory,
+                        volumeID: getVolumeID(url)))
             }
-            
-            
         } catch {
             print("Error while getting folder contents: \(error).")
+        }
+    }
+    
+    func getVolumeID(_ forURL: URL) -> Any? {
+        do {
+            let resourceValues = try forURL.resourceValues(forKeys: [.volumeIdentifierKey])
+            return  resourceValues.volumeIdentifier
+        } catch {
+            print("Error retrieving volume ID: \(error)")
+            return nil
         }
     }
     
@@ -90,14 +115,14 @@ class TableDataSource {
         
         do {
             let resourceValues = try forURL.resourceValues(forKeys: [.fileSizeKey])
-            return  resourceValues.fileSize //{
+            return  resourceValues.fileSize
         } catch {
             print("Error while getting the file size: \(error)")
             return nil
         }
     }
     
-    func getFileDate(_ forURL: URL) -> String {
+    func getFileModifiedDate(_ forURL: URL) -> String {
         do {
             let resourceValues = try forURL.resourceValues(forKeys: [.contentModificationDateKey])
             if let dateModified = resourceValues.contentModificationDate {
