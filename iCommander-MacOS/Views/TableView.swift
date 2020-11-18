@@ -8,8 +8,7 @@
 import Cocoa
 
 protocol TableViewDelegate {
-//    var rowForMenu: Int? { get set }
-    func goToParent(_ tableView: NSTableView)
+    func parentFolderRequested(_ tableView: NSTableView)
     func refreshDataSource(_ tableView: NSTableView)
     func focusNextTable(_ tableView: NSTableView)
     func handleEnterPressed(_ tableView: NSTableView, _ row: Int)
@@ -39,7 +38,7 @@ class TableView: NSTableView {
         if event.keyCode == Constants.KeyCodeEnter {
             tableViewDelegate?.handleEnterPressed(self, selectedRow)
         } else if event.keyCode == Constants.KeyCodeUp && event.modifierFlags.contains(.command) {
-                tableViewDelegate?.goToParent(self)
+                tableViewDelegate?.parentFolderRequested(self)
         } else if event.keyCode == Constants.KeyCodetab {
             tableViewDelegate?.focusNextTable(self)
             super.keyDown(with: event)
@@ -56,8 +55,6 @@ class TableView: NSTableView {
     override func menu(for event: NSEvent) -> NSMenu? {
         let pointInView = convert(event.locationInWindow, from: nil)
         let rowforMenu = row(at: pointInView)
-        
-//        tableViewDelegate?.rowForMenu = rowforMenu
         
         return super.menu(for: event)
     }
