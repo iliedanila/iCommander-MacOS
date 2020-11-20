@@ -75,12 +75,14 @@ extension ViewController: TableViewDelegate {
     }
     
     func handleEnterPressed(_ tableView: NSTableView, _ forRow: Int) {
-        if forRow == 0 {
+        guard let dataSource = tableToDataSource[tableView] else { return }
+        
+        if forRow == 0 && urlHasParent(dataSource.currentUrl){
             parentFolderRequested(tableView)
             return
         }
         
-        if let dataSource = tableToDataSource[tableView], let locationHistory = tableToLocationHistory[tableView] {
+        if let locationHistory = tableToLocationHistory[tableView] {
             let element = dataSource.tableElements[forRow]
             
             if element.isDirectory {
@@ -105,6 +107,16 @@ extension ViewController: TableViewDelegate {
             currentActiveTable = leftTable
             refreshButtonsState(leftTable, leftTable.selectedRow)
         }
+    }
+    
+    func urlHasParent(_ url: URL) -> Bool {
+        let parentUrl = url.deletingLastPathComponent()
+        let currentPath = url.path
+        let parentPath = parentUrl.path
+        if !FileManager.default.contentsEqual(atPath: currentPath, andPath: parentPath) {
+            return true
+        }
+        return false
     }
     
     func parentFolderRequested(_ tableView: NSTableView) {
