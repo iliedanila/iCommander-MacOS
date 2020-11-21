@@ -181,4 +181,15 @@ extension ViewController: TableViewDelegate {
             }
         }
     }
+    
+    func handleF5() {
+        if let sourceTable = currentActiveTable {
+            let destinationTable = sourceTable == leftTable ? rightTable : leftTable
+            let dataSource = tableToDataSource[sourceTable]!
+            let sourceItem = dataSource.tableElements[sourceTable.selectedRow]
+            let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentUrl
+            
+            fileOperations.copy(sourceItem, destinationFolderUrl)
+        }
+    }
 }

@@ -51,14 +51,7 @@ class ViewController: NSViewController {
     
     @IBAction func functionButtonClicked(_ sender: NSButton) {
         if sender == F5CopyButton {
-            if let sourceTable = currentActiveTable {
-                let destinationTable = sourceTable == leftTable ? rightTable : leftTable
-                let dataSource = tableToDataSource[sourceTable]!
-                let sourceItem = dataSource.tableElements[sourceTable.selectedRow]
-                let destinationUrl = tableToDataSource[destinationTable!]!.currentUrl
-                
-                fileOperations.copyFile(sourceItem, destinationUrl)
-            }
+            handleF5()
         }
     }
     

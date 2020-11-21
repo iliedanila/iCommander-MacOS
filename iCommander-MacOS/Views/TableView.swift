@@ -12,6 +12,7 @@ protocol TableViewDelegate {
     func refreshDataSource(_ tableView: NSTableView)
     func focusNextTable(_ tableView: NSTableView)
     func handleEnterPressed(_ tableView: NSTableView, _ row: Int)
+    func handleF5()
     func deleteItem(_ tableView: NSTableView, _ row: Int)
 }
 
@@ -46,6 +47,8 @@ class TableView: NSTableView {
             tableViewDelegate?.deleteItem(self, selectedRow)
         } else if event.keyCode == Constants.KeyCodeR && event.modifierFlags.contains(.command){
             reloadData()
+        } else if event.keyCode == Constants.KeyCodeF5 {
+            tableViewDelegate?.handleF5()
         } else {
             print("Key down: \(event.keyCode)")
             super.keyDown(with: event)
