@@ -52,6 +52,8 @@ class ViewController: NSViewController {
     @IBAction func functionButtonClicked(_ sender: NSButton) {
         if sender == F5CopyButton {
             handleF5()
+        } else if sender == F6MoveButton {
+            handleF6()
         }
     }
     

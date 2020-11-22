@@ -22,6 +22,26 @@ class FileOperations {
         processQueue(queue)
     }
     
+    func move(_ sourceItem: TableElement, _ destinationDirectory: URL) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                try FileManager.default.moveItem(at: sourceItem.url, to: destinationDirectory.appendingPathComponent(sourceItem.name))
+                self.delegate?.fileOperationCompleted(nil)
+            } catch {
+                print("Error while moving item: \(error)")
+            }
+        }
+    }
+    
+    func delete(_ item: TableElement) {
+        do {
+            try FileManager.default.trashItem(at: item.url, resultingItemURL: nil)
+            self.delegate?.fileOperationCompleted(nil)
+        } catch {
+            print("Error while deleting element: \(error)")
+        }
+    }
+    
     func prepareQueue(_ sourceItem: TableElement, _ destinationDirectory: URL) -> [SourceDestinationPair]{
         var queue: [SourceDestinationPair] = []
         var urlList: [SourceDestinationPair] = []
