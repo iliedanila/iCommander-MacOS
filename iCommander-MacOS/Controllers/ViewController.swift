@@ -40,6 +40,7 @@ class ViewController: NSViewController {
     var indexDrivePath: [Int : URL] = [:]
     var currentActiveTable: NSTableView? = nil
     var fileOperations = FileOperations()
+    var rowIndexForContexMenu: Int = -1
     
     @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
         if sender == leftDriveButton {
@@ -54,6 +55,8 @@ class ViewController: NSViewController {
             handleF5()
         } else if sender == F6MoveButton {
             handleF6()
+        } else if sender == F7NewFolderButton {
+            handleF7()
         }
     }
     

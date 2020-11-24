@@ -14,7 +14,10 @@ protocol TableViewDelegate {
     func handleEnterPressed(_ tableView: NSTableView, _ row: Int)
     func handleF5()
     func handleF6()
+    func handleF7()
+    func handleF8()
     func deleteItem(_ tableView: NSTableView, _ row: Int)
+    var rowIndexForActivatedMenu: Int { get set }
 }
 
 class TableView: NSTableView {
@@ -52,6 +55,10 @@ class TableView: NSTableView {
             tableViewDelegate?.handleF5()
         } else if event.keyCode == Constants.KeyCodeF6 {
             tableViewDelegate?.handleF6()
+        } else if event.keyCode == Constants.KeyCodeF7 {
+            tableViewDelegate?.handleF7()
+        } else if event.keyCode == Constants.KeyCodeF8 {
+            tableViewDelegate?.handleF8()
         } else {
             print("Key down: \(event.keyCode)")
             super.keyDown(with: event)
@@ -61,6 +68,7 @@ class TableView: NSTableView {
     override func menu(for event: NSEvent) -> NSMenu? {
         let pointInView = convert(event.locationInWindow, from: nil)
         let rowforMenu = row(at: pointInView)
+        tableViewDelegate?.rowIndexForActivatedMenu = rowforMenu
         
         return super.menu(for: event)
     }

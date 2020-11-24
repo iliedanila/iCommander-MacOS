@@ -15,6 +15,7 @@ struct Constants {
     static let KeyCodeDelete = 51
     static let KeyCodeF5 = 96
     static let KeyCodeF6 = 97
+    static let KeyCodeF7 = 98
     static let KeyCodeF3 = 99
     static let KeyCodeF8 = 100
     static let KeyCodeF4 = 118

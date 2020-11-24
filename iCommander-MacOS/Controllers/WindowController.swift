@@ -22,11 +22,29 @@ class WindowController: NSWindowController {
         }        
     }
     
-    @IBAction func sayHello(_ sender: NSButton) {
-        let hello = NSAlert()
-        hello.messageText = "Hello there! :)"
-        hello.alertStyle = .informational
-        hello.addButton(withTitle: "OK")
-        hello.runModal()
+    @IBAction func handleTouchBarAction(_ sender: NSButton) {
+        guard let viewController = window?.contentViewController as? ViewController else { return }
+        
+        switch sender.title {
+        case "Copy":
+            viewController.handleF5()
+        case "Move":
+            viewController.handleF6()
+        case "New Folder":
+            viewController.handleF7()
+        case "Delete":
+            viewController.handleF8()
+        default:
+            print(sender.title)
+            break
+        }
     }
+    
+    //    @IBAction func sayHello(_ sender: NSButton) {
+//        let hello = NSAlert()
+//        hello.messageText = "Hello there! :)"
+//        hello.alertStyle = .informational
+//        hello.addButton(withTitle: "OK")
+//        hello.runModal()
+//    }
 }

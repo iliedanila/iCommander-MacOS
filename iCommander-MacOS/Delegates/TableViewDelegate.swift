@@ -43,6 +43,12 @@ extension ViewController: NSTableViewDelegate {
 // MARK: - TableViewDelegate
 extension ViewController: TableViewDelegate {
     
+    var rowIndexForActivatedMenu: Int {
+        get { return rowIndexForContexMenu }
+        set { rowIndexForContexMenu = newValue }
+    }
+    
+    
     func refreshDataSource(_ tableView: NSTableView) {
         if let dataSource = tableToDataSource[tableView] {
             dataSource.refreshData()
@@ -203,5 +209,46 @@ extension ViewController: TableViewDelegate {
         print("Source: \(sourceItem.url.path) Destination: \(destinationFolderUrl.path)")
         
         fileOperations.move(sourceItem, destinationFolderUrl)
+    }
+    
+    func getNewFolderName() -> String {
+        let alert = NSAlert()
+        alert.alertStyle = .informational
+        alert.messageText = "Create New Folder"
+        alert.informativeText = "New Folder Name:"
+        alert.addButton(withTitle: "Ok")
+        alert.addButton(withTitle: "Cancel")
+        let textField = NSTextField(frame: NSRect(x: 0, y: 0, width: 300, height: 24))
+        textField.placeholderString = ""
+        alert.accessoryView = textField
+        
+        let response = alert.runModal()
+        if response == .alertFirstButtonReturn {
+            return textField.stringValue
+        }
+        return ""
+    }
+    
+    func createFolder(_ tableView: NSTableView, _ folderName: String) {
+        let dataSource = tableToDataSource[tableView]!
+        let parentFolder = dataSource.currentUrl
+        
+        do {
+            try FileManager.default.createDirectory(at: parentFolder.appendingPathComponent(folderName), withIntermediateDirectories: false, attributes: nil)
+        } catch {
+            print("Error in creating new folder: \(error)")
+        }
+    }
+    
+    func handleF7() {
+        let newFolderName = getNewFolderName()
+        guard let sourceTable = currentActiveTable else { return }
+        createFolder(sourceTable, newFolderName)
+        sourceTable.reloadData()
+    }
+    
+    func handleF8() {
+        guard let sourceTable = currentActiveTable else { return }
+        deleteItem(sourceTable, sourceTable.selectedRow)
     }
 }
