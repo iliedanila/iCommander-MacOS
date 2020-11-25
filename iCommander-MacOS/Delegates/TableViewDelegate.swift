@@ -214,11 +214,16 @@ extension ViewController: TableViewDelegate {
     func getNewFolderName() -> String {
         let alert = NSAlert()
         alert.alertStyle = .informational
-        alert.messageText = "Create New Folder"
-        alert.informativeText = "New Folder Name:"
+        alert.messageText = "New Folder's Name:"
+        alert.icon = nil
+        
         alert.addButton(withTitle: "Ok")
         alert.addButton(withTitle: "Cancel")
-        let textField = NSTextField(frame: NSRect(x: 0, y: 0, width: 300, height: 24))
+        let windowWidth = alert.window.contentLayoutRect.width
+        let windowHeight = alert.window.contentLayoutRect.height
+        
+        let textField = NSTextField(frame: NSRect(x: 0, y: 0, width: windowWidth, height: windowHeight / 13))
+        alert.window.initialFirstResponder = textField
         textField.placeholderString = ""
         alert.accessoryView = textField
         
