@@ -91,10 +91,9 @@ extension ViewController: TableViewDelegate {
         if let locationHistory = tableToLocationHistory[tableView] {
             let element = dataSource.tableElements[forRow]
             
-            if element.isDirectory {
+            if element.isDirectory && !element.isPackage! {
                 dataSource.currentUrl = element.url
                 locationHistory.addDirectoryToHistory(element.url)
-                
             } else {
                 NSWorkspace.shared.open(element.url)
             }

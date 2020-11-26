@@ -16,6 +16,7 @@ struct TableElement {
     let dateModified: String
     let isDirectory: Bool
     let volumeID: Any?
+    let isPackage: Bool?
 }
 
 protocol DataSourceDelegate {
@@ -71,7 +72,8 @@ class TableDataSource {
                     sizeString: fileSizeString,
                     dateModified: dateModified,
                     isDirectory: true,
-                    volumeID: getVolumeID(parentUrl)))
+                    volumeID: getVolumeID(parentUrl),
+                    isPackage: false))
         }
     }
     
@@ -88,6 +90,7 @@ class TableDataSource {
                 let fileSize = isDirectory ? nil : getFileSize(url)
                 let fileSizeString = isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(fileSize!))
                 let dateModified = getFileModifiedDate(url)
+                let isPackage = getIsPackage(url)
                 
                 tableElements.append(
                     TableElement(
@@ -97,7 +100,8 @@ class TableDataSource {
                         sizeString: fileSizeString,
                         dateModified: dateModified,
                         isDirectory: isDirectory,
-                        volumeID: getVolumeID(url)))
+                        volumeID: getVolumeID(url),
+                        isPackage: isPackage))
             }
         } catch {
             print("Error while getting folder contents: \(error).")
@@ -121,6 +125,16 @@ class TableDataSource {
             return  resourceValues.fileSize
         } catch {
             print("Error while getting the file size: \(error)")
+            return nil
+        }
+    }
+    
+    func getIsPackage(_ forURL: URL) -> Bool? {
+        do {
+            let resourceValues = try forURL.resourceValues(forKeys: [.isPackageKey])
+            return  resourceValues.isPackage
+        } catch {
+            print("Error while getting resource value isPackage: \(error)")
             return nil
         }
     }

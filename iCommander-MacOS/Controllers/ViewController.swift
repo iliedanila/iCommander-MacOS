@@ -79,12 +79,13 @@ class ViewController: NSViewController {
         }
         
         if let tableData = tableToDataSource[sender], let locationHistory = tableToLocationHistory[sender] {
-            let itemURL = tableData.tableElements[sender.clickedRow].url
-            if itemURL.hasDirectoryPath {
-                tableData.currentUrl = itemURL
-                locationHistory.addDirectoryToHistory(itemURL)
+            
+            let item = tableData.tableElements[sender.clickedRow]
+            if item.isDirectory && !item.isPackage! {
+                tableData.currentUrl = item.url
+                locationHistory.addDirectoryToHistory(item.url)
             } else {
-                NSWorkspace.shared.open(itemURL)
+                NSWorkspace.shared.open(item.url)
             }
         }
     }
