@@ -83,21 +83,40 @@ class FileOperations {
     func processQueue(_ queue: [SourceDestinationPair]) {
         DispatchQueue.global(qos: .background).async {
             for pair in queue {
-                guard let inputStream = InputStream(url: pair.source) else { return }
-                guard let outputStream = OutputStream(url: pair.destination, append: false) else { return }
+                guard let isAlias = self.getIsAlias(pair.source) else { return }
                 
-                inputStream.open()
-                outputStream.open()
-                
-                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 1025)
-                
-                while inputStream.hasBytesAvailable {
-                    inputStream.read(buffer, maxLength: 1024)
-                    outputStream.write(buffer, maxLength: 1024)
+                if isAlias {
+                    do {
+                        try FileManager.default.copyItem(at: pair.source, to: pair.destination)
+                    } catch {
+                        print("Error while copying file: \(pair.source.lastPathComponent) - Error: \(error)")
+                    }
+                } else {
+                    guard let inputStream = InputStream(url: pair.source) else { return }
+                    guard let outputStream = OutputStream(url: pair.destination, append: false) else { return }
+                    
+                    inputStream.open()
+                    outputStream.open()
+                    
+                    let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 1025)
+                    
+                    while inputStream.hasBytesAvailable {
+                        let bytesCount = inputStream.read(buffer, maxLength: 1024)
+                        outputStream.write(buffer, maxLength: bytesCount)
+                    }
                 }
             }
-            
             self.delegate?.fileOperationCompleted(nil)
+        }
+    }
+    
+    func getIsAlias(_ forURL: URL) -> Bool? {
+        do {
+            let resourceValues = try forURL.resourceValues(forKeys: [.isAliasFileKey])
+            return  resourceValues.isAliasFile
+        } catch {
+            print("Error while getting resource value isAliasFile: \(error)")
+            return nil
         }
     }
 }
