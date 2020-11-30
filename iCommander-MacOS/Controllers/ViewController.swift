@@ -42,6 +42,8 @@ class ViewController: NSViewController {
     var fileOperations = FileOperations()
     var rowIndexForContexMenu: Int = -1
     var copyOperationsAlerts: [String:NSAlert] = [:]
+    
+    var progressWindowController: ProgressWindowController? = nil
     var progressViewController: ProgressViewController? = nil
     
     @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
