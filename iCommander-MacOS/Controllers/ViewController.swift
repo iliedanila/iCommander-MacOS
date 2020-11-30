@@ -41,6 +41,8 @@ class ViewController: NSViewController {
     var currentActiveTable: NSTableView? = nil
     var fileOperations = FileOperations()
     var rowIndexForContexMenu: Int = -1
+    var copyOperationsAlerts: [String:NSAlert] = [:]
+    var progressViewController: ProgressViewController? = nil
     
     @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
         if sender == leftDriveButton {

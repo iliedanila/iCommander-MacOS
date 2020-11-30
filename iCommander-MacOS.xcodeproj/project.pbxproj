@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4B1765A12535C1FA00B9C8E2 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1765A02535C1FA00B9C8E2 /* TableView.swift */; };
+		4B3CCA842573B1D600F1AEEF /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3CCA832573B1D600F1AEEF /* ProgressViewController.swift */; };
 		4B5DFBCE254F607F000B45BB /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5DFBCD254F607F000B45BB /* WindowController.swift */; };
 		4B5DFBD12550B639000B45BB /* MenuDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5DFBD02550B639000B45BB /* MenuDelegate.swift */; };
 		4B5DFBD42550B69C000B45BB /* TableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5DFBD32550B69C000B45BB /* TableViewDelegate.swift */; };
@@ -18,6 +19,7 @@
 		4B89F3A1253F50F4008CDE5C /* TableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */; };
 		4B94F7082563124C00BABFEE /* FileOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B94F7072563124C00BABFEE /* FileOperations.swift */; };
 		4B9B364E253B6BD500706A2F /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9B364D253B6BD500706A2F /* TextField.swift */; };
+		4BA3D29925741A0C00C6891A /* ProgressWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */; };
 		4BA94F632556ECB1005CFAA2 /* LocationHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA94F622556ECB1005CFAA2 /* LocationHistory.swift */; };
 		4BA94F6625574234005CFAA2 /* LocationHistoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */; };
 		4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06932523B59D00DF1AFF /* AppDelegate.swift */; };
@@ -30,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		4B1765A02535C1FA00B9C8E2 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		4B3CCA832573B1D600F1AEEF /* ProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		4B5DFBCD254F607F000B45BB /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		4B5DFBD02550B639000B45BB /* MenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuDelegate.swift; sourceTree = "<group>"; };
 		4B5DFBD32550B69C000B45BB /* TableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDelegate.swift; sourceTree = "<group>"; };
@@ -40,6 +43,7 @@
 		4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableDataSource.swift; sourceTree = "<group>"; };
 		4B94F7072563124C00BABFEE /* FileOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOperations.swift; sourceTree = "<group>"; };
 		4B9B364D253B6BD500706A2F /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressWindowController.swift; sourceTree = "<group>"; };
 		4BA94F622556ECB1005CFAA2 /* LocationHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHistory.swift; sourceTree = "<group>"; };
 		4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHistoryDelegate.swift; sourceTree = "<group>"; };
 		4BDC06902523B59D00DF1AFF /* iCommander-MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iCommander-MacOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +129,8 @@
 			children = (
 				4BDC06952523B59D00DF1AFF /* ViewController.swift */,
 				4B5DFBCD254F607F000B45BB /* WindowController.swift */,
+				4B3CCA832573B1D600F1AEEF /* ProgressViewController.swift */,
+				4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -213,6 +219,7 @@
 				4B5DFBD72550B6D1000B45BB /* TableViewDataSource.swift in Sources */,
 				4B62BCD1256452B300C883DA /* FileOperationsDelegate.swift in Sources */,
 				4B5DFBDA2550B759000B45BB /* TextFieldDelegate.swift in Sources */,
+				4BA3D29925741A0C00C6891A /* ProgressWindowController.swift in Sources */,
 				4B94F7082563124C00BABFEE /* FileOperations.swift in Sources */,
 				4B89F3A1253F50F4008CDE5C /* TableDataSource.swift in Sources */,
 				4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */,
@@ -224,6 +231,7 @@
 				4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */,
 				4B9B364E253B6BD500706A2F /* TextField.swift in Sources */,
 				4B5DFBCE254F607F000B45BB /* WindowController.swift in Sources */,
+				4B3CCA842573B1D600F1AEEF /* ProgressViewController.swift in Sources */,
 				4BDC06992523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld in Sources */,
 				4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */,
 			);

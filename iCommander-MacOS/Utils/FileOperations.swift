@@ -10,16 +10,31 @@ import Foundation
 typealias SourceDestinationPair = (source: URL, destination: URL)
 
 protocol FileOperationsDelegate {
+    func copyStarted(_ uuid: String, _ totalBytes: Int)
+    func startedFile(_ uuid: String, _ fileName: String)
+    func copyUpdateProgress(_ uuid: String, _ bytesCopied: Int)
     func fileOperationCompleted(_ error: Error?)
 }
 
 class FileOperations {
     
     var delegate: FileOperationsDelegate?
+    var bytesCopied: Int = 0
+    var uuid: String = ""
     
     func copy(_ sourceItem: TableElement, _ destinationDirectory: URL) {
-        let queue = prepareQueue(sourceItem, destinationDirectory)
-        processQueue(queue)
+        DispatchQueue.global(qos: .background).async {
+            var totalBytesToCopy = 0
+            self.uuid = UUID().uuidString
+            
+            let queue = self.prepareQueue(sourceItem, destinationDirectory, totalBytes: &totalBytesToCopy)
+            
+            DispatchQueue.main.async {
+                self.delegate?.copyStarted(self.uuid, totalBytesToCopy)
+            }
+            
+            self.processQueue(queue)
+        }
     }
     
     func move(_ sourceItem: TableElement, _ destinationDirectory: URL) {
@@ -42,7 +57,7 @@ class FileOperations {
         }
     }
     
-    func prepareQueue(_ sourceItem: TableElement, _ destinationDirectory: URL) -> [SourceDestinationPair]{
+    func prepareQueue(_ sourceItem: TableElement, _ destinationDirectory: URL, totalBytes: inout Int) -> [SourceDestinationPair]{
         var queue: [SourceDestinationPair] = []
         var urlList: [SourceDestinationPair] = []
         urlList.append((sourceItem.url, destinationDirectory))
@@ -71,6 +86,7 @@ class FileOperations {
                     print("Error while getting contents of directory: \(error)")
                 }
             } else {
+                totalBytes += getFileSize(currentUrl)!
                 queue.append((currentUrl, destinationFolderUrl.appendingPathComponent(currentUrl.lastPathComponent)))
             }
             
@@ -81,31 +97,43 @@ class FileOperations {
     }
     
     func processQueue(_ queue: [SourceDestinationPair]) {
-        DispatchQueue.global(qos: .background).async {
-            for pair in queue {
-                guard let isAlias = self.getIsAlias(pair.source) else { return }
+        for pair in queue {
+            
+            DispatchQueue.main.async {
+                self.delegate?.startedFile(self.uuid, pair.source.lastPathComponent)
+            }
+            
+            guard let isAlias = self.getIsAlias(pair.source) else { return }
+            
+            if isAlias {
+                do {
+                    try FileManager.default.copyItem(at: pair.source, to: pair.destination)
+                } catch {
+                    print("Error while copying file: \(pair.source.lastPathComponent) - Error: \(error)")
+                }
+            } else {
+                guard let inputStream = InputStream(url: pair.source) else { return }
+                guard let outputStream = OutputStream(url: pair.destination, append: false) else { return }
                 
-                if isAlias {
-                    do {
-                        try FileManager.default.copyItem(at: pair.source, to: pair.destination)
-                    } catch {
-                        print("Error while copying file: \(pair.source.lastPathComponent) - Error: \(error)")
+                inputStream.open()
+                outputStream.open()
+                
+                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 1025)
+                
+                while inputStream.hasBytesAvailable {
+                    let bytesCount = inputStream.read(buffer, maxLength: 1024)
+                    outputStream.write(buffer, maxLength: bytesCount)
+                    
+                    self.bytesCopied += bytesCount
+                    DispatchQueue.main.async {
+                        self.delegate?.copyUpdateProgress(self.uuid, self.bytesCopied)
                     }
-                } else {
-                    guard let inputStream = InputStream(url: pair.source) else { return }
-                    guard let outputStream = OutputStream(url: pair.destination, append: false) else { return }
-                    
-                    inputStream.open()
-                    outputStream.open()
-                    
-                    let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 1025)
-                    
-                    while inputStream.hasBytesAvailable {
-                        let bytesCount = inputStream.read(buffer, maxLength: 1024)
-                        outputStream.write(buffer, maxLength: bytesCount)
-                    }
+                    print("Progress: \(self.bytesCopied)")
                 }
             }
+        }
+        print("Done copying.")
+        DispatchQueue.main.async {
             self.delegate?.fileOperationCompleted(nil)
         }
     }
@@ -118,5 +146,15 @@ class FileOperations {
             print("Error while getting resource value isAliasFile: \(error)")
             return nil
         }
+    }
+    
+    func getFileSize(_ forURL: URL) -> Int? {
+        do {
+            let resourceValues = try forURL.resourceValues(forKeys: [.fileSizeKey])
+            return resourceValues.fileSize
+        } catch {
+            print("Error while getting file size for: \(forURL.lastPathComponent)")
+        }
+        return nil
     }
 }
