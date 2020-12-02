@@ -56,13 +56,25 @@ extension ViewController: TableViewDelegate {
     }
     
     
-    func deleteItem(_ tableView: NSTableView, _ row: Int) {
+    func deleteItems(_ tableView: NSTableView, _ rows: [Int]) {
         if let dataSource = tableToDataSource[tableView] {
-            let element = dataSource.tableElements[row]
             
-            if showDialog("Are you sure you want to delete \(element.name)?") {
+            var elements: [TableElement] = []
+            for row in rows {
+                elements.append(dataSource.tableElements[row])
+            }
+            
+            var confirmationString: String = ""
+            for element in elements {
+                confirmationString += element.name
+                confirmationString += "\n"
+            }
+            
+            if showDialog("Are you sure you want to delete \(confirmationString)?") {
                 do {
-                    try FileManager.default.trashItem(at: element.url, resultingItemURL: nil)
+                    for element in elements {
+                        try FileManager.default.trashItem(at: element.url, resultingItemURL: nil)
+                    }
                     tableView.reloadData()
                 } catch {
                     print(error)
@@ -257,6 +269,6 @@ extension ViewController: TableViewDelegate {
     
     func handleF8() {
         guard let sourceTable = currentActiveTable else { return }
-        deleteItem(sourceTable, sourceTable.selectedRow)
+        deleteItems(sourceTable, Array(sourceTable.selectedRowIndexes))
     }
 }

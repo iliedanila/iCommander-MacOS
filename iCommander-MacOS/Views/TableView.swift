@@ -16,7 +16,7 @@ protocol TableViewDelegate {
     func handleF6()
     func handleF7()
     func handleF8()
-    func deleteItem(_ tableView: NSTableView, _ row: Int)
+    func deleteItems(_ tableView: NSTableView, _ rows: [Int])
     var rowIndexForActivatedMenu: Int { get set }
 }
 
@@ -48,7 +48,7 @@ class TableView: NSTableView {
             tableViewDelegate?.focusNextTable(self)
             super.keyDown(with: event)
         } else if event.keyCode == Constants.KeyCodeDelete && event.modifierFlags.contains(.command){
-            tableViewDelegate?.deleteItem(self, selectedRow)
+            tableViewDelegate?.deleteItems(self, Array(selectedRowIndexes))
         } else if event.keyCode == Constants.KeyCodeR && event.modifierFlags.contains(.command){
             reloadData()
         } else if event.keyCode == Constants.KeyCodeF5 {
