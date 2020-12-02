@@ -22,12 +22,13 @@ class FileOperations {
     var bytesCopied: Int = 0
     var uuid: String = ""
     
-    func copy(_ sourceItem: TableElement, _ destinationDirectory: URL) {
+    func copy(_ sourceItems: [TableElement], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
+            
             var totalBytesToCopy = 0
             self.uuid = UUID().uuidString
             
-            let queue = self.prepareQueue(sourceItem, destinationDirectory, totalBytes: &totalBytesToCopy)
+            let queue = self.prepareQueue(sourceItems, destinationDirectory, totalBytes: &totalBytesToCopy)
             
             DispatchQueue.main.async {
                 self.delegate?.copyStarted(self.uuid, totalBytesToCopy)
@@ -57,10 +58,13 @@ class FileOperations {
         }
     }
     
-    func prepareQueue(_ sourceItem: TableElement, _ destinationDirectory: URL, totalBytes: inout Int) -> [SourceDestinationPair]{
+    func prepareQueue(_ sourceItems: [TableElement], _ destinationDirectory: URL, totalBytes: inout Int) -> [SourceDestinationPair] {
         var queue: [SourceDestinationPair] = []
         var urlList: [SourceDestinationPair] = []
-        urlList.append((sourceItem.url, destinationDirectory))
+        
+        for sourceItem in sourceItems {
+            urlList.append((sourceItem.url, destinationDirectory))
+        }
         var index: Int = 0
         
         while index < urlList.count {

@@ -191,10 +191,14 @@ extension ViewController: TableViewDelegate {
         if let sourceTable = currentActiveTable {
             let destinationTable = sourceTable == leftTable ? rightTable : leftTable
             let dataSource = tableToDataSource[sourceTable]!
-            let sourceItem = dataSource.tableElements[sourceTable.selectedRow]
+            var sourceItems: [TableElement] = []
+            
+            for selectedRowIndex in sourceTable.selectedRowIndexes {
+                sourceItems.append(dataSource.tableElements[selectedRowIndex])
+            }
             let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentUrl
             
-            fileOperations.copy(sourceItem, destinationFolderUrl)
+            fileOperations.copy(sourceItems, destinationFolderUrl)
         }
     }
     
