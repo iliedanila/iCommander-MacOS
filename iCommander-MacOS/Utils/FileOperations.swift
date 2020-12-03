@@ -38,11 +38,16 @@ class FileOperations {
         }
     }
     
-    func move(_ sourceItem: TableElement, _ destinationDirectory: URL) {
+    func move(_ sourceItems: [TableElement], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
             do {
-                try FileManager.default.moveItem(at: sourceItem.url, to: destinationDirectory.appendingPathComponent(sourceItem.name))
-                self.delegate?.fileOperationCompleted(nil)
+                for sourceItem in sourceItems {
+                    try FileManager.default.moveItem(at: sourceItem.url, to: destinationDirectory.appendingPathComponent(sourceItem.name))
+                }
+                
+                DispatchQueue.main.async {
+                    self.delegate?.fileOperationCompleted(nil)
+                }
             } catch {
                 print("Error while moving item: \(error)")
             }

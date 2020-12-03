@@ -218,12 +218,15 @@ extension ViewController: TableViewDelegate {
         guard let sourceTable = currentActiveTable else { return }
         let destinationTable = sourceTable == leftTable ? rightTable : leftTable
         let dataSource = tableToDataSource[sourceTable]!
-        let sourceItem = dataSource.tableElements[sourceTable.selectedRow]
+        
+        var sourceItems: [TableElement] = []
+        for index in sourceTable.selectedRowIndexes {
+            sourceItems.append(dataSource.tableElements[index])
+        }
+
         let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentUrl
         
-        print("Source: \(sourceItem.url.path) Destination: \(destinationFolderUrl.path)")
-        
-        fileOperations.move(sourceItem, destinationFolderUrl)
+        fileOperations.move(sourceItems, destinationFolderUrl)
     }
     
     func getNewFolderName() -> String {
