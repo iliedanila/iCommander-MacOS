@@ -22,7 +22,7 @@ class FileOperations {
     var bytesCopied: Int = 0
     var uuid: String = ""
     
-    func copy(_ sourceItems: [URL], _ destinationDirectory: URL) {
+    func copy(_ sourceItems: [TableElement], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
             
             var totalBytesToCopy = 0
@@ -63,12 +63,12 @@ class FileOperations {
         }
     }
     
-    func prepareQueue(_ sourceItems: [URL], _ destinationDirectory: URL, totalBytes: inout Int) -> [SourceDestinationPair] {
+    func prepareQueue(_ sourceItems: [TableElement], _ destinationDirectory: URL, totalBytes: inout Int) -> [SourceDestinationPair] {
         var queue: [SourceDestinationPair] = []
         var urlList: [SourceDestinationPair] = []
         
         for sourceItem in sourceItems {
-            urlList.append((sourceItem, destinationDirectory))
+            urlList.append((sourceItem.url, destinationDirectory))
         }
         var index: Int = 0
         

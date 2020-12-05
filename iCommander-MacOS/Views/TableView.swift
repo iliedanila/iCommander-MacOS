@@ -13,7 +13,6 @@ protocol TableViewDelegate {
     func focusNextTable(_ tableView: NSTableView)
     func handleEnterPressed(_ tableView: NSTableView, _ row: Int)
     func handleF5()
-    func dragAndDropCopy(_ tableView: NSTableView, _ url: URL)
     func handleF6()
     func handleF7()
     func handleF8()
@@ -24,11 +23,6 @@ protocol TableViewDelegate {
 class TableView: NSTableView {
     
     var tableViewDelegate: TableViewDelegate?
-    let supportedTypes: [NSPasteboard.PasteboardType] = [.fileURL]
-    
-    override func awakeFromNib() {
-        registerForDraggedTypes(supportedTypes)
-    }
     
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
@@ -77,58 +71,5 @@ class TableView: NSTableView {
         tableViewDelegate?.rowIndexForActivatedMenu = rowforMenu
         
         return super.menu(for: event)
-    }
-    
-    override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
-        let canReadPasteboardObjects = sender.draggingPasteboard.canReadObject(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly : true])
-        
-        if canReadPasteboardObjects {
-            highlight()
-            return .copy
-        }
-        return NSDragOperation()
-    }
-    
-    override func draggingUpdated(_ sender: NSDraggingInfo) -> NSDragOperation {
-        return draggingEntered(sender)
-    }
-    
-    override func prepareForDragOperation(_ sender: NSDraggingInfo) -> Bool {
-        return true
-    }
-    
-    override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
-        print("performDragOperation")
-        guard let pasteboardObjects = sender.draggingPasteboard.readObjects(forClasses: [NSURL.self], options: nil), pasteboardObjects.count > 0 else { return false }
-        
-        pasteboardObjects.forEach { (object) in
-            if let url = object as? NSURL {
-                self.tableViewDelegate?.dragAndDropCopy(self, url as URL)
-            }
-        }
-        
-        return true
-    }
-    
-    override func concludeDragOperation(_ sender: NSDraggingInfo?) {
-        print("concludeDragOperation")
-    }
-    
-    override func draggingEnded(_ sender: NSDraggingInfo) {
-        unhighlight()
-    }
-    
-    override func draggingExited(_ sender: NSDraggingInfo?) {
-        unhighlight()
-    }
-    
-    func highlight() {
-        self.layer?.borderColor = NSColor.controlAccentColor.cgColor
-        self.layer?.borderWidth = 2.0
-    }
-    
-    func unhighlight() {
-        self.layer?.borderColor = NSColor.clear.cgColor
-        self.layer?.borderWidth = 0.0
     }
 }
