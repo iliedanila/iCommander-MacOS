@@ -203,15 +203,22 @@ extension ViewController: TableViewDelegate {
         if let sourceTable = currentActiveTable {
             let destinationTable = sourceTable == leftTable ? rightTable : leftTable
             let dataSource = tableToDataSource[sourceTable]!
-            var sourceItems: [TableElement] = []
+            var sourceItems: [URL] = []
             
             for selectedRowIndex in sourceTable.selectedRowIndexes {
-                sourceItems.append(dataSource.tableElements[selectedRowIndex])
+                sourceItems.append(dataSource.tableElements[selectedRowIndex].url)
             }
             let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentUrl
             
             fileOperations.copy(sourceItems, destinationFolderUrl)
         }
+    }
+    
+    func dragAndDropCopy(_ tableView: NSTableView, _ url: URL) {
+        guard let dataSource = tableToDataSource[tableView] else { return }
+        let destination = dataSource.currentUrl
+        
+        fileOperations.copy([url], destination)
     }
     
     func handleF6() {
