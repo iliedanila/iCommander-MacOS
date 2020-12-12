@@ -28,6 +28,11 @@ class TableView: NSTableView {
         super.draw(dirtyRect)
     }
     
+    override func awakeFromNib() {
+        registerForDraggedTypes(NSFilePromiseReceiver.readableDraggedTypes.map {NSPasteboard.PasteboardType($0) })
+        registerForDraggedTypes([.fileURL])
+    }
+    
     override func reloadData() {
         tableViewDelegate?.refreshDataSource(self)
         

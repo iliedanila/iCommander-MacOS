@@ -203,10 +203,10 @@ extension ViewController: TableViewDelegate {
         if let sourceTable = currentActiveTable {
             let destinationTable = sourceTable == leftTable ? rightTable : leftTable
             let dataSource = tableToDataSource[sourceTable]!
-            var sourceItems: [TableElement] = []
+            var sourceItems: [URL] = []
             
             for selectedRowIndex in sourceTable.selectedRowIndexes {
-                sourceItems.append(dataSource.tableElements[selectedRowIndex])
+                sourceItems.append(dataSource.tableElements[selectedRowIndex].url)
             }
             let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentUrl
             
