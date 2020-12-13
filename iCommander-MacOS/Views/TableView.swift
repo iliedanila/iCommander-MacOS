@@ -29,7 +29,6 @@ class TableView: NSTableView {
     }
     
     override func awakeFromNib() {
-        registerForDraggedTypes(NSFilePromiseReceiver.readableDraggedTypes.map {NSPasteboard.PasteboardType($0) })
         registerForDraggedTypes([.fileURL])
     }
     
@@ -49,9 +48,8 @@ class TableView: NSTableView {
             tableViewDelegate?.handleEnterPressed(self, selectedRow)
         } else if event.keyCode == Constants.KeyCodeUp && event.modifierFlags.contains(.command) {
                 tableViewDelegate?.parentFolderRequested(self)
-        } else if event.keyCode == Constants.KeyCodetab {
+        } else if event.keyCode == Constants.KeyCodeTab {
             tableViewDelegate?.focusNextTable(self)
-            super.keyDown(with: event)
         } else if event.keyCode == Constants.KeyCodeDelete && event.modifierFlags.contains(.command){
             tableViewDelegate?.deleteItems(self, Array(selectedRowIndexes))
         } else if event.keyCode == Constants.KeyCodeR && event.modifierFlags.contains(.command){

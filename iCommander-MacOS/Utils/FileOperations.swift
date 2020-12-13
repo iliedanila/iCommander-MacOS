@@ -38,6 +38,20 @@ class FileOperations {
         }
     }
     
+    func rename(_ sourceItem: URL, _ currentDirectory: URL, _ newName: String) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                try FileManager.default.moveItem(at: sourceItem, to: currentDirectory.appendingPathComponent(newName))
+
+                DispatchQueue.main.async {
+                    self.delegate?.fileOperationCompleted(nil)
+                }
+            } catch {
+                print("Error while renaming item: \(error)")
+            }
+        }
+    }
+    
     func move(_ sourceItems: [TableElement], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
             do {

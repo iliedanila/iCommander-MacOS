@@ -117,6 +117,18 @@ class ViewController: NSViewController {
         }
     }
     
+    @IBAction func cellEditAction(_ sender: Any) {
+        if let textField = sender as? NSTextField {
+            let activeTable = currentActiveTable == leftTable ? leftTable : rightTable
+            let dataSource = tableToDataSource[activeTable!]!
+            let element = dataSource.tableElements[activeTable!.selectedRow]
+            print("Probably editing \(element.name)")
+            
+            fileOperations.rename(element.url, dataSource.currentUrl, textField.stringValue)
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

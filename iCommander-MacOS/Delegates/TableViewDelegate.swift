@@ -116,11 +116,13 @@ extension ViewController: TableViewDelegate {
         if tableView == leftTable {
             // Focus right table
             leftTable.nextKeyView = rightTable
+            view.window?.makeFirstResponder(rightTable)
             currentActiveTable = rightTable
             refreshButtonsState(rightTable, rightTable.selectedRow)
         } else {
             // Focus left table
             rightTable.nextKeyView = leftTable
+            view.window?.makeFirstResponder(leftTable)
             currentActiveTable = leftTable
             refreshButtonsState(leftTable, leftTable.selectedRow)
         }
