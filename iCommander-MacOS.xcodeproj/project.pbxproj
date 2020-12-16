@@ -28,6 +28,7 @@
 		4BDC069B2523B59E00DF1AFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC069A2523B59E00DF1AFF /* Assets.xcassets */; };
 		4BDC069E2523B59E00DF1AFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC069C2523B59E00DF1AFF /* Main.storyboard */; };
 		4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE9FC192523D913001E5A33 /* Constants.swift */; };
+		4BFDB12D2589774C009E02D5 /* WindowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFDB12C2589774C009E02D5 /* WindowDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		4BDC069F2523B59E00DF1AFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BDC06A02523B59E00DF1AFF /* iCommander_MacOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iCommander_MacOS.entitlements; sourceTree = "<group>"; };
 		4BE9FC192523D913001E5A33 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4BFDB12C2589774C009E02D5 /* WindowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				4B5DFBD02550B639000B45BB /* MenuDelegate.swift */,
 				4BDC06932523B59D00DF1AFF /* AppDelegate.swift */,
 				4B62BCD0256452B300C883DA /* FileOperationsDelegate.swift */,
+				4BFDB12C2589774C009E02D5 /* WindowDelegate.swift */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 			files = (
 				4B5DFBD42550B69C000B45BB /* TableViewDelegate.swift in Sources */,
 				4B5DFBD72550B6D1000B45BB /* TableViewDataSource.swift in Sources */,
+				4BFDB12D2589774C009E02D5 /* WindowDelegate.swift in Sources */,
 				4B62BCD1256452B300C883DA /* FileOperationsDelegate.swift in Sources */,
 				4B5DFBDA2550B759000B45BB /* TextFieldDelegate.swift in Sources */,
 				4BA3D29925741A0C00C6891A /* ProgressWindowController.swift in Sources */,

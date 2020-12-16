@@ -14,11 +14,12 @@ class WindowController: NSWindowController {
     override func windowDidLoad() {
         super.windowDidLoad()
         
+        if let mainWindow = window {
+            mainWindow.delegate = self
+        }
+        
         if let myWindow = window, let screen = NSScreen.main {
             myWindow.setFrame(screen.visibleFrame, display: true)
-            if let viewController = myWindow.contentViewController as? ViewController {
-                viewController.handleMaximize()
-            }
         }        
     }
     
@@ -39,12 +40,4 @@ class WindowController: NSWindowController {
             break
         }
     }
-    
-    //    @IBAction func sayHello(_ sender: NSButton) {
-//        let hello = NSAlert()
-//        hello.messageText = "Hello there! :)"
-//        hello.alertStyle = .informational
-//        hello.addButton(withTitle: "OK")
-//        hello.runModal()
-//    }
 }
