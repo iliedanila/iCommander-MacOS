@@ -34,10 +34,6 @@ extension ViewController: NSTableViewDelegate {
         }
         return nil
     }
-    
-    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return tableView.visibleRect.width / 35
-    }
 }
 
 // MARK: - TableViewDelegate
