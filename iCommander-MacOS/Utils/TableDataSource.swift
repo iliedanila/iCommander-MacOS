@@ -30,6 +30,7 @@ class TableDataSource {
     var sortColumn: String? = nil
     var isAscending: Bool? = nil
     var tableElements: [TableElement] = []
+    var showHiddenFiles: Bool = false
     
     init(_ aLocation: LocationOnScreen) {
         location = aLocation
@@ -81,8 +82,12 @@ class TableDataSource {
         do {
             let fileManager = FileManager.default
             
-            let fileURLs = try fileManager.contentsOfDirectory(at: currentUrl, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
+            var searchOptions: FileManager.DirectoryEnumerationOptions = [.skipsSubdirectoryDescendants]
+            if !showHiddenFiles {
+                searchOptions.insert(.skipsHiddenFiles)
+            }
             
+            let fileURLs = try fileManager.contentsOfDirectory(at: currentUrl, includingPropertiesForKeys: nil, options: searchOptions)
             
             for url in fileURLs {
                 let name = url.lastPathComponent

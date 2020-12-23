@@ -29,6 +29,8 @@ class ViewController: NSViewController {
     @IBOutlet var leftForwardButton: NSButton!
     @IBOutlet var rightBackButton: NSButton!
     @IBOutlet var rightForwardButton: NSButton!
+    @IBOutlet var leftShowHiddenFiles: NSButton!
+    @IBOutlet var rightShowHiddenFiles: NSButton!
     
     var tableToPath: [NSTableView : NSStackView] = [:]
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
@@ -45,6 +47,18 @@ class ViewController: NSViewController {
     
     var progressWindowController: ProgressWindowController? = nil
     var progressViewController: ProgressViewController? = nil
+    
+    @IBAction func showHiddenFilesToggled(_ sender: NSButton) {
+        if sender == leftShowHiddenFiles {
+            leftTableDataSource.showHiddenFiles = sender.state == .on
+            leftTableDataSource.refreshData()
+            leftTable.reloadData()
+        } else {
+            rightTableDataSource.showHiddenFiles = sender.state == .on
+            rightTableDataSource.refreshData()
+            rightTable.reloadData()
+        }
+    }
     
     @IBAction func handleDriveButton(_ sender: NSPopUpButton) {
         if sender == leftDriveButton {
