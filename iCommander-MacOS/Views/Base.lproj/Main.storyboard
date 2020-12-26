@@ -1253,7 +1253,7 @@
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="k3h-8f-E7k">
-                                                                    <rect key="frame" x="1" y="1" width="124" height="17"/>
+                                                                    <rect key="frame" x="1" y="1" width="123" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2GD-hF-geQ">
@@ -1295,7 +1295,7 @@
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView id="cgC-6u-Xj5">
-                                                                    <rect key="frame" x="127.5" y="1" width="24" height="17"/>
+                                                                    <rect key="frame" x="127" y="1" width="24" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3PY-4C-Acu">
@@ -1579,10 +1579,11 @@
                     <window key="window" title="Copy" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="GVM-E0-zca">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="425" y="462" width="480" height="270"/>
+                        <rect key="contentRect" x="425" y="462" width="480" height="200"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+                        <value key="minSize" type="size" width="480" height="200"/>
                         <view key="contentView" id="Qaw-Cs-Lkx">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="200"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </view>
                         <connections>
@@ -1601,92 +1602,143 @@
         <scene sceneID="l2r-yY-fFM">
             <objects>
                 <viewController id="43u-ub-ehL" customClass="ProgressViewController" customModule="iCommander_MacOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="enr-Mv-hle">
-                        <rect key="frame" x="0.0" y="0.0" width="466" height="243"/>
+                    <view key="view" misplaced="YES" id="enr-Mv-hle">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="113"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mCU-aB-nNO">
-                                <rect key="frame" x="0.0" y="0.0" width="466" height="243"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ghm-Tt-msO">
+                                <rect key="frame" x="0.0" y="91" width="480" height="22"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5S6-Lq-REd">
-                                        <rect key="frame" x="-2" y="227" width="470" height="16"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Overall Copy Progress" id="jFd-af-aXB">
+                                        <rect key="frame" x="218" y="3" width="44" height="16"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="COPY" id="jFd-af-aXB">
                                             <font key="font" usesAppearanceFont="YES"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <stackView orientation="horizontal" alignment="top" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5GJ-Zb-KfK">
-                                        <rect key="frame" x="0.0" y="154" width="466" height="53"/>
-                                        <beginningViews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Liq-LV-nV8">
-                                                <rect key="frame" x="-2" y="37" width="79" height="16"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" title="Current File:" id="v5j-MJ-plJ">
-                                                    <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5pQ-4E-jcw">
-                                                <rect key="frame" x="93" y="37" width="61" height="16"/>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" title="FileName" id="WQ2-2U-tsG">
-                                                    <font key="font" metaFont="system"/>
-                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                        </beginningViews>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
-                                    <progressIndicator maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="E7Y-TX-ova">
-                                        <rect key="frame" x="20" y="115" width="426" height="20"/>
-                                    </progressIndicator>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="E7Y-TX-ova" secondAttribute="trailing" constant="20" id="3qO-JJ-FSr"/>
-                                    <constraint firstItem="E7Y-TX-ova" firstAttribute="leading" secondItem="mCU-aB-nNO" secondAttribute="leading" constant="20" id="B3Z-gR-o1F"/>
-                                    <constraint firstAttribute="bottom" secondItem="E7Y-TX-ova" secondAttribute="bottom" constant="20" id="FZF-fM-g4c"/>
-                                    <constraint firstItem="5S6-Lq-REd" firstAttribute="leading" secondItem="mCU-aB-nNO" secondAttribute="leading" id="H3K-GE-dn1"/>
-                                    <constraint firstItem="5S6-Lq-REd" firstAttribute="top" secondItem="mCU-aB-nNO" secondAttribute="top" id="Yjy-7f-wld"/>
-                                    <constraint firstItem="5S6-Lq-REd" firstAttribute="trailing" secondItem="mCU-aB-nNO" secondAttribute="trailing" id="aT3-u5-rsT"/>
-                                    <constraint firstItem="E7Y-TX-ova" firstAttribute="top" secondItem="5GJ-Zb-KfK" secondAttribute="bottom" constant="20" id="b3q-aX-1Uk"/>
-                                    <constraint firstItem="5GJ-Zb-KfK" firstAttribute="leading" secondItem="mCU-aB-nNO" secondAttribute="leading" id="wgZ-74-fY5"/>
-                                    <constraint firstItem="5GJ-Zb-KfK" firstAttribute="trailing" secondItem="mCU-aB-nNO" secondAttribute="trailing" id="y4r-pb-pMz"/>
+                                    <constraint firstItem="5S6-Lq-REd" firstAttribute="centerX" secondItem="Ghm-Tt-msO" secondAttribute="centerX" id="4sY-1i-Xbw"/>
+                                    <constraint firstItem="5S6-Lq-REd" firstAttribute="centerY" secondItem="Ghm-Tt-msO" secondAttribute="centerY" id="Ggb-Vs-DX2"/>
                                 </constraints>
-                                <visibilityPriorities>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
-                                </visibilityPriorities>
-                                <customSpacing>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                </customSpacing>
-                            </stackView>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="vPg-b5-YQa">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="23"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ucm-eN-MTo">
+                                        <rect key="frame" x="391" y="-6" width="76" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WEc-Tx-3FT">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                        </buttonCell>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zeb-dc-wVZ">
+                                        <rect key="frame" x="322" y="-6" width="71" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Pause" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="g2y-01-h7O">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Zeb-dc-wVZ" firstAttribute="centerY" secondItem="vPg-b5-YQa" secondAttribute="centerY" id="eFN-VJ-Hcn"/>
+                                    <constraint firstAttribute="trailing" secondItem="ucm-eN-MTo" secondAttribute="trailing" constant="20" symbolic="YES" id="kG5-kF-RQo"/>
+                                    <constraint firstItem="ucm-eN-MTo" firstAttribute="leading" secondItem="Zeb-dc-wVZ" secondAttribute="trailing" constant="12" symbolic="YES" id="vuF-8S-Bse"/>
+                                    <constraint firstItem="ucm-eN-MTo" firstAttribute="centerY" secondItem="vPg-b5-YQa" secondAttribute="centerY" id="yTI-2f-1Uj"/>
+                                </constraints>
+                            </customView>
+                            <gridView xPlacement="leading" yPlacement="fill" rowAlignment="none" rowSpacing="20" columnSpacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="R1p-aM-1Ub">
+                                <rect key="frame" x="20" y="31" width="440" height="52"/>
+                                <rows>
+                                    <gridRow id="jYw-Mw-lSw"/>
+                                    <gridRow id="cMq-zK-Psk"/>
+                                </rows>
+                                <columns>
+                                    <gridColumn id="HBv-vI-3dA"/>
+                                    <gridColumn xPlacement="fill" id="bLg-wC-f0G"/>
+                                    <gridColumn id="Orh-zC-AnA"/>
+                                </columns>
+                                <gridCells>
+                                    <gridCell row="jYw-Mw-lSw" column="HBv-vI-3dA" id="Doy-zi-gKq">
+                                        <textField key="contentView" horizontalHuggingPriority="999" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VRl-Hm-awC">
+                                            <rect key="frame" x="-2" y="36" width="75" height="16"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Current File" id="4NC-8W-Vl7">
+                                                <font key="font" usesAppearanceFont="YES"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </gridCell>
+                                    <gridCell row="jYw-Mw-lSw" column="bLg-wC-f0G" id="GaO-Et-Shi">
+                                        <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="E7Y-TX-ova">
+                                            <rect key="frame" x="255" y="35" width="100" height="18"/>
+                                        </progressIndicator>
+                                    </gridCell>
+                                    <gridCell row="jYw-Mw-lSw" column="Orh-zC-AnA" id="1w1-mL-0P1">
+                                        <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ond-EO-zUm">
+                                            <rect key="frame" x="380" y="36" width="41" height="16"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="% File" id="mR3-iN-2Eq">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </gridCell>
+                                    <gridCell row="cMq-zK-Psk" column="HBv-vI-3dA" id="6P5-ON-TYE">
+                                        <textField key="contentView" horizontalHuggingPriority="999" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BtP-BJ-JVA">
+                                            <rect key="frame" x="-2" y="0.0" width="104" height="16"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Overall Progress" id="w1o-oC-DTf">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </gridCell>
+                                    <gridCell row="cMq-zK-Psk" column="bLg-wC-f0G" id="oIW-te-lvg">
+                                        <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="mLp-FL-ssF">
+                                            <rect key="frame" x="255" y="-1" width="100" height="18"/>
+                                        </progressIndicator>
+                                    </gridCell>
+                                    <gridCell row="cMq-zK-Psk" column="Orh-zC-AnA" id="fEY-3L-L7C">
+                                        <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mg9-YC-siO">
+                                            <rect key="frame" x="380" y="0.0" width="62" height="16"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="% Overall" id="RrC-06-v5s">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </gridCell>
+                                </gridCells>
+                            </gridView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="mCU-aB-nNO" firstAttribute="bottom" secondItem="enr-Mv-hle" secondAttribute="bottom" id="1Ba-3J-XBB"/>
-                            <constraint firstItem="mCU-aB-nNO" firstAttribute="top" secondItem="enr-Mv-hle" secondAttribute="top" id="5n3-26-L49"/>
-                            <constraint firstItem="mCU-aB-nNO" firstAttribute="trailing" secondItem="enr-Mv-hle" secondAttribute="trailing" id="U8I-Ga-4ii"/>
-                            <constraint firstItem="mCU-aB-nNO" firstAttribute="leading" secondItem="enr-Mv-hle" secondAttribute="leading" id="ewC-0c-9xJ"/>
+                            <constraint firstItem="vPg-b5-YQa" firstAttribute="height" secondItem="enr-Mv-hle" secondAttribute="height" multiplier="20%" id="0SY-am-UEO"/>
+                            <constraint firstItem="R1p-aM-1Ub" firstAttribute="leading" secondItem="enr-Mv-hle" secondAttribute="leading" constant="20" symbolic="YES" id="K4X-E9-aId"/>
+                            <constraint firstItem="vPg-b5-YQa" firstAttribute="top" secondItem="R1p-aM-1Ub" secondAttribute="bottom" constant="8" symbolic="YES" id="Lwi-LG-7XZ"/>
+                            <constraint firstItem="vPg-b5-YQa" firstAttribute="leading" secondItem="enr-Mv-hle" secondAttribute="leading" id="NZw-Gq-JFg"/>
+                            <constraint firstItem="Ghm-Tt-msO" firstAttribute="top" secondItem="enr-Mv-hle" secondAttribute="top" id="YLa-aY-wft"/>
+                            <constraint firstAttribute="bottom" secondItem="vPg-b5-YQa" secondAttribute="bottom" id="Zay-jE-JbS"/>
+                            <constraint firstItem="Ghm-Tt-msO" firstAttribute="trailing" secondItem="enr-Mv-hle" secondAttribute="trailing" id="gra-rA-cvJ"/>
+                            <constraint firstAttribute="trailing" secondItem="vPg-b5-YQa" secondAttribute="trailing" id="h4a-gB-OHn"/>
+                            <constraint firstItem="Ghm-Tt-msO" firstAttribute="height" secondItem="enr-Mv-hle" secondAttribute="height" multiplier="20%" id="uWu-gL-A0e"/>
+                            <constraint firstItem="R1p-aM-1Ub" firstAttribute="top" secondItem="Ghm-Tt-msO" secondAttribute="bottom" constant="8" symbolic="YES" id="xPU-1z-jic"/>
+                            <constraint firstItem="Ghm-Tt-msO" firstAttribute="leading" secondItem="enr-Mv-hle" secondAttribute="leading" id="xpp-Cf-J1c"/>
+                            <constraint firstAttribute="trailing" secondItem="R1p-aM-1Ub" secondAttribute="trailing" constant="20" symbolic="YES" id="ytk-EL-GGD"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="currentFileName" destination="5pQ-4E-jcw" id="PQw-5H-66L"/>
-                        <outlet property="progressBar" destination="E7Y-TX-ova" id="on4-WN-QDR"/>
+                        <outlet property="currentFileName" destination="VRl-Hm-awC" id="lyL-h5-Ewd"/>
+                        <outlet property="progressBar" destination="mLp-FL-ssF" id="k0G-4H-jyB"/>
                     </connections>
                 </viewController>
                 <customObject id="gno-f3-eZL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="866" y="666.5"/>
+            <point key="canvasLocation" x="871" y="855"/>
         </scene>
     </scenes>
     <resources>
