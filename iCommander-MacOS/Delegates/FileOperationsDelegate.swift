@@ -17,15 +17,15 @@ extension ViewController: FileOperationsDelegate {
     func copyStarted(_ uuid: String, _ totalBytes: Int) {
         instantiateProgressWindow()
 
-        progressViewController?.progressBar.minValue = Double(0)
-        progressViewController?.progressBar.maxValue = Double(totalBytes)
-        progressViewController?.progressBar.doubleValue = Double(0)
+        progressViewController?.overallProgressBar.minValue = Double(0)
+        progressViewController?.overallProgressBar.maxValue = Double(totalBytes)
+        progressViewController?.overallProgressBar.doubleValue = Double(0)
         
         progressWindowController?.showWindow(self)
     }
     
     func copyUpdateProgress(_ uuid: String, _ bytesCopied: Int) {
-        progressViewController?.progressBar.doubleValue = Double(bytesCopied)
+        progressViewController?.overallProgressBar.doubleValue = Double(bytesCopied)
     }
     
     
@@ -38,9 +38,7 @@ extension ViewController: FileOperationsDelegate {
     
     func instantiateProgressWindow() {
         if let _ = progressWindowController,
-           let _ = progressViewController {
-            return
-        }
+           let _ = progressViewController { return }
         
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         let sceneIdentifier = NSStoryboard.SceneIdentifier(stringLiteral: "ProgressWindowController")

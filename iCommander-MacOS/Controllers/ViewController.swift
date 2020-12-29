@@ -31,6 +31,8 @@ class ViewController: NSViewController {
     @IBOutlet var rightForwardButton: NSButton!
     @IBOutlet var leftShowHiddenFiles: NSButton!
     @IBOutlet var rightShowHiddenFiles: NSButton!
+    @IBOutlet var leftVolumesStackView: NSStackView!
+    @IBOutlet var rightVolumesStackView: NSStackView!
     
     var tableToPath: [NSTableView : NSStackView] = [:]
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
@@ -177,6 +179,7 @@ class ViewController: NSViewController {
         rightTable.rowSizeStyle = .medium
         
         populateDriveList()
+        populateVolumeButtons()
                 
         let notificationCenter = NSWorkspace.shared.notificationCenter
         notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didMountNotification, object: nil)
@@ -188,26 +191,91 @@ class ViewController: NSViewController {
         rightDriveButton.removeAllItems()
         indexDrivePath.removeAll()
         
-        let keys = Set<URLResourceKey>([.volumeNameKey, .isVolumeKey, .volumeIsBrowsableKey])
-        let option: FileManager.VolumeEnumerationOptions = .skipHiddenVolumes
+        let resourceValuesList = getMountedVolumesResourceValues()
+        var index: Int = 0
+        for resourceValues in resourceValuesList {
+            leftDriveButton.addItem(withTitle: resourceValues.volumeName!)
+            rightDriveButton.addItem(withTitle: resourceValues.volumeName!)
+            indexDrivePath[index] = URL(fileURLWithPath: resourceValues.path!)
+            index = index + 1
+        }
+    }
+    
+    func populateVolumeButtons() {
+        clearVolumesStackViews()
+        
+        let resourceValuesList = getMountedVolumesResourceValues()
+        
+        leftVolumesStackView.addView(createHomeButton(.Left), in: .trailing)
+        rightVolumesStackView.addView(createHomeButton(.Right), in: .trailing)
+        
+        for resourceValues in resourceValuesList {
+            let leftButton = createDriveButton(resourceValues, .Left)
+            let rightButton = createDriveButton(resourceValues, .Right)
+            
+            leftVolumesStackView.addView(leftButton, in: .trailing)
+            rightVolumesStackView.addView(rightButton, in: .trailing)
+        }
+    }
+    
+    func clearVolumesStackViews() {
+        let leftStackViewItems = leftVolumesStackView.views
+        for item in leftStackViewItems {
+            leftVolumesStackView.removeView(item)
+        }
+        
+        let rightStackViewItems = rightVolumesStackView.views
+        for item in rightStackViewItems {
+            rightVolumesStackView.removeView(item)
+        }
+    }
+    
+    func createHomeButton(_ locationOnScreen: LocationOnScreen) -> DriveButton {
+        let homeURL = FileManager.default.homeDirectoryForCurrentUser
+        let homeImage = NSWorkspace.shared.icon(forFile: homeURL.path)
+        let button = DriveButton(title: "Home", image: homeImage, target: self, action: #selector(driveButtonPressed(_:)))
+        button.imagePosition = .imageLeading
+        button.setButtonType(.momentaryPushIn)
+        button.isBordered = true
+        button.state = .off
+        button.drivePath = homeURL.path
+        button.locationOnScreen = locationOnScreen
+        
+        return button
+    }
+    
+    func getMountedVolumesResourceValues() -> [URLResourceValues] {
+        
+        var result: [URLResourceValues] = []
+        
         let fileManager = FileManager.default
+        let keys = Set<URLResourceKey>([.volumeNameKey, .isVolumeKey, .volumeIsBrowsableKey, .customIconKey, .effectiveIconKey, .pathKey])
+        let option: FileManager.VolumeEnumerationOptions = .skipHiddenVolumes
         
         if let mountedVolumesUrls = fileManager.mountedVolumeURLs(includingResourceValuesForKeys: Array(keys), options: option) {
-            var index: Int = 0
             for volumeUrl in mountedVolumesUrls {
                 do {
                     let resourceValues = try volumeUrl.resourceValues(forKeys: keys)
-                    if resourceValues.isVolume != nil && resourceValues.isVolume == true {
-                        leftDriveButton.addItem(withTitle: resourceValues.volumeName!)
-                        rightDriveButton.addItem(withTitle: resourceValues.volumeName!)
-                        indexDrivePath[index] = volumeUrl
-                        index = index + 1
-                    }
+                    result.append(resourceValues)
                 } catch {
                     print(error)
                 }
             }
         }
+        return result
+    }
+    
+    func createDriveButton(_ resourceValues: URLResourceValues, _ locationOnScreen: LocationOnScreen) -> DriveButton {
+        
+        let button = DriveButton(title: resourceValues.volumeName!, image: resourceValues.effectiveIcon as! NSImage, target: self, action: #selector(driveButtonPressed(_:)))
+        button.imagePosition = .imageLeading
+        button.setButtonType(.momentaryPushIn)
+        button.isBordered = true
+        button.state = .off
+        button.drivePath = resourceValues.path
+        button.locationOnScreen = locationOnScreen
+        
+        return button
     }
 
     func handleMaximize() {
@@ -231,6 +299,18 @@ class ViewController: NSViewController {
     
     @objc func handleDriveChange(_ notification: NSNotification) {
         populateDriveList()
+        populateVolumeButtons()
+    }
+    
+    @objc func driveButtonPressed(_ sender: Any?)
+    {
+        if let button = sender as? DriveButton,
+           let locationOnScreen = button.locationOnScreen {
+            
+            let tableView = locationOnScreen == .Left ? leftTable : rightTable
+            let dataSource = tableToDataSource[tableView!]!
+            dataSource.currentUrl = URL(fileURLWithPath: button.drivePath!)
+        }
     }
 }
 

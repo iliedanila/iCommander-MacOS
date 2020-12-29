@@ -10,7 +10,12 @@ import Cocoa
 class ProgressViewController: NSViewController {
 
     @IBOutlet var currentFileName: NSTextField!
-    @IBOutlet var progressBar: NSProgressIndicator!
+    @IBOutlet var fileProgressBar: NSProgressIndicator!
+    @IBOutlet var overallProgressBar: NSProgressIndicator!
+    @IBOutlet var fileProgressPercent: NSTextField!
+    @IBOutlet var overallProgressPercent: NSTextField!
+    @IBOutlet var playPauseButton: NSButton!
+    @IBOutlet var cancelButton: NSButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
