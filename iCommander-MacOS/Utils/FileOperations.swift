@@ -7,34 +7,43 @@
 
 import Foundation
 
-typealias SourceDestinationPair = (source: URL, destination: URL)
+typealias SourceDestination = (source: URL, destination: URL)
+typealias SourceDestinationSize = (source: URL, destination: URL, size: UInt64)
 
 protocol FileOperationsDelegate {
-    func copyStarted(_ uuid: String, _ totalBytes: Int)
+    func copyStarted(_ fileOperationsManager: FileOperations, _ uuid: String, _ totalBytes: UInt64)
     func startedFile(_ uuid: String, _ fileName: String)
-    func copyUpdateProgress(_ uuid: String, _ bytesCopied: Int)
+    func copyUpdateProgress(_ uuid: String, _ fileProgress: Double, _ overallProgress: Double)
     func fileOperationCompleted(_ error: Error?)
 }
 
 class FileOperations {
     
+    enum State {
+        case Running
+        case Paused
+        case Stopped
+        case Finished
+    }
+    
     var delegate: FileOperationsDelegate?
-    var bytesCopied: Int = 0
+    var totalBytesCopied: Int = 0
+    var totalBytesToCopy: UInt64 = 0
     var uuid: String = ""
+    var state: State = .Running
     
     func copy(_ sourceItems: [URL], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
             
-            var totalBytesToCopy = 0
             self.uuid = UUID().uuidString
             
-            let queue = self.prepareQueue(sourceItems, destinationDirectory, totalBytes: &totalBytesToCopy)
+            var queue = self.prepareQueue(sourceItems, destinationDirectory, totalBytes: &self.totalBytesToCopy)
             
             DispatchQueue.main.async {
-                self.delegate?.copyStarted(self.uuid, totalBytesToCopy)
+                self.delegate?.copyStarted(self, self.uuid, self.totalBytesToCopy)
             }
             
-            self.processQueue(queue)
+            self.processNextFileInQueue(&queue)
         }
     }
     
@@ -77,9 +86,9 @@ class FileOperations {
         }
     }
     
-    func prepareQueue(_ sourceItems: [URL], _ destinationDirectory: URL, totalBytes: inout Int) -> [SourceDestinationPair] {
-        var queue: [SourceDestinationPair] = []
-        var urlList: [SourceDestinationPair] = []
+    func prepareQueue(_ sourceItems: [URL], _ destinationDirectory: URL, totalBytes: inout UInt64) -> [SourceDestinationSize] {
+        var queue: [SourceDestinationSize] = []
+        var urlList: [SourceDestination] = []
         
         for sourceItem in sourceItems {
             urlList.append((sourceItem, destinationDirectory))
@@ -109,8 +118,10 @@ class FileOperations {
                     print("Error while getting contents of directory: \(error)")
                 }
             } else {
-                totalBytes += getFileSize(currentUrl)!
-                queue.append((currentUrl, destinationFolderUrl.appendingPathComponent(currentUrl.lastPathComponent)))
+                let fileSize = getFileSize(currentUrl)
+                totalBytes += fileSize
+                let destinationURL = destinationFolderUrl.appendingPathComponent(currentUrl.lastPathComponent)
+                queue.append((currentUrl, destinationURL, fileSize))
             }
             
             index += 1
@@ -119,45 +130,125 @@ class FileOperations {
         return queue
     }
     
-    func processQueue(_ queue: [SourceDestinationPair]) {
-        for pair in queue {
-            
+    func processNextFileInQueue(_ queue: inout [SourceDestinationSize]) {
+        if state == .Stopped || state == .Finished{
             DispatchQueue.main.async {
-                self.delegate?.startedFile(self.uuid, pair.source.lastPathComponent)
+                self.delegate?.fileOperationCompleted(nil)
+            }
+            state = .Running
+            return
+        } else if state == .Paused {
+            Thread.sleep(forTimeInterval: 0.1) //seconds
+            DispatchQueue.global(qos: .background).async { [queue] in
+                var mutableQueue = queue
+                self.processNextFileInQueue(&mutableQueue)
+            }
+            return
+        } else { //Running
+            if queue.isEmpty {
+                state = .Finished
+                DispatchQueue.main.async {
+                    self.delegate?.fileOperationCompleted(nil)
+                }
+                
+                DispatchQueue.global(qos: .background).async { [queue] in
+                    var mutableQueue = queue
+                    self.processNextFileInQueue(&mutableQueue)
+                }
+                return
             }
             
-            guard let isAlias = self.getIsAlias(pair.source) else { return }
+            let tuple = queue.removeFirst()
+            let sourceURL = tuple.source
+            let destinationURL = tuple.destination
+            let fileSize = tuple.size
+            
+            DispatchQueue.main.async {
+                self.delegate?.startedFile(self.uuid, sourceURL.lastPathComponent)
+            }
+            
+            guard let isAlias = self.getIsAlias(tuple.source) else { return }
             
             if isAlias {
                 do {
-                    try FileManager.default.copyItem(at: pair.source, to: pair.destination)
+                    try FileManager.default.copyItem(at: tuple.source, to: tuple.destination)
+                    DispatchQueue.global(qos: .background).async { [queue] in
+                        var mutableQueue = queue
+                        self.processNextFileInQueue(&mutableQueue)
+                    }
                 } catch {
-                    print("Error while copying file: \(pair.source.lastPathComponent) - Error: \(error)")
+                    print("Error while copying file: \(tuple.source.lastPathComponent) - Error: \(error)")
                 }
             } else {
-                guard let inputStream = InputStream(url: pair.source) else { return }
-                guard let outputStream = OutputStream(url: pair.destination, append: false) else { return }
-                
-                inputStream.open()
-                outputStream.open()
-                
-                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: 1025)
-                
-                while inputStream.hasBytesAvailable {
-                    let bytesCount = inputStream.read(buffer, maxLength: 1024)
-                    outputStream.write(buffer, maxLength: bytesCount)
+                do {
+                    let fileManager = FileManager.default
+                    let attributes = try fileManager.attributesOfItem(atPath: sourceURL.path)
+                    fileManager.createFile(atPath: destinationURL.path, contents: nil, attributes: attributes)
                     
-                    self.bytesCopied += bytesCount
-                    DispatchQueue.main.async {
-                        self.delegate?.copyUpdateProgress(self.uuid, self.bytesCopied)
+                    DispatchQueue.global(qos: .background).async { [queue] in
+                        self.processNextChuckInFile(sourceURL.path, destinationURL.path, 0, fileSize, queue)
                     }
-                    print("Progress: \(self.bytesCopied)")
+                } catch {
+                    print(error)
                 }
             }
         }
-        print("Done copying.")
-        DispatchQueue.main.async {
-            self.delegate?.fileOperationCompleted(nil)
+    }
+    
+    func processNextChuckInFile(
+        _ sourcePath: String,
+        _ destinationPath: String,
+        _ bytesCopiedInFile: UInt64,
+        _ fileSize: UInt64,
+        _ queue: [SourceDestinationSize]) {
+        
+        if state == .Stopped {
+            DispatchQueue.main.async {
+                self.delegate?.fileOperationCompleted(nil)
+            }
+            state = .Running
+            return
+        } else if state == .Paused {
+            Thread.sleep(forTimeInterval: 0.1) //seconds
+            DispatchQueue.global(qos: .background).async {
+                self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedInFile, fileSize, queue)
+            }
+        } else if state == .Running {
+            if let inFile = FileHandle(forReadingAtPath: sourcePath),
+               let outFile = FileHandle(forWritingAtPath: destinationPath) {
+                do {
+                    try inFile.seek(toOffset: bytesCopiedInFile)
+                    
+                    if #available(OSX 10.15.4, *) {
+                        try outFile.seekToEnd()
+                    }
+                    
+                    let data = inFile.readData(ofLength: 1024)
+                    outFile.write(data)
+                    
+                    let bytesCopiedCount = bytesCopiedInFile + UInt64(data.count)
+                    totalBytesCopied += data.count
+                    
+                    DispatchQueue.main.async {
+                        let fileProgress = Double(bytesCopiedCount) / Double(fileSize)
+                        let overallProgress = Double(self.totalBytesCopied) / Double(self.totalBytesToCopy)
+                        self.delegate?.copyUpdateProgress(self.uuid, fileProgress, overallProgress)
+                    }
+                    
+                    if bytesCopiedCount < fileSize {
+                        DispatchQueue.global(qos: .background).async {
+                            self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedCount, fileSize, queue)
+                        }
+                    } else {
+                        DispatchQueue.global(qos: .background).async { [queue] in
+                            var mutableQueue = queue
+                            self.processNextFileInQueue(&mutableQueue)
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
     }
     
@@ -171,13 +262,13 @@ class FileOperations {
         }
     }
     
-    func getFileSize(_ forURL: URL) -> Int? {
+    func getFileSize(_ forURL: URL) -> UInt64 {
         do {
             let resourceValues = try forURL.resourceValues(forKeys: [.fileSizeKey])
-            return resourceValues.fileSize
+            return UInt64(resourceValues.fileSize!)
         } catch {
             print("Error while getting file size for: \(forURL.lastPathComponent)")
         }
-        return nil
+        return 0
     }
 }

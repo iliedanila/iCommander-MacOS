@@ -17,9 +17,41 @@ class ProgressViewController: NSViewController {
     @IBOutlet var playPauseButton: NSButton!
     @IBOutlet var cancelButton: NSButton!
     
+    var fileOperationsManager: FileOperations? = nil
+    
+    @IBAction func playPauseButtonPressed(_ sender: NSButton) {
+        switch sender.title {
+        case "Pause":
+            sender.title = "Continue"
+            
+            DispatchQueue.global(qos: .background).async {
+                self.fileOperationsManager?.state = .Paused
+            }
+            
+            break
+        case "Continue":
+            sender.title = "Pause"
+            
+            DispatchQueue.global(qos: .background).async {
+                self.fileOperationsManager?.state = .Running
+            }
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    @IBAction func cancel(_ sender: NSButton) {
+        playPauseButton.title = "Pause"
+        DispatchQueue.global(qos: .background).async {
+            self.fileOperationsManager?.state = .Stopped
+        }
+    }
+    
     override func viewDidLoad() {
+        playPauseButton.title = "Pause"
         super.viewDidLoad()
-        // Do view setup here.
     }
     
     override func viewWillDisappear() {

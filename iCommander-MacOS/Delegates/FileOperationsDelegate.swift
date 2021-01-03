@@ -10,22 +10,33 @@ import Cocoa
 extension ViewController: FileOperationsDelegate {
     func startedFile(_ uuid: String, _ fileName: String) {
         if let progressViewController = self.progressViewController {
+            progressViewController.fileProgressBar.doubleValue = 0
             progressViewController.currentFileName.stringValue = fileName
         }
     }
     
-    func copyStarted(_ uuid: String, _ totalBytes: Int) {
+    func copyStarted(_ fileOperationsManager: FileOperations, _ uuid: String, _ totalBytes: UInt64) {
         instantiateProgressWindow()
+        
+        progressViewController?.fileOperationsManager = fileOperationsManager
 
         progressViewController?.overallProgressBar.minValue = Double(0)
-        progressViewController?.overallProgressBar.maxValue = Double(totalBytes)
+        progressViewController?.overallProgressBar.maxValue = Double(1)
         progressViewController?.overallProgressBar.doubleValue = Double(0)
+        
+        progressViewController?.fileProgressBar.minValue = 0
+        progressViewController?.fileProgressBar.maxValue = 1
+        progressViewController?.fileProgressBar.doubleValue = 0
         
         progressWindowController?.showWindow(self)
     }
     
-    func copyUpdateProgress(_ uuid: String, _ bytesCopied: Int) {
-        progressViewController?.overallProgressBar.doubleValue = Double(bytesCopied)
+    func copyUpdateProgress(_ uuid: String, _ fileProgress: Double, _ overallProgress: Double) {
+        progressViewController?.fileProgressBar.doubleValue = fileProgress
+        progressViewController?.overallProgressBar.doubleValue = overallProgress
+        
+        progressViewController?.fileProgressPercent.stringValue = String(format: "%.2f", 100 * fileProgress) + "%"
+        progressViewController?.overallProgressPercent.stringValue = String(format: "%.2f", 100 * overallProgress) + "%"
     }
     
     
