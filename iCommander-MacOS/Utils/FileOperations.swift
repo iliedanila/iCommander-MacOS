@@ -10,6 +10,8 @@ import Foundation
 typealias SourceDestination = (source: URL, destination: URL)
 typealias SourceDestinationSize = (source: URL, destination: URL, size: UInt64)
 
+let chunkSize: Int = 1024 * 5
+
 protocol FileOperationsDelegate {
     func copyStarted(_ fileOperationsManager: FileOperations, _ uuid: String, _ totalBytes: UInt64)
     func startedFile(_ uuid: String, _ fileName: String)
@@ -223,7 +225,7 @@ class FileOperations {
                         try outFile.seekToEnd()
                     }
                     
-                    let data = inFile.readData(ofLength: 1024)
+                    let data = inFile.readData(ofLength: chunkSize)
                     outFile.write(data)
                     
                     let bytesCopiedCount = bytesCopiedInFile + UInt64(data.count)
