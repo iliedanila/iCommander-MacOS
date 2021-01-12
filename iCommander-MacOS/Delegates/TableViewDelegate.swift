@@ -38,6 +38,11 @@ extension ViewController: NSTableViewDelegate {
 
 // MARK: - TableViewDelegate
 extension ViewController: TableViewDelegate {
+    var tableViewForActivatedMenu: NSTableView? {
+        get { return tableViewForContextMenu }
+        set { tableViewForContextMenu = newValue }
+    }
+    
     
     var rowIndexForActivatedMenu: Int {
         get { return rowIndexForContexMenu }

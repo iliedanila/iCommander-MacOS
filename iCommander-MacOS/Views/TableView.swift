@@ -18,6 +18,7 @@ protocol TableViewDelegate {
     func handleF8()
     func deleteItems(_ tableView: NSTableView, _ rows: [Int])
     var rowIndexForActivatedMenu: Int { get set }
+    var tableViewForActivatedMenu: NSTableView? { get set }
 }
 
 class TableView: NSTableView {
@@ -71,6 +72,7 @@ class TableView: NSTableView {
     override func menu(for event: NSEvent) -> NSMenu? {
         let pointInView = convert(event.locationInWindow, from: nil)
         let rowforMenu = row(at: pointInView)
+        tableViewDelegate?.tableViewForActivatedMenu = self
         tableViewDelegate?.rowIndexForActivatedMenu = rowforMenu
         
         return super.menu(for: event)

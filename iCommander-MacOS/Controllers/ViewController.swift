@@ -45,6 +45,7 @@ class ViewController: NSViewController {
     var currentActiveTable: NSTableView? = nil
     var fileOperations = FileOperations()
     var rowIndexForContexMenu: Int = -1
+    var tableViewForContextMenu: NSTableView? = nil
     var copyOperationsAlerts: [String:NSAlert] = [:]
     
     var progressWindowController: ProgressWindowController? = nil
