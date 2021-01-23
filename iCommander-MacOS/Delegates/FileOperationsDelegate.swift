@@ -28,6 +28,18 @@ extension ViewController: FileOperationsDelegate {
         progressViewController?.fileProgressBar.maxValue = 1
         progressViewController?.fileProgressBar.doubleValue = 0
         
+        if let window = NSApplication.shared.mainWindow {
+            let width = (progressWindowController?.window?.frame.width)!
+            let height = (progressWindowController?.window?.frame.height)!
+            
+            let mainWidth = window.frame.width
+            let mainHeight = window.frame.height
+
+            let x = (mainWidth - width) / 2
+            let y = (mainHeight - height) / 2 + height
+            
+            progressWindowController?.window?.setFrameTopLeftPoint(NSPoint(x: x, y: y))
+        }
         progressWindowController?.showWindow(self)
     }
     

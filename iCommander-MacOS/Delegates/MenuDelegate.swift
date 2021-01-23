@@ -15,16 +15,30 @@ extension ViewController: NSMenuDelegate {
         guard let tableView =  tableViewForActivatedMenu else { return }
         guard let dataSource = tableToDataSource[tableView] else { return }
         
-        let element = dataSource.tableElements[rowIndexForContexMenu]
-        let name = element.name
+        if rowIndexForContexMenu != -1 {
+            let element = dataSource.tableElements[rowIndexForContexMenu]
+            
+            if element.isPackage != nil && element.isPackage == true {
+                menu.addItem(withTitle: "Show Contents", action: #selector(openDirectoryFromMenu), keyEquivalent: "")
+            }
+            
+            // Copy
+            menu.addItem(withTitle: "Copy", action: nil, keyEquivalent: "")
+        }
+        // Paste
+        menu.addItem(withTitle: "Paste", action: nil, keyEquivalent: "")
         
-        print("Right clicked on \(name)")
+        // New... -> Text Document
+        let newMenuItem = NSMenuItem(title: "New...", action: nil, keyEquivalent: "")
+        menu.addItem(newMenuItem)
+        let submenu = NSMenu(title: "New...")
+        let newTextFile = NSMenuItem(title: "Text Document", action: #selector(doNothing), keyEquivalent: "")
+        submenu.addItem(newTextFile)
+        menu.setSubmenu(submenu, for: newMenuItem)
         
-        if element.isPackage != nil && element.isPackage == true {
-            menu.addItem(withTitle: "Show Contents", action: #selector(openDirectoryFromMenu), keyEquivalent: "")
-        } else {
-            menu.addItem(withTitle: "1st menu item", action: #selector(doNothing), keyEquivalent: "")
-            menu.addItem(withTitle: "2nd menu item", action: #selector(doNothing), keyEquivalent: "")
+        // Rename
+        if rowIndexForContexMenu != -1 {
+            menu.addItem(withTitle: "Rename", action: #selector(doNothing), keyEquivalent: "")
         }
     }
     

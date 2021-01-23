@@ -5,7 +5,7 @@
 //  Created by Ilie Danila on 16.11.2020.
 //
 
-import Foundation
+import Cocoa
 
 typealias SourceDestination = (source: URL, destination: URL)
 typealias SourceDestinationSize = (source: URL, destination: URL, size: UInt64)
@@ -91,6 +91,7 @@ class FileOperations {
     func prepareQueue(_ sourceItems: [URL], _ destinationDirectory: URL, totalBytes: inout UInt64) -> [SourceDestinationSize] {
         var queue: [SourceDestinationSize] = []
         var urlList: [SourceDestination] = []
+        let fileManager = FileManager.default
         
         for sourceItem in sourceItems {
             urlList.append((sourceItem, destinationDirectory))
@@ -104,8 +105,13 @@ class FileOperations {
             if currentUrl.hasDirectoryPath {
                 // Create proper directory at destination
                 let destinationUrl = destinationFolderUrl.appendingPathComponent(currentUrl.lastPathComponent)
+                if fileManager.fileExists(atPath: destinationUrl.path) {
+                    
+                    overwrite("Overwrite \(currentUrl.lastPathComponent)?", "A folder with the same name exists at the destination.")
+                }
+                
                 do {
-                    try FileManager.default.createDirectory(at: destinationUrl, withIntermediateDirectories: true, attributes: [:])
+                    try fileManager.createDirectory(at: destinationUrl, withIntermediateDirectories: true, attributes: [:])
                 } catch {
                     print("Error while creating directory: \(error)")
                 }
@@ -163,6 +169,12 @@ class FileOperations {
             let tuple = queue.removeFirst()
             let sourceURL = tuple.source
             let destinationURL = tuple.destination
+            
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: destinationURL.path) {
+                overwrite("Overwrite \(sourceURL.lastPathComponent)?", "A file with the same name exists at the destination.")
+            }
+            
             let fileSize = tuple.size
             
             DispatchQueue.main.async {
@@ -251,6 +263,19 @@ class FileOperations {
                     print(error)
                 }
             }
+        }
+    }
+    
+    func overwrite(_ message: String, _ info: String) {
+        DispatchQueue.main.async {
+            let alert = NSAlert()
+            alert.alertStyle = .informational
+            alert.messageText = message
+            alert.informativeText = info
+            alert.addButton(withTitle: "OK")
+            alert.addButton(withTitle: "Cancel")
+            
+            alert.runModal()// == NSApplication.ModalResponse.alertFirstButtonReturn
         }
     }
     
