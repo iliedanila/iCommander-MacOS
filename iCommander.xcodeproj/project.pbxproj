@@ -16,6 +16,8 @@
 		4B5DFBDA2550B759000B45BB /* TextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5DFBD92550B759000B45BB /* TextFieldDelegate.swift */; };
 		4B5DFBDD2550B78E000B45BB /* DataSourceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5DFBDC2550B78E000B45BB /* DataSourceDelegate.swift */; };
 		4B62BCD1256452B300C883DA /* FileOperationsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B62BCD0256452B300C883DA /* FileOperationsDelegate.swift */; };
+		4B72162C25C8894F008FD7E3 /* TableViewData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B72162A25C8894F008FD7E3 /* TableViewData+CoreDataClass.swift */; };
+		4B72162D25C8894F008FD7E3 /* TableViewData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B72162B25C8894F008FD7E3 /* TableViewData+CoreDataProperties.swift */; };
 		4B89F3A1253F50F4008CDE5C /* TableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */; };
 		4B94F7082563124C00BABFEE /* FileOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B94F7072563124C00BABFEE /* FileOperations.swift */; };
 		4B986768259A605D003AD5F7 /* DriveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B986767259A605D003AD5F7 /* DriveButton.swift */; };
@@ -25,7 +27,7 @@
 		4BA94F6625574234005CFAA2 /* LocationHistoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */; };
 		4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06932523B59D00DF1AFF /* AppDelegate.swift */; };
 		4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06952523B59D00DF1AFF /* ViewController.swift */; };
-		4BDC06992523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06972523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld */; };
+		4BDC06992523B59D00DF1AFF /* iCommander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06972523B59D00DF1AFF /* iCommander.xcdatamodeld */; };
 		4BDC069B2523B59E00DF1AFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC069A2523B59E00DF1AFF /* Assets.xcassets */; };
 		4BDC069E2523B59E00DF1AFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC069C2523B59E00DF1AFF /* Main.storyboard */; };
 		4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE9FC192523D913001E5A33 /* Constants.swift */; };
@@ -42,6 +44,8 @@
 		4B5DFBD92550B759000B45BB /* TextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldDelegate.swift; sourceTree = "<group>"; };
 		4B5DFBDC2550B78E000B45BB /* DataSourceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceDelegate.swift; sourceTree = "<group>"; };
 		4B62BCD0256452B300C883DA /* FileOperationsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOperationsDelegate.swift; sourceTree = "<group>"; };
+		4B72162A25C8894F008FD7E3 /* TableViewData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableViewData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4B72162B25C8894F008FD7E3 /* TableViewData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableViewData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableDataSource.swift; sourceTree = "<group>"; };
 		4B94F7072563124C00BABFEE /* FileOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOperations.swift; sourceTree = "<group>"; };
 		4B986767259A605D003AD5F7 /* DriveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveButton.swift; sourceTree = "<group>"; };
@@ -49,14 +53,14 @@
 		4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressWindowController.swift; sourceTree = "<group>"; };
 		4BA94F622556ECB1005CFAA2 /* LocationHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHistory.swift; sourceTree = "<group>"; };
 		4BA94F6525574234005CFAA2 /* LocationHistoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHistoryDelegate.swift; sourceTree = "<group>"; };
-		4BDC06902523B59D00DF1AFF /* iCommander-MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iCommander-MacOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BDC06902523B59D00DF1AFF /* iCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BDC06932523B59D00DF1AFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BDC06952523B59D00DF1AFF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4BDC06982523B59D00DF1AFF /* iCommander_MacOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iCommander_MacOS.xcdatamodel; sourceTree = "<group>"; };
 		4BDC069A2523B59E00DF1AFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4BDC069D2523B59E00DF1AFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4BDC069F2523B59E00DF1AFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BDC06A02523B59E00DF1AFF /* iCommander_MacOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iCommander_MacOS.entitlements; sourceTree = "<group>"; };
+		4BDC06A02523B59E00DF1AFF /* iCommander.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iCommander.entitlements; sourceTree = "<group>"; };
 		4BE9FC192523D913001E5A33 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4BFDB12C2589774C009E02D5 /* WindowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,7 +95,7 @@
 		4BDC06872523B59D00DF1AFF = {
 			isa = PBXGroup;
 			children = (
-				4BDC06922523B59D00DF1AFF /* iCommander-MacOS */,
+				4BDC06922523B59D00DF1AFF /* iCommander */,
 				4BDC06912523B59D00DF1AFF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,12 +103,12 @@
 		4BDC06912523B59D00DF1AFF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4BDC06902523B59D00DF1AFF /* iCommander-MacOS.app */,
+				4BDC06902523B59D00DF1AFF /* iCommander.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4BDC06922523B59D00DF1AFF /* iCommander-MacOS */ = {
+		4BDC06922523B59D00DF1AFF /* iCommander */ = {
 			isa = PBXGroup;
 			children = (
 				4BDC06A72523B63200DF1AFF /* Views */,
@@ -113,10 +117,10 @@
 				4BE9FC182523D902001E5A33 /* Utils */,
 				4BDC069A2523B59E00DF1AFF /* Assets.xcassets */,
 				4BDC069F2523B59E00DF1AFF /* Info.plist */,
-				4BDC06A02523B59E00DF1AFF /* iCommander_MacOS.entitlements */,
-				4BDC06972523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld */,
+				4BDC06A02523B59E00DF1AFF /* iCommander.entitlements */,
+				4BDC06972523B59D00DF1AFF /* iCommander.xcdatamodeld */,
 			);
-			path = "iCommander-MacOS";
+			path = iCommander;
 			sourceTree = "<group>";
 		};
 		4BDC06A72523B63200DF1AFF /* Views */ = {
@@ -144,6 +148,8 @@
 		4BE9FC182523D902001E5A33 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				4B72162A25C8894F008FD7E3 /* TableViewData+CoreDataClass.swift */,
+				4B72162B25C8894F008FD7E3 /* TableViewData+CoreDataProperties.swift */,
 				4BE9FC192523D913001E5A33 /* Constants.swift */,
 				4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */,
 				4BA94F622556ECB1005CFAA2 /* LocationHistory.swift */,
@@ -155,9 +161,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4BDC068F2523B59D00DF1AFF /* iCommander-MacOS */ = {
+		4BDC068F2523B59D00DF1AFF /* iCommander */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BDC06A32523B59E00DF1AFF /* Build configuration list for PBXNativeTarget "iCommander-MacOS" */;
+			buildConfigurationList = 4BDC06A32523B59E00DF1AFF /* Build configuration list for PBXNativeTarget "iCommander" */;
 			buildPhases = (
 				4BDC068C2523B59D00DF1AFF /* Sources */,
 				4BDC068D2523B59D00DF1AFF /* Frameworks */,
@@ -167,9 +173,9 @@
 			);
 			dependencies = (
 			);
-			name = "iCommander-MacOS";
+			name = iCommander;
 			productName = "iCommander-MacOS";
-			productReference = 4BDC06902523B59D00DF1AFF /* iCommander-MacOS.app */;
+			productReference = 4BDC06902523B59D00DF1AFF /* iCommander.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +192,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4BDC068B2523B59D00DF1AFF /* Build configuration list for PBXProject "iCommander-MacOS" */;
+			buildConfigurationList = 4BDC068B2523B59D00DF1AFF /* Build configuration list for PBXProject "iCommander" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -199,7 +205,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4BDC068F2523B59D00DF1AFF /* iCommander-MacOS */,
+				4BDC068F2523B59D00DF1AFF /* iCommander */,
 			);
 		};
 /* End PBXProject section */
@@ -226,10 +232,12 @@
 				4BFDB12D2589774C009E02D5 /* WindowDelegate.swift in Sources */,
 				4B62BCD1256452B300C883DA /* FileOperationsDelegate.swift in Sources */,
 				4B5DFBDA2550B759000B45BB /* TextFieldDelegate.swift in Sources */,
+				4B72162C25C8894F008FD7E3 /* TableViewData+CoreDataClass.swift in Sources */,
 				4B986768259A605D003AD5F7 /* DriveButton.swift in Sources */,
 				4BA3D29925741A0C00C6891A /* ProgressWindowController.swift in Sources */,
 				4B94F7082563124C00BABFEE /* FileOperations.swift in Sources */,
 				4B89F3A1253F50F4008CDE5C /* TableDataSource.swift in Sources */,
+				4B72162D25C8894F008FD7E3 /* TableViewData+CoreDataProperties.swift in Sources */,
 				4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */,
 				4BA94F632556ECB1005CFAA2 /* LocationHistory.swift in Sources */,
 				4B5DFBD12550B639000B45BB /* MenuDelegate.swift in Sources */,
@@ -240,7 +248,7 @@
 				4B9B364E253B6BD500706A2F /* TextField.swift in Sources */,
 				4B5DFBCE254F607F000B45BB /* WindowController.swift in Sources */,
 				4B3CCA842573B1D600F1AEEF /* ProgressViewController.swift in Sources */,
-				4BDC06992523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld in Sources */,
+				4BDC06992523B59D00DF1AFF /* iCommander.xcdatamodeld in Sources */,
 				4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,18 +387,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "iCommander-MacOS/iCommander_MacOS.entitlements";
+				CODE_SIGN_ENTITLEMENTS = iCommander/iCommander.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = NDU642L3S2;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = "iCommander-MacOS/Info.plist";
+				INFOPLIST_FILE = iCommander/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "home.iliedanila.iCommander-MacOS";
+				PRODUCT_BUNDLE_IDENTIFIER = home.iliedanila.iCommander;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -401,18 +409,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "iCommander-MacOS/iCommander_MacOS.entitlements";
+				CODE_SIGN_ENTITLEMENTS = iCommander/iCommander.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = NDU642L3S2;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = "iCommander-MacOS/Info.plist";
+				INFOPLIST_FILE = iCommander/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "home.iliedanila.iCommander-MacOS";
+				PRODUCT_BUNDLE_IDENTIFIER = home.iliedanila.iCommander;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -421,7 +429,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4BDC068B2523B59D00DF1AFF /* Build configuration list for PBXProject "iCommander-MacOS" */ = {
+		4BDC068B2523B59D00DF1AFF /* Build configuration list for PBXProject "iCommander" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BDC06A12523B59E00DF1AFF /* Debug */,
@@ -430,7 +438,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4BDC06A32523B59E00DF1AFF /* Build configuration list for PBXNativeTarget "iCommander-MacOS" */ = {
+		4BDC06A32523B59E00DF1AFF /* Build configuration list for PBXNativeTarget "iCommander" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BDC06A42523B59E00DF1AFF /* Debug */,
@@ -442,13 +450,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		4BDC06972523B59D00DF1AFF /* iCommander_MacOS.xcdatamodeld */ = {
+		4BDC06972523B59D00DF1AFF /* iCommander.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				4BDC06982523B59D00DF1AFF /* iCommander_MacOS.xcdatamodel */,
 			);
 			currentVersion = 4BDC06982523B59D00DF1AFF /* iCommander_MacOS.xcdatamodel */;
-			path = iCommander_MacOS.xcdatamodeld;
+			path = iCommander.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
