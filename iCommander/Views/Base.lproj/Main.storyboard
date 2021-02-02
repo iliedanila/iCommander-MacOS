@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="17008"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,11 +13,11 @@
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="iCommander-MacOS" id="1Xt-HY-uBw">
+                            <menuItem title="iCommander" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="iCommander-MacOS" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="iCommander" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
-                                        <menuItem title="About iCommander-MacOS" id="5kV-Vb-QxS">
+                                        <menuItem title="About iCommander" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
@@ -32,7 +31,7 @@
                                             <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                                        <menuItem title="Hide iCommander-MacOS" keyEquivalent="h" id="Olw-nP-bQN">
+                                        <menuItem title="Hide iCommander" keyEquivalent="h" id="Olw-nP-bQN">
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
                                             </connections>
@@ -50,7 +49,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                                        <menuItem title="Quit iCommander-MacOS" keyEquivalent="q" id="4sb-4s-VLi">
+                                        <menuItem title="Quit iCommander" keyEquivalent="q" id="4sb-4s-VLi">
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
                                             </connections>
@@ -663,7 +662,7 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
-                                        <menuItem title="iCommander-MacOS Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                                        <menuItem title="iCommander Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
                                                 <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
                                             </connections>
@@ -930,16 +929,16 @@
                                 </constraints>
                             </customView>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="22" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W5C-EG-gSr" userLabel="Right Table Stack View">
-                                <rect key="frame" x="401" y="24" width="400" height="194"/>
+                                <rect key="frame" x="401" y="24" width="400" height="357"/>
                                 <subviews>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfq-xS-6Zw" userLabel="Right Table View">
-                                        <rect key="frame" x="0.0" y="38" width="169" height="156"/>
+                                        <rect key="frame" x="0.0" y="38" width="400" height="319"/>
                                         <clipView key="contentView" id="LuY-OR-MYI">
-                                            <rect key="frame" x="1" y="1" width="167" height="154"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <rect key="frame" x="1" y="1" width="398" height="317"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <tableView identifier="RightTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" emptySelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="medium" headerView="mBS-jC-ScP" viewBased="YES" id="Aqh-xu-Ors" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="167" height="129"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="289"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1073,7 +1072,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <tableHeaderView key="headerView" wantsLayer="YES" id="mBS-jC-ScP">
-                                            <rect key="frame" x="0.0" y="0.0" width="167" height="25"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="398" height="28"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableHeaderView>
                                     </scrollView>
@@ -1098,10 +1097,10 @@
                                 </customSpacing>
                             </stackView>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="17" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="999" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yIM-pQ-HqB" userLabel="Upper Left Stack View">
-                                <rect key="frame" x="0.0" y="231" width="401" height="240"/>
+                                <rect key="frame" x="0.0" y="381" width="401" height="90"/>
                                 <subviews>
                                     <stackView distribution="fillProportionally" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r4n-vB-q8d">
-                                        <rect key="frame" x="0.0" y="220" width="263" height="20"/>
+                                        <rect key="frame" x="0.0" y="70" width="263" height="20"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BQ6-Lq-Qc3">
                                                 <rect key="frame" x="-7" y="-7" width="70" height="32"/>
@@ -1175,10 +1174,10 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sW6-Wm-D2b">
-                                        <rect key="frame" x="0.0" y="183" width="77" height="20"/>
+                                        <rect key="frame" x="0.0" y="33" width="78" height="20"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cUP-zj-9RH">
-                                                <rect key="frame" x="-7" y="-7" width="91" height="32"/>
+                                                <rect key="frame" x="-7" y="-7" width="92" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Home" bezelStyle="rounded" image="NSHomeTemplate" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ylb-Gf-hEB">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -1193,10 +1192,10 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fillProportionally" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fZq-XS-cLg">
-                                        <rect key="frame" x="0.0" y="0.0" width="81" height="166"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="81" height="16"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zPL-wN-Tmv">
-                                                <rect key="frame" x="-2" y="150" width="85" height="16"/>
+                                                <rect key="frame" x="-2" y="0.0" width="85" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Current Path:" id="Xry-pr-a6S">
                                                     <font key="font" usesAppearanceFont="YES"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1224,16 +1223,16 @@
                                 </customSpacing>
                             </stackView>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="22" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jeA-S5-stZ" userLabel="Left Table Stack View">
-                                <rect key="frame" x="0.0" y="24" width="401" height="207"/>
+                                <rect key="frame" x="0.0" y="24" width="401" height="357"/>
                                 <subviews>
                                     <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZVq-ae-km5" userLabel="Left Table View">
-                                        <rect key="frame" x="0.0" y="38" width="194" height="169"/>
+                                        <rect key="frame" x="0.0" y="38" width="401" height="319"/>
                                         <clipView key="contentView" id="41e-R9-d5K">
-                                            <rect key="frame" x="1" y="1" width="192" height="167"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <rect key="frame" x="1" y="1" width="399" height="317"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <tableView identifier="LeftTable" verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" emptySelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="medium" headerView="Iot-m0-OHD" viewBased="YES" id="q3L-KJ-iO5" customClass="TableView" customModule="iCommander_MacOS" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="192" height="142"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="399" height="289"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1367,7 +1366,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <tableHeaderView key="headerView" wantsLayer="YES" id="Iot-m0-OHD">
-                                            <rect key="frame" x="0.0" y="0.0" width="192" height="25"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="399" height="28"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableHeaderView>
                                     </scrollView>
@@ -1392,10 +1391,10 @@
                                 </customSpacing>
                             </stackView>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="17" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="999" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vof-1N-TtA" userLabel="Upper Right Stack View">
-                                <rect key="frame" x="401" y="218" width="400" height="253"/>
+                                <rect key="frame" x="401" y="381" width="400" height="90"/>
                                 <subviews>
                                     <stackView distribution="fillProportionally" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="80q-7Y-WAv">
-                                        <rect key="frame" x="0.0" y="233" width="263" height="20"/>
+                                        <rect key="frame" x="0.0" y="70" width="263" height="20"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TOv-z7-pP5">
                                                 <rect key="frame" x="-7" y="-7" width="70" height="32"/>
@@ -1469,10 +1468,10 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1lF-bF-iYg">
-                                        <rect key="frame" x="0.0" y="196" width="77" height="20"/>
+                                        <rect key="frame" x="0.0" y="33" width="78" height="20"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Dt-Qh-TFT">
-                                                <rect key="frame" x="-7" y="-7" width="91" height="32"/>
+                                                <rect key="frame" x="-7" y="-7" width="92" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Home" bezelStyle="rounded" image="NSHomeTemplate" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bd2-gF-l7B">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -1487,10 +1486,10 @@
                                         </customSpacing>
                                     </stackView>
                                     <stackView distribution="fillProportionally" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nhW-Gd-UbI">
-                                        <rect key="frame" x="0.0" y="0.0" width="81" height="179"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="81" height="16"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="acr-g6-RZb">
-                                                <rect key="frame" x="-2" y="163" width="85" height="16"/>
+                                                <rect key="frame" x="-2" y="0.0" width="85" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Current Path:" id="ImC-77-wQd">
                                                     <font key="font" usesAppearanceFont="YES"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1642,7 +1641,7 @@ Gw
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zeb-dc-wVZ">
-                                        <rect key="frame" x="322" y="-6" width="71" height="32"/>
+                                        <rect key="frame" x="321" y="-6" width="72" height="32"/>
                                         <buttonCell key="cell" type="push" title="Pause" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="g2y-01-h7O">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -1683,12 +1682,12 @@ Gw
                                     </gridCell>
                                     <gridCell row="jYw-Mw-lSw" column="bLg-wC-f0G" id="GaO-Et-Shi">
                                         <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="E7Y-TX-ova">
-                                            <rect key="frame" x="127" y="35" width="100" height="18"/>
+                                            <rect key="frame" x="127" y="35" width="228" height="18"/>
                                         </progressIndicator>
                                     </gridCell>
                                     <gridCell row="jYw-Mw-lSw" column="Orh-zC-AnA" id="1w1-mL-0P1">
                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ond-EO-zUm">
-                                            <rect key="frame" x="252" y="36" width="41" height="16"/>
+                                            <rect key="frame" x="380" y="36" width="41" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="% File" id="mR3-iN-2Eq">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1708,12 +1707,12 @@ Gw
                                     </gridCell>
                                     <gridCell row="cMq-zK-Psk" column="bLg-wC-f0G" id="oIW-te-lvg">
                                         <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="mLp-FL-ssF">
-                                            <rect key="frame" x="127" y="-1" width="100" height="18"/>
+                                            <rect key="frame" x="127" y="-1" width="228" height="18"/>
                                         </progressIndicator>
                                     </gridCell>
                                     <gridCell row="cMq-zK-Psk" column="Orh-zC-AnA" id="fEY-3L-L7C">
                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mg9-YC-siO">
-                                            <rect key="frame" x="252" y="0.0" width="62" height="16"/>
+                                            <rect key="frame" x="380" y="0.0" width="62" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="% Overall" id="RrC-06-v5s">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1758,6 +1757,6 @@ Gw
         <image name="NSActionTemplate" width="15" height="15"/>
         <image name="NSGoBackTemplate" width="10" height="14"/>
         <image name="NSGoForwardTemplate" width="10" height="14"/>
-        <image name="NSHomeTemplate" width="19" height="16"/>
+        <image name="NSHomeTemplate" width="20" height="16"/>
     </resources>
 </document>

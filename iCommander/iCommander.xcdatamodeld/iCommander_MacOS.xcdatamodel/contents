@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="TableViewData" representedClassName="TableViewData" syncable="YES">
+        <attribute name="currentUrlDBValue" optional="YES" attributeType="URI"/>
+        <attribute name="isOnLeftSide" optional="YES" attributeType="Boolean" usesScalarValueType="YES" customClassName="LocationOnScreen"/>
+        <attribute name="showHiddenFiles" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+    </entity>
+    <elements>
+        <element name="TableViewData" positionX="-45" positionY="0" width="128" height="74"/>
+    </elements>
+</model>

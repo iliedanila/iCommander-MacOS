@@ -37,6 +37,10 @@ class ViewController: NSViewController {
     var tableToPath: [NSTableView : NSStackView] = [:]
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
     var rightTableDataSource: TableDataSource = TableDataSource(.Right)
+    
+    var leftTableData: TableViewData? = nil
+    var rightTableData: TableViewData? = nil
+    
     var leftLocationHistory: LocationHistory = LocationHistory(.Left)
     var rightLocationHistory: LocationHistory = LocationHistory(.Right)
     var tableToDataSource: [NSTableView : TableDataSource] = [:]
@@ -50,6 +54,8 @@ class ViewController: NSViewController {
     
     var progressWindowController: ProgressWindowController? = nil
     var progressViewController: ProgressViewController? = nil
+    
+    let context = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     @IBAction func showHiddenFilesToggled(_ sender: NSButton) {
         if sender == leftShowHiddenFiles {
@@ -162,8 +168,10 @@ class ViewController: NSViewController {
         rightLocationHistory.delegate = self
         fileOperations.delegate = self
         
-        leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
-        rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
+        fetchFromContext()
+        
+//        leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
+//        rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         
         leftLocationHistory.addDirectoryToHistory(leftTableDataSource.currentUrl)
         rightLocationHistory.addDirectoryToHistory(rightTableDataSource.currentUrl)
@@ -185,6 +193,55 @@ class ViewController: NSViewController {
         let notificationCenter = NSWorkspace.shared.notificationCenter
         notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didMountNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didUnmountNotification, object: nil)
+    }
+    
+    func fetchFromContext() {
+        do {
+            let contextItems = try context.fetch(TableViewData.fetchRequest())
+            for contextItem in contextItems {
+                if let tableData = contextItem as? TableViewData {
+                    if tableData.isOnLeftSide {
+                        leftTableData = tableData
+                    } else {
+                        rightTableData = tableData
+                    }
+                }
+            }
+            
+            leftTableDataSource.currentUrl = leftTableData!.currentUrlDBValue!
+            leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
+            rightTableDataSource.currentUrl = rightTableData!.currentUrlDBValue!
+            rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
+        } catch  {
+            createTableData()
+            self.saveContext()
+        }
+    }
+    
+    func createTableData() {
+        leftTableData = TableViewData(context: context)
+        leftTableData?.isOnLeftSide = true
+        leftTableData?.showHiddenFiles = false
+        leftTableData?.currentUrlDBValue = FileManager.default.homeDirectoryForCurrentUser
+        
+        rightTableData = TableViewData(context: context)
+        rightTableData?.isOnLeftSide = false
+        rightTableData?.showHiddenFiles = false
+        rightTableData?.currentUrlDBValue = FileManager.default.homeDirectoryForCurrentUser
+        
+        leftTableDataSource.currentUrl = leftTableData!.currentUrlDBValue!
+        leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
+        rightTableDataSource.currentUrl = rightTableData!.currentUrlDBValue!
+        rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
+
+    }
+    
+    func saveContext() {
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     func populateDriveList() {

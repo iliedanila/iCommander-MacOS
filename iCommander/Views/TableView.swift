@@ -64,7 +64,6 @@ class TableView: NSTableView {
         } else if event.keyCode == Constants.KeyCodeF8 {
             tableViewDelegate?.handleF8()
         } else {
-            print("Key down: \(event.keyCode)")
             super.keyDown(with: event)
         }
     }
