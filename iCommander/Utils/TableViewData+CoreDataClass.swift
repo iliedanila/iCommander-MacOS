@@ -11,5 +11,4 @@ import CoreData
 
 @objc(TableViewData)
 public class TableViewData: NSManagedObject {
-
 }

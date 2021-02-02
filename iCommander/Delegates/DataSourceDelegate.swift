@@ -41,6 +41,16 @@ extension ViewController: DataSourceDelegate {
                 stackView.insertView(textField, at: index + 1, in: .leading)
             }
         }
+        
+        let tableViewData = dataSource.location == .Left ? leftTableData : rightTableData
+        tableViewData?.currentUrlDBValue = newUrl
+        
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+        
         tableView?.reloadData()
     }
 }

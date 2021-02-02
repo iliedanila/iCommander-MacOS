@@ -155,8 +155,6 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchFromContext()
-        
         tableToPath[leftTable] = leftPathStackView
         tableToPath[rightTable] = rightPathStackView
         tableToDataSource[leftTable] = leftTableDataSource
@@ -170,8 +168,10 @@ class ViewController: NSViewController {
         rightLocationHistory.delegate = self
         fileOperations.delegate = self
         
-        leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
-        rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
+        fetchFromContext()
+        
+//        leftTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
+//        rightTableDataSource.currentUrl = FileManager.default.homeDirectoryForCurrentUser
         
         leftLocationHistory.addDirectoryToHistory(leftTableDataSource.currentUrl)
         rightLocationHistory.addDirectoryToHistory(rightTableDataSource.currentUrl)
@@ -208,9 +208,10 @@ class ViewController: NSViewController {
                 }
             }
             
-            print(leftTableData?.currentUrlDBValue?.path ?? "")
-            print(rightTableData?.currentUrlDBValue?.path ?? "")
-            
+            leftTableDataSource.currentUrl = leftTableData!.currentUrlDBValue!
+            leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
+            rightTableDataSource.currentUrl = rightTableData!.currentUrlDBValue!
+            rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
         } catch  {
             createTableData()
             self.saveContext()
@@ -227,6 +228,12 @@ class ViewController: NSViewController {
         rightTableData?.isOnLeftSide = false
         rightTableData?.showHiddenFiles = false
         rightTableData?.currentUrlDBValue = FileManager.default.homeDirectoryForCurrentUser
+        
+        leftTableDataSource.currentUrl = leftTableData!.currentUrlDBValue!
+        leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
+        rightTableDataSource.currentUrl = rightTableData!.currentUrlDBValue!
+        rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
+
     }
     
     func saveContext() {
