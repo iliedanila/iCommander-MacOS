@@ -30,7 +30,11 @@ class TableDataSource {
     var sortColumn: String? = nil
     var isAscending: Bool? = nil
     var tableElements: [TableElement] = []
-    var showHiddenFiles: Bool = false
+    var showHiddenFiles: Bool = false {
+        didSet {
+            refreshData()
+        }
+    }
     
     init(_ aLocation: LocationOnScreen) {
         location = aLocation

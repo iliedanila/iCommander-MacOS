@@ -58,13 +58,14 @@ class ViewController: NSViewController {
     let context = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     @IBAction func showHiddenFilesToggled(_ sender: NSButton) {
+        let isOn = sender.state == .on
         if sender == leftShowHiddenFiles {
-            leftTableDataSource.showHiddenFiles = sender.state == .on
-            leftTableDataSource.refreshData()
+            leftTableDataSource.showHiddenFiles = isOn
+            leftTableData?.showHiddenFiles = isOn
             leftTable.reloadData()
         } else {
-            rightTableDataSource.showHiddenFiles = sender.state == .on
-            rightTableDataSource.refreshData()
+            rightTableDataSource.showHiddenFiles = isOn
+            rightTableData?.showHiddenFiles = isOn
             rightTable.reloadData()
         }
     }
@@ -212,6 +213,13 @@ class ViewController: NSViewController {
             leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
             rightTableDataSource.currentUrl = rightTableData!.currentUrlDBValue!
             rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
+            
+            if leftTableData!.showHiddenFiles {
+                leftShowHiddenFiles.state = .on
+            }
+            if rightTableData!.showHiddenFiles {
+                rightShowHiddenFiles.state = .on
+            }
         } catch  {
             createTableData()
             self.saveContext()
