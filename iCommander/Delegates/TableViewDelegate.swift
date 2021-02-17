@@ -100,17 +100,6 @@ extension ViewController: TableViewDelegate {
             parentFolderRequested(tableView)
             return
         }
-        
-        if let locationHistory = tableToLocationHistory[tableView] {
-            let element = dataSource.tableElements[forRow]
-            
-            if element.isDirectory && !element.isPackage! {
-                dataSource.currentUrl = element.url
-                locationHistory.addDirectoryToHistory(element.url)
-            } else {
-                NSWorkspace.shared.open(element.url)
-            }
-        }
     }
     
     func focusNextTable(_ tableView: NSTableView) {
