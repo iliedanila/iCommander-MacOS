@@ -17,12 +17,24 @@ extension ViewController: DataSourceDelegate {
         let tableViewData = dataSource.location == .Left ? leftTableData : rightTableData
         tableViewData?.currentUrlDBValue = newUrl
         
-        do {
-            try context.save()
-        } catch {
-            print(error.localizedDescription)
-        }
+        refreshAddRemoveFavButton(newUrl)
+        
+        saveContext()
         
         tableView?.reloadData()
+    }
+    
+    func refreshAddRemoveFavButton(_ url: URL) {
+        if (favorites?.favURLs?.firstIndex(of: url)) != nil {
+            addRemoveFavorite.title = "-"
+            if #available(OSX 11.0, *) {
+                addRemoveFavorite.image = NSImage(systemSymbolName: "star.fill", accessibilityDescription: nil)
+            }
+        } else {
+            addRemoveFavorite.title = "+"
+            if #available(OSX 11.0, *) {
+                addRemoveFavorite.image = NSImage(systemSymbolName: "star", accessibilityDescription: nil)
+            }
+        }
     }
 }

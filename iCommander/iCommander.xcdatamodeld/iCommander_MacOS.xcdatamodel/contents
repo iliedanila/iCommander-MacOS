@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Favorites" representedClassName="Favorites" syncable="YES">
+        <attribute name="favURLs" optional="YES" attributeType="Transformable" customClassName="[URL]"/>
+    </entity>
     <entity name="TableViewData" representedClassName="TableViewData" syncable="YES">
         <attribute name="currentUrlDBValue" optional="YES" attributeType="URI"/>
         <attribute name="isOnLeftSide" optional="YES" attributeType="Boolean" usesScalarValueType="YES" customClassName="LocationOnScreen"/>
@@ -7,5 +10,6 @@
     </entity>
     <elements>
         <element name="TableViewData" positionX="-45" positionY="0" width="128" height="74"/>
+        <element name="Favorites" positionX="-45" positionY="27" width="128" height="44"/>
     </elements>
 </model>

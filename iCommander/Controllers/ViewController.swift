@@ -26,12 +26,15 @@ class ViewController: NSViewController {
     @IBOutlet var favoritesStackView: NSStackView!
     @IBOutlet var leftPath: NSTextField!
     @IBOutlet var rightPath: NSTextField!
+    @IBOutlet var addRemoveFavorite: NSButton!
     
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
     var rightTableDataSource: TableDataSource = TableDataSource(.Right)
     
     var leftTableData: TableViewData? = nil
     var rightTableData: TableViewData? = nil
+    
+    var favorites: Favorites? = nil
     
     var tableToDataSource: [NSTableView : TableDataSource] = [:]
     var indexDrivePath: [Int : URL] = [:]
@@ -133,17 +136,46 @@ class ViewController: NSViewController {
         rightTable.rowSizeStyle = .medium
         
         populateVolumeButtons()
+        
+        currentActiveTable = leftTable
                 
         let notificationCenter = NSWorkspace.shared.notificationCenter
         notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didMountNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didUnmountNotification, object: nil)
     }
     
+    @IBAction func addRemoveFavorite(_ sender: Any) {
+        if let button = sender as? NSButton {
+            
+            let dataSource = tableToDataSource[currentActiveTable!]!
+            
+            switch button.title {
+            case "+":
+                favorites?.favURLs?.append(dataSource.currentUrl)
+            case "-":
+                if let index = favorites?.favURLs?.firstIndex(of: dataSource.currentUrl) {
+                    favorites?.favURLs?.remove(at: index)
+                }
+            default:
+                break;
+            }
+            
+            saveContext()
+            fetchFavorites()
+            refreshAddRemoveFavButton(dataSource.currentUrl)
+        }
+    }
+    
     func fetchFromContext() {
+        fetchTableData()
+        fetchFavorites()
+    }
+    
+    func fetchTableData() {
         do {
-            let contextItems = try context.fetch(TableViewData.fetchRequest())
-            for contextItem in contextItems {
-                if let tableData = contextItem as? TableViewData {
+            let tableViewDataItems = try context.fetch(TableViewData.fetchRequest())
+            for tableViewDataItem in tableViewDataItems {
+                if let tableData = tableViewDataItem as? TableViewData {
                     if tableData.isOnLeftSide {
                         leftTableData = tableData
                     } else {
@@ -167,6 +199,52 @@ class ViewController: NSViewController {
             createTableData()
             self.saveContext()
         }
+    }
+    
+    func fetchFavorites() {
+        do {
+            let favoritesItems = try context.fetch(Favorites.fetchRequest())
+            if !favoritesItems.isEmpty,
+               let favoritesDB = favoritesItems[0] as? Favorites {
+                favorites = favoritesDB
+                addFavoritesButtons(favoritesDB)
+            } else {
+                addFavoritesButtons(nil)
+                saveContext()
+            }
+        } catch {
+            addFavoritesButtons(nil)
+            saveContext()
+        }
+    }
+    
+    func addFavoritesButtons(_ favoritesDB: Favorites?) {
+        if favoritesDB == nil {
+            favorites = Favorites(context: context)
+            
+            let applicationsFolderURL = FileManager.default.urls(for: .applicationDirectory, in: .localDomainMask)[0]
+            let documentsFolderURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let downloadsFolderURL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)[0]
+            
+            favorites?.favURLs = []
+            favorites?.favURLs?.append(applicationsFolderURL)
+            favorites?.favURLs?.append(documentsFolderURL)
+            favorites?.favURLs?.append(downloadsFolderURL)
+        }
+
+        clearFavoritesStackView()
+        
+        for url in favorites!.favURLs! {
+            favoritesStackView.addView(createFavButton(url), in: .trailing)
+        }
+    }
+    
+    func clearFavoritesStackView() {
+        for view in favoritesStackView.views {
+            favoritesStackView.removeView(view)
+        }
+        
+        favoritesStackView.addView(NSTextField(labelWithString: "Favorites: "), in: .trailing)
     }
     
     func createTableData() {
@@ -224,6 +302,18 @@ class ViewController: NSViewController {
         }
     }
     
+    func createFavButton(_ url: URL) -> ButtonWithPath {
+        let image = NSWorkspace.shared.icon(forFile: url.path)
+        let button = ButtonWithPath(title: url.lastPathComponent, image: image, target: self, action: #selector(pathButtonPressed(_:)))
+        button.imagePosition = .imageLeading
+        button.setButtonType(.momentaryPushIn)
+        button.isBordered = true
+        button.state = .off
+        button.path = url.path
+        
+        return button
+    }
+    
     func createHomeButton(_ locationOnScreen: LocationOnScreen) -> DriveButton {
         let homeURL = FileManager.default.homeDirectoryForCurrentUser
         let homeImage = NSWorkspace.shared.icon(forFile: homeURL.path)
@@ -232,7 +322,7 @@ class ViewController: NSViewController {
         button.setButtonType(.momentaryPushIn)
         button.isBordered = true
         button.state = .off
-        button.drivePath = homeURL.path
+        button.path = homeURL.path
         button.locationOnScreen = locationOnScreen
         
         return button
@@ -266,7 +356,7 @@ class ViewController: NSViewController {
         button.setButtonType(.momentaryPushIn)
         button.isBordered = true
         button.state = .off
-        button.drivePath = resourceValues.path
+        button.path = resourceValues.path
         button.locationOnScreen = locationOnScreen
         
         return button
@@ -295,6 +385,13 @@ class ViewController: NSViewController {
         populateVolumeButtons()
     }
     
+    @objc func pathButtonPressed(_ sender: Any?) {
+        if let button = sender as? ButtonWithPath {
+            let dataSource = tableToDataSource[currentActiveTable!]!
+            dataSource.currentUrl = URL(fileURLWithPath: button.path!)
+        }
+    }
+    
     @objc func driveButtonPressed(_ sender: Any?)
     {
         if let button = sender as? DriveButton,
@@ -302,7 +399,7 @@ class ViewController: NSViewController {
             
             let tableView = locationOnScreen == .Left ? leftTable : rightTable
             let dataSource = tableToDataSource[tableView!]!
-            dataSource.currentUrl = URL(fileURLWithPath: button.drivePath!)
+            dataSource.currentUrl = URL(fileURLWithPath: button.path!)
         }
     }
 }
