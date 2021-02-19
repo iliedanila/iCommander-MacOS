@@ -221,8 +221,6 @@ class TableDataSource {
             tempURL = tempURL.deletingLastPathComponent()
         }
         
-        print(tempURL.path)
-        
         if !FileManager.default.fileExists(atPath: tempURL.path) ||
             tempURL.path == "/Volumes" { // current url was on a removed drive
             currentUrl = FileManager.default.homeDirectoryForCurrentUser

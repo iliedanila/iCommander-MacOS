@@ -54,6 +54,9 @@ extension ViewController: FileOperationsDelegate {
     
     func fileOperationCompleted(_ error: Error?) {
         progressWindowController?.window?.close()
+        
+        leftTableDataSource.checkPathIsStillValid()
+        rightTableDataSource.checkPathIsStillValid()
                 
         self.leftTable.reloadData()
         self.rightTable.reloadData()

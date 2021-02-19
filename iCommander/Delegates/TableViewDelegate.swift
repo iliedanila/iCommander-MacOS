@@ -76,7 +76,12 @@ extension ViewController: TableViewDelegate {
                     for element in elements {
                         try FileManager.default.trashItem(at: element.url, resultingItemURL: nil)
                     }
-                    tableView.reloadData()
+                    
+                    leftTableDataSource.checkPathIsStillValid()
+                    rightTableDataSource.checkPathIsStillValid()
+                    
+                    leftTable.reloadData()
+                    rightTable.reloadData()
                 } catch {
                     print(error)
                 }
@@ -213,6 +218,9 @@ extension ViewController: TableViewDelegate {
             let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentUrl
             
             fileOperations.copy(sourceItems, destinationFolderUrl)
+            
+            leftTable.reloadData()
+            rightTable.reloadData()
         }
     }
     
@@ -269,7 +277,9 @@ extension ViewController: TableViewDelegate {
         let newFolderName = getNewFolderName()
         guard let sourceTable = currentActiveTable else { return }
         createFolder(sourceTable, newFolderName)
-        sourceTable.reloadData()
+        
+        leftTable.reloadData()
+        rightTable.reloadData()
     }
     
     func handleF8() {
