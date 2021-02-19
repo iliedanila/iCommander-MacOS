@@ -101,15 +101,12 @@ extension ViewController: TableViewDelegate {
             return
         }
         
-        if let locationHistory = tableToLocationHistory[tableView] {
-            let element = dataSource.tableElements[forRow]
-            
-            if element.isDirectory && !element.isPackage! {
-                dataSource.currentUrl = element.url
-                locationHistory.addDirectoryToHistory(element.url)
-            } else {
-                NSWorkspace.shared.open(element.url)
-            }
+        let element = dataSource.tableElements[forRow]
+        
+        if element.isDirectory && !element.isPackage! {
+            dataSource.currentUrl = element.url
+        } else {
+            NSWorkspace.shared.open(element.url)
         }
     }
     
@@ -120,12 +117,14 @@ extension ViewController: TableViewDelegate {
             view.window?.makeFirstResponder(rightTable)
             currentActiveTable = rightTable
             refreshButtonsState(rightTable, rightTable.selectedRow)
+            refreshAddRemoveFavButton(tableToDataSource[rightTable]!.currentUrl)
         } else {
             // Focus left table
             rightTable.nextKeyView = leftTable
             view.window?.makeFirstResponder(leftTable)
             currentActiveTable = leftTable
             refreshButtonsState(leftTable, leftTable.selectedRow)
+            refreshAddRemoveFavButton(tableToDataSource[leftTable]!.currentUrl)
         }
     }
     

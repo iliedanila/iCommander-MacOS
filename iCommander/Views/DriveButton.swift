@@ -7,9 +7,8 @@
 
 import Cocoa
 
-class DriveButton: NSButton {
+class DriveButton: ButtonWithPath {
     
-    var drivePath: String?
     var locationOnScreen: LocationOnScreen?
 
     override func draw(_ dirtyRect: NSRect) {
