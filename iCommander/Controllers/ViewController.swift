@@ -83,6 +83,7 @@ class ViewController: NSViewController {
             }
         }
         currentActiveTable = sender
+        refreshAddRemoveFavButton(tableToDataSource[sender]!.currentUrl)
     }
     
     @IBAction func tableDoubleClick(_ sender: NSTableView) {
@@ -278,6 +279,9 @@ class ViewController: NSViewController {
         
         let resourceValuesList = getMountedVolumesResourceValues()
         
+        leftVolumesStackView.addView(NSTextField(labelWithString: "Volumes: "), in: .trailing)
+        rightVolumesStackView.addView(NSTextField(labelWithString: "Volumes: "), in: .trailing)
+        
         leftVolumesStackView.addView(createHomeButton(.Left), in: .trailing)
         rightVolumesStackView.addView(createHomeButton(.Right), in: .trailing)
         
@@ -312,6 +316,20 @@ class ViewController: NSViewController {
         button.path = url.path
         
         return button
+    }
+    
+    func refreshAddRemoveFavButton(_ url: URL) {
+        if (favorites?.favURLs?.firstIndex(of: url)) != nil {
+            addRemoveFavorite.title = "-"
+            if #available(OSX 11.0, *) {
+                addRemoveFavorite.image = NSImage(systemSymbolName: "star.fill", accessibilityDescription: nil)
+            }
+        } else {
+            addRemoveFavorite.title = "+"
+            if #available(OSX 11.0, *) {
+                addRemoveFavorite.image = NSImage(systemSymbolName: "star", accessibilityDescription: nil)
+            }
+        }
     }
     
     func createHomeButton(_ locationOnScreen: LocationOnScreen) -> DriveButton {

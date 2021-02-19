@@ -815,7 +815,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="800" height="500"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sW6-Wm-D2b">
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sW6-Wm-D2b">
                                 <rect key="frame" x="20" y="436" width="77" height="20"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cUP-zj-9RH">
@@ -833,8 +833,8 @@
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
-                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="44" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZaY-nD-oUA" userLabel="leftPathStackView">
-                                <rect key="frame" x="20" y="412" width="215" height="16"/>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZaY-nD-oUA" userLabel="leftPathStackView">
+                                <rect key="frame" x="20" y="412" width="181" height="16"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="446-dE-HTu">
                                         <rect key="frame" x="-2" y="0.0" width="89" height="16"/>
@@ -845,7 +845,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ffA-3b-8cs">
-                                        <rect key="frame" x="127" y="0.0" width="90" height="16"/>
+                                        <rect key="frame" x="93" y="0.0" width="90" height="16"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" title="leftActualPath" id="lfa-Dz-5im">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -972,8 +972,8 @@
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
-                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="19" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MGF-gc-83m" userLabel="rightPathStackView">
-                                <rect key="frame" x="399" y="412" width="198" height="16"/>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MGF-gc-83m" userLabel="rightPathStackView">
+                                <rect key="frame" x="399" y="412" width="189" height="16"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Sm-9b-HQr">
                                         <rect key="frame" x="-2" y="0.0" width="89" height="16"/>
@@ -984,7 +984,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bc3-vR-ZFQ">
-                                        <rect key="frame" x="102" y="0.0" width="98" height="16"/>
+                                        <rect key="frame" x="93" y="0.0" width="98" height="16"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" title="rightActualPath" id="ha5-xi-5nC">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1301,7 +1301,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1lF-bF-iYg">
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="250" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1lF-bF-iYg">
                                 <rect key="frame" x="399" y="436" width="77" height="20"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Dt-Qh-TFT">
@@ -1498,12 +1498,12 @@ Gw
                                     </gridCell>
                                     <gridCell row="jYw-Mw-lSw" column="bLg-wC-f0G" id="GaO-Et-Shi">
                                         <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="E7Y-TX-ova">
-                                            <rect key="frame" x="127" y="35" width="100" height="18"/>
+                                            <rect key="frame" x="255" y="35" width="100" height="18"/>
                                         </progressIndicator>
                                     </gridCell>
                                     <gridCell row="jYw-Mw-lSw" column="Orh-zC-AnA" id="1w1-mL-0P1">
                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ond-EO-zUm">
-                                            <rect key="frame" x="252" y="36" width="41" height="16"/>
+                                            <rect key="frame" x="380" y="36" width="41" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="% File" id="mR3-iN-2Eq">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1523,12 +1523,12 @@ Gw
                                     </gridCell>
                                     <gridCell row="cMq-zK-Psk" column="bLg-wC-f0G" id="oIW-te-lvg">
                                         <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="mLp-FL-ssF">
-                                            <rect key="frame" x="127" y="-1" width="100" height="18"/>
+                                            <rect key="frame" x="255" y="-1" width="100" height="18"/>
                                         </progressIndicator>
                                     </gridCell>
                                     <gridCell row="cMq-zK-Psk" column="Orh-zC-AnA" id="fEY-3L-L7C">
                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mg9-YC-siO">
-                                            <rect key="frame" x="252" y="0.0" width="62" height="16"/>
+                                            <rect key="frame" x="380" y="0.0" width="62" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="% Overall" id="RrC-06-v5s">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>

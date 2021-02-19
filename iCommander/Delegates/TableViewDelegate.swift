@@ -117,12 +117,14 @@ extension ViewController: TableViewDelegate {
             view.window?.makeFirstResponder(rightTable)
             currentActiveTable = rightTable
             refreshButtonsState(rightTable, rightTable.selectedRow)
+            refreshAddRemoveFavButton(tableToDataSource[rightTable]!.currentUrl)
         } else {
             // Focus left table
             rightTable.nextKeyView = leftTable
             view.window?.makeFirstResponder(leftTable)
             currentActiveTable = leftTable
             refreshButtonsState(leftTable, leftTable.selectedRow)
+            refreshAddRemoveFavButton(tableToDataSource[leftTable]!.currentUrl)
         }
     }
     

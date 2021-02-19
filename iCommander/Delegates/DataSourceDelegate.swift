@@ -13,6 +13,9 @@ extension ViewController: DataSourceDelegate {
     func handlePathChanged(_ dataSource: TableDataSource, _ newUrl: URL) {
         
         let tableView = dataSource.location == .Left ? leftTable : rightTable
+        let pathLabel = dataSource.location == .Left ? leftPath : rightPath
+        
+        pathLabel?.stringValue = newUrl.path
         
         let tableViewData = dataSource.location == .Left ? leftTableData : rightTableData
         tableViewData?.currentUrlDBValue = newUrl
@@ -22,19 +25,5 @@ extension ViewController: DataSourceDelegate {
         saveContext()
         
         tableView?.reloadData()
-    }
-    
-    func refreshAddRemoveFavButton(_ url: URL) {
-        if (favorites?.favURLs?.firstIndex(of: url)) != nil {
-            addRemoveFavorite.title = "-"
-            if #available(OSX 11.0, *) {
-                addRemoveFavorite.image = NSImage(systemSymbolName: "star.fill", accessibilityDescription: nil)
-            }
-        } else {
-            addRemoveFavorite.title = "+"
-            if #available(OSX 11.0, *) {
-                addRemoveFavorite.image = NSImage(systemSymbolName: "star", accessibilityDescription: nil)
-            }
-        }
     }
 }
