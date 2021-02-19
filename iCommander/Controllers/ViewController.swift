@@ -401,6 +401,8 @@ class ViewController: NSViewController {
     
     @objc func handleDriveChange(_ notification: NSNotification) {
         populateVolumeButtons()
+        leftTableDataSource.checkPathIsStillValid()
+        rightTableDataSource.checkPathIsStillValid()
     }
     
     @objc func pathButtonPressed(_ sender: Any?) {

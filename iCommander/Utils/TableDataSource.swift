@@ -214,4 +214,20 @@ class TableDataSource {
             return first > second
         }
     }
+    
+    func checkPathIsStillValid() {
+        var tempURL = currentUrl
+        while !FileManager.default.fileExists(atPath: tempURL.path) {
+            tempURL = tempURL.deletingLastPathComponent()
+        }
+        
+        print(tempURL.path)
+        
+        if !FileManager.default.fileExists(atPath: tempURL.path) ||
+            tempURL.path == "/Volumes" { // current url was on a removed drive
+            currentUrl = FileManager.default.homeDirectoryForCurrentUser
+        } else {
+            currentUrl = tempURL
+        }
+    }
 }
