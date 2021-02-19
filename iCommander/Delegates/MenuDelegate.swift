@@ -25,6 +25,9 @@ extension ViewController: NSMenuDelegate {
             // Copy
             menu.addItem(withTitle: "Copy", action: nil, keyEquivalent: "")
         }
+        
+        menu.addItem(withTitle: "Open in Finder", action: #selector(openInFinder), keyEquivalent: "")
+        
         // Paste
         menu.addItem(withTitle: "Paste", action: nil, keyEquivalent: "")
         
@@ -39,6 +42,18 @@ extension ViewController: NSMenuDelegate {
         // Rename
         if rowIndexForContexMenu != -1 {
             menu.addItem(withTitle: "Rename", action: #selector(doNothing), keyEquivalent: "")
+        }
+    }
+    
+    @objc func openInFinder() {
+        guard let tableView =  tableViewForActivatedMenu else { return }
+        guard let dataSource = tableToDataSource[tableView] else { return }
+        
+        if rowIndexForContexMenu == -1 {
+            NSWorkspace.shared.open(dataSource.currentUrl)
+        } else {
+            let element = dataSource.tableElements[rowIndexForContexMenu]
+            NSWorkspace.shared.open(element.url)
         }
     }
     
