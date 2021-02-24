@@ -101,7 +101,7 @@ extension ViewController: TableViewDelegate {
     func handleEnterPressed(_ tableView: NSTableView, _ forRow: Int) {
         guard let dataSource = tableToDataSource[tableView] else { return }
         
-        if forRow == 0 && urlHasParent(dataSource.currentUrl){
+        if forRow == 0 && urlHasParent(dataSource.currentURL){
             parentFolderRequested(tableView)
             return
         }
@@ -109,7 +109,7 @@ extension ViewController: TableViewDelegate {
         let element = dataSource.tableElements[forRow]
         
         if element.isDirectory && !element.isPackage! {
-            dataSource.currentUrl = element.url
+            dataSource.currentURL = element.url
         } else {
             NSWorkspace.shared.open(element.url)
         }
@@ -122,14 +122,14 @@ extension ViewController: TableViewDelegate {
             view.window?.makeFirstResponder(rightTable)
             currentActiveTable = rightTable
             refreshButtonsState(rightTable, rightTable.selectedRow)
-            refreshAddRemoveFavButton(tableToDataSource[rightTable]!.currentUrl)
+            refreshAddRemoveFavButton(tableToDataSource[rightTable]!.currentURL)
         } else {
             // Focus left table
             rightTable.nextKeyView = leftTable
             view.window?.makeFirstResponder(leftTable)
             currentActiveTable = leftTable
             refreshButtonsState(leftTable, leftTable.selectedRow)
-            refreshAddRemoveFavButton(tableToDataSource[leftTable]!.currentUrl)
+            refreshAddRemoveFavButton(tableToDataSource[leftTable]!.currentURL)
         }
     }
     
@@ -145,11 +145,11 @@ extension ViewController: TableViewDelegate {
     
     func parentFolderRequested(_ tableView: NSTableView) {
         if let tableData = tableToDataSource[tableView] {
-            let previousDirectory = tableData.currentUrl
-            let parentUrl = tableData.currentUrl.deletingLastPathComponent()
+            let previousDirectory = tableData.currentURL
+            let parentUrl = tableData.currentURL.deletingLastPathComponent()
             
             if !FileManager.default.contentsEqual(atPath: previousDirectory.path, andPath: parentUrl.path) {
-                tableData.currentUrl = parentUrl
+                tableData.currentURL = parentUrl
             }
             
             if let index = tableData.tableElements.firstIndex(where: { (element) -> Bool in
@@ -215,7 +215,7 @@ extension ViewController: TableViewDelegate {
             for selectedRowIndex in sourceTable.selectedRowIndexes {
                 sourceItems.append(dataSource.tableElements[selectedRowIndex].url)
             }
-            let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentUrl
+            let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentURL
             
             fileOperations.copy(sourceItems, destinationFolderUrl)
             
@@ -234,7 +234,7 @@ extension ViewController: TableViewDelegate {
             sourceItems.append(dataSource.tableElements[index])
         }
 
-        let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentUrl
+        let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentURL
         
         fileOperations.move(sourceItems, destinationFolderUrl)
     }
@@ -264,7 +264,7 @@ extension ViewController: TableViewDelegate {
     
     func createFolder(_ tableView: NSTableView, _ folderName: String) {
         let dataSource = tableToDataSource[tableView]!
-        let parentFolder = dataSource.currentUrl
+        let parentFolder = dataSource.currentURL
         
         do {
             try FileManager.default.createDirectory(at: parentFolder.appendingPathComponent(folderName), withIntermediateDirectories: false, attributes: nil)

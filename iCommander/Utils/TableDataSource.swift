@@ -40,20 +40,20 @@ class TableDataSource {
         location = aLocation
     }
     
-    var currentUrl: URL = FileManager.default.homeDirectoryForCurrentUser {
+    var currentURL: URL = FileManager.default.homeDirectoryForCurrentUser {
         didSet
         {
             refreshData()
             
-            delegate?.handlePathChanged(self, currentUrl)
+            delegate?.handlePathChanged(self, currentURL)
         }
     }
     
     func refreshData() {
         
         tableElements = []
-        addParentFolder(currentUrl)
-        addFolderContents(currentUrl)
+        addParentFolder(currentURL)
+        addFolderContents(currentURL)
         
         if let column = sortColumn, let ascending = isAscending {
             sort(column, ascending)
@@ -91,7 +91,7 @@ class TableDataSource {
                 searchOptions.insert(.skipsHiddenFiles)
             }
             
-            let fileURLs = try fileManager.contentsOfDirectory(at: currentUrl, includingPropertiesForKeys: nil, options: searchOptions)
+            let fileURLs = try fileManager.contentsOfDirectory(at: currentURL, includingPropertiesForKeys: nil, options: searchOptions)
             
             for url in fileURLs {
                 let name = url.lastPathComponent
@@ -216,16 +216,16 @@ class TableDataSource {
     }
     
     func checkPathIsStillValid() {
-        var tempURL = currentUrl
+        var tempURL = currentURL
         while !FileManager.default.fileExists(atPath: tempURL.path) {
             tempURL = tempURL.deletingLastPathComponent()
         }
         
         if !FileManager.default.fileExists(atPath: tempURL.path) ||
             tempURL.path == "/Volumes" { // current url was on a removed drive
-            currentUrl = FileManager.default.homeDirectoryForCurrentUser
+            currentURL = FileManager.default.homeDirectoryForCurrentUser
         } else {
-            currentUrl = tempURL
+            currentURL = tempURL
         }
     }
 }

@@ -48,7 +48,7 @@ extension ViewController: NSTableViewDataSource {
         
         if !sourceURLs.isEmpty {
             let dataSource = tableToDataSource[tableView]!
-            let destinationURL = dataSource.currentUrl
+            let destinationURL = dataSource.currentURL
             
             fileOperations.copy(sourceURLs, destinationURL)
         }

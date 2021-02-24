@@ -28,6 +28,8 @@ extension ViewController: NSMenuDelegate {
         
         menu.addItem(withTitle: "Open in Finder", action: #selector(openInFinder), keyEquivalent: "")
         
+        menu.addItem(withTitle: "Open Terminal", action: #selector(openTerminal), keyEquivalent: "")
+        
         // Paste
         menu.addItem(withTitle: "Paste", action: nil, keyEquivalent: "")
         
@@ -45,12 +47,25 @@ extension ViewController: NSMenuDelegate {
         }
     }
     
+    @objc func openTerminal() {
+        guard let tableView =  tableViewForActivatedMenu else { return }
+        guard let dataSource = tableToDataSource[tableView] else { return }
+        let currentURL = dataSource.currentURL
+        
+        guard let terminalURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Terminal") else { return }
+        let conf = NSWorkspace.OpenConfiguration()
+        conf.activates = true
+        conf.arguments = [currentURL.path]
+        
+        NSWorkspace.shared.openApplication(at: terminalURL, configuration: conf, completionHandler: nil)
+    }
+    
     @objc func openInFinder() {
         guard let tableView =  tableViewForActivatedMenu else { return }
         guard let dataSource = tableToDataSource[tableView] else { return }
         
         if rowIndexForContexMenu == -1 {
-            NSWorkspace.shared.open(dataSource.currentUrl)
+            NSWorkspace.shared.open(dataSource.currentURL)
         } else {
             let element = dataSource.tableElements[rowIndexForContexMenu]
             NSWorkspace.shared.open(element.url)
@@ -64,7 +79,7 @@ extension ViewController: NSMenuDelegate {
 
         view.window?.makeFirstResponder(tableView)
         currentActiveTable = tableView
-        dataSource.currentUrl = element.url
+        dataSource.currentURL = element.url
     }
     
     @objc func doNothing() {

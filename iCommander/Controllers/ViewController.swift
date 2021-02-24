@@ -83,7 +83,7 @@ class ViewController: NSViewController {
             }
         }
         currentActiveTable = sender
-        refreshAddRemoveFavButton(tableToDataSource[sender]!.currentUrl)
+        refreshAddRemoveFavButton(tableToDataSource[sender]!.currentURL)
     }
     
     @IBAction func tableDoubleClick(_ sender: NSTableView) {
@@ -95,7 +95,7 @@ class ViewController: NSViewController {
             
             let item = tableData.tableElements[sender.clickedRow]
             if item.isDirectory && !item.isPackage! {
-                tableData.currentUrl = item.url
+                tableData.currentURL = item.url
             } else {
                 NSWorkspace.shared.open(item.url)
             }
@@ -108,7 +108,7 @@ class ViewController: NSViewController {
             let dataSource = tableToDataSource[activeTable!]!
             let element = dataSource.tableElements[activeTable!.selectedRow]
             
-            fileOperations.rename(element.url, dataSource.currentUrl, textField.stringValue)
+            fileOperations.rename(element.url, dataSource.currentURL, textField.stringValue)
         }
     }
     
@@ -152,9 +152,9 @@ class ViewController: NSViewController {
             
             switch button.title {
             case "+":
-                favorites?.favURLs?.append(dataSource.currentUrl)
+                favorites?.favURLs?.append(dataSource.currentURL)
             case "-":
-                if let index = favorites?.favURLs?.firstIndex(of: dataSource.currentUrl) {
+                if let index = favorites?.favURLs?.firstIndex(of: dataSource.currentURL) {
                     favorites?.favURLs?.remove(at: index)
                 }
             default:
@@ -163,7 +163,7 @@ class ViewController: NSViewController {
             
             saveContext()
             fetchFavorites()
-            refreshAddRemoveFavButton(dataSource.currentUrl)
+            refreshAddRemoveFavButton(dataSource.currentURL)
         }
     }
     
@@ -185,9 +185,9 @@ class ViewController: NSViewController {
                 }
             }
             
-            leftTableDataSource.currentUrl = leftTableData!.currentUrlDBValue!
+            leftTableDataSource.currentURL = leftTableData!.currentUrlDBValue!
             leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
-            rightTableDataSource.currentUrl = rightTableData!.currentUrlDBValue!
+            rightTableDataSource.currentURL = rightTableData!.currentUrlDBValue!
             rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
             
             if leftTableData!.showHiddenFiles {
@@ -259,9 +259,9 @@ class ViewController: NSViewController {
         rightTableData?.showHiddenFiles = false
         rightTableData?.currentUrlDBValue = FileManager.default.homeDirectoryForCurrentUser
         
-        leftTableDataSource.currentUrl = leftTableData!.currentUrlDBValue!
+        leftTableDataSource.currentURL = leftTableData!.currentUrlDBValue!
         leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
-        rightTableDataSource.currentUrl = rightTableData!.currentUrlDBValue!
+        rightTableDataSource.currentURL = rightTableData!.currentUrlDBValue!
         rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
 
     }
@@ -408,7 +408,7 @@ class ViewController: NSViewController {
     @objc func pathButtonPressed(_ sender: Any?) {
         if let button = sender as? ButtonWithPath {
             let dataSource = tableToDataSource[currentActiveTable!]!
-            dataSource.currentUrl = URL(fileURLWithPath: button.path!)
+            dataSource.currentURL = URL(fileURLWithPath: button.path!)
         }
     }
     
@@ -419,7 +419,7 @@ class ViewController: NSViewController {
             
             let tableView = locationOnScreen == .Left ? leftTable : rightTable
             let dataSource = tableToDataSource[tableView!]!
-            dataSource.currentUrl = URL(fileURLWithPath: button.path!)
+            dataSource.currentURL = URL(fileURLWithPath: button.path!)
         }
     }
 }
