@@ -18,19 +18,27 @@ extension ViewController: NSTableViewDataSource {
     }
     
     func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
-        var dragOperation: NSDragOperation = []
+        let dragOperation: NSDragOperation = []
         
-        if dropOperation != .on {   // We don't support dropping on an item.
-            if let draggingSource = info.draggingSource as? NSTableView {   // Same application
-                if draggingSource != tableView {    // Drag and drop within the same table is not supported.
-                    dragOperation = [.copy]
-                }
-            } else {
-                dragOperation = [.copy]     // From another application.
-            }
+        var isSameTableView: Bool = false
+        var isDropOnItem: Bool = false
+        var isDropOnDirectory: Bool = false
+        
+        if let draggingSource = info.draggingSource as? NSTableView {
+            isSameTableView = draggingSource == tableView
         }
         
-        return dragOperation
+        isDropOnItem = dropOperation == .on
+        if isDropOnItem {
+            let dataSource = tableToDataSource[tableView]!
+            isDropOnDirectory = dataSource.tableElements[row].url.hasDirectoryPath
+        }
+
+        if  isDropOnItem && !isDropOnDirectory || isSameTableView {
+            return dragOperation
+        } else {
+            return [.copy]
+        }        
     }
     
     func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
@@ -46,9 +54,14 @@ extension ViewController: NSTableViewDataSource {
             }
         }
         
+        print("Drop operation on: \(dropOperation == .on)")
+        
         if !sourceURLs.isEmpty {
             let dataSource = tableToDataSource[tableView]!
-            let destinationURL = dataSource.currentURL
+            
+            let destinationURL = dropOperation != .on ? dataSource.currentURL : dataSource.tableElements[row].url
+            
+            print("Drop row: \(row)")
             
             fileOperations.copy(sourceURLs, destinationURL)
         }
