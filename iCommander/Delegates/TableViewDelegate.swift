@@ -18,10 +18,14 @@ extension ViewController: NSTableViewDelegate {
             
             let dataSource = tableToDataSource[tableView]
             let element = dataSource!.tableElements[row]
+            
             switch tableColumn?.title {
             case Constants.NameColumn:
                 cell.textField?.stringValue = element.name
                 cell.imageView?.image = NSWorkspace.shared.icon(forFile: element.url.path)
+                if row == 0 {
+                    cell.textField?.isEditable = false
+                }
             case Constants.SizeColumn:
                 cell.textField?.stringValue = element.sizeString
             case Constants.DateColumn:
@@ -62,7 +66,13 @@ extension ViewController: TableViewDelegate {
             
             var elements: [TableElement] = []
             for row in rows {
-                elements.append(dataSource.tableElements[row])
+                if row != 0 {
+                    elements.append(dataSource.tableElements[row])
+                }
+            }
+            
+            if elements.isEmpty {
+                return
             }
             
             var confirmationString: String = ""

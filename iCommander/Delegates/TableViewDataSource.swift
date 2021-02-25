@@ -61,8 +61,6 @@ extension ViewController: NSTableViewDataSource {
             
             let destinationURL = dropOperation != .on ? dataSource.currentURL : dataSource.tableElements[row].url
             
-            print("Drop row: \(row)")
-            
             fileOperations.copy(sourceURLs, destinationURL)
         }
         
@@ -70,6 +68,11 @@ extension ViewController: NSTableViewDataSource {
     }
     
     func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
+        
+        if row == 0 {
+            return nil
+        }
+        
         let dataSource = tableToDataSource[tableView]!
         let draggedItem = dataSource.tableElements[row]
         let itemURL = draggedItem.url
