@@ -113,6 +113,28 @@ class ViewController: NSViewController {
     }
     
     
+    @IBAction func pathEdited(_ sender: NSTextField) {
+        let isPathValid = FileManager.default.fileExists(atPath: sender.stringValue)
+        let tableView = sender == leftPath ? leftTable : rightTable
+        let dataSource = tableToDataSource[tableView!]!
+        
+        var isNewPathOK = false
+        
+        if isPathValid {
+            let url = URL(fileURLWithPath: sender.stringValue)
+            
+            if url.hasDirectoryPath {
+                isNewPathOK = true
+                dataSource.currentURL = url
+            }
+        }
+        
+        if !isNewPathOK {
+            sender.stringValue = dataSource.currentURL.path
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -138,11 +160,11 @@ class ViewController: NSViewController {
         
         populateVolumeButtons()
         
-        currentActiveTable = leftTable
-                
         let notificationCenter = NSWorkspace.shared.notificationCenter
         notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didMountNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didUnmountNotification, object: nil)
+        
+        focusNextTable(rightTable)
     }
     
     @IBAction func addRemoveFavorite(_ sender: Any) {
