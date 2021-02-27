@@ -29,6 +29,8 @@
 		4BDC06992523B59D00DF1AFF /* iCommander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06972523B59D00DF1AFF /* iCommander.xcdatamodeld */; };
 		4BDC069B2523B59E00DF1AFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC069A2523B59E00DF1AFF /* Assets.xcassets */; };
 		4BDC069E2523B59E00DF1AFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC069C2523B59E00DF1AFF /* Main.storyboard */; };
+		4BE4F86A25E9BF9D00E70D3C /* SearchWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE4F86925E9BF9D00E70D3C /* SearchWindowController.swift */; };
+		4BE4F86D25E9BFD200E70D3C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE4F86C25E9BFD200E70D3C /* SearchViewController.swift */; };
 		4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE9FC192523D913001E5A33 /* Constants.swift */; };
 		4BFDB12D2589774C009E02D5 /* WindowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFDB12C2589774C009E02D5 /* WindowDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -59,6 +61,8 @@
 		4BDC069D2523B59E00DF1AFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4BDC069F2523B59E00DF1AFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BDC06A02523B59E00DF1AFF /* iCommander.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iCommander.entitlements; sourceTree = "<group>"; };
+		4BE4F86925E9BF9D00E70D3C /* SearchWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWindowController.swift; sourceTree = "<group>"; };
+		4BE4F86C25E9BFD200E70D3C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		4BE9FC192523D913001E5A33 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4BFDB12C2589774C009E02D5 /* WindowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +141,8 @@
 				4B5DFBCD254F607F000B45BB /* WindowController.swift */,
 				4B3CCA832573B1D600F1AEEF /* ProgressViewController.swift */,
 				4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */,
+				4BE4F86925E9BF9D00E70D3C /* SearchWindowController.swift */,
+				4BE4F86C25E9BFD200E70D3C /* SearchViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -240,7 +246,9 @@
 				4B5DFBDD2550B78E000B45BB /* DataSourceDelegate.swift in Sources */,
 				4B1765A12535C1FA00B9C8E2 /* TableView.swift in Sources */,
 				4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */,
+				4BE4F86A25E9BF9D00E70D3C /* SearchWindowController.swift in Sources */,
 				4B5DFBCE254F607F000B45BB /* WindowController.swift in Sources */,
+				4BE4F86D25E9BFD200E70D3C /* SearchViewController.swift in Sources */,
 				4B95597725DD17DA00B5EC7C /* ButtonWithPath.swift in Sources */,
 				4B95597B25DD19CD00B5EC7C /* Favorites+CoreDataClass.swift in Sources */,
 				4B3CCA842573B1D600F1AEEF /* ProgressViewController.swift in Sources */,
