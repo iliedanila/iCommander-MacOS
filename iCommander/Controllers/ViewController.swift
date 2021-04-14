@@ -197,26 +197,31 @@ class ViewController: NSViewController {
     func fetchTableData() {
         do {
             let tableViewDataItems = try context.fetch(TableViewData.fetchRequest())
-            for tableViewDataItem in tableViewDataItems {
-                if let tableData = tableViewDataItem as? TableViewData {
-                    if tableData.isOnLeftSide {
-                        leftTableData = tableData
-                    } else {
-                        rightTableData = tableData
+            
+            if tableViewDataItems.count != 0 {
+                for tableViewDataItem in tableViewDataItems {
+                    if let tableData = tableViewDataItem as? TableViewData {
+                        if tableData.isOnLeftSide {
+                            leftTableData = tableData
+                        } else {
+                            rightTableData = tableData
+                        }
                     }
                 }
-            }
-            
-            leftTableDataSource.currentURL = leftTableData!.currentUrlDBValue!
-            leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
-            rightTableDataSource.currentURL = rightTableData!.currentUrlDBValue!
-            rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
-            
-            if leftTableData!.showHiddenFiles {
-                leftShowHiddenFiles.state = .on
-            }
-            if rightTableData!.showHiddenFiles {
-                rightShowHiddenFiles.state = .on
+                
+                leftTableDataSource.currentURL = leftTableData!.currentUrlDBValue!
+                leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
+                rightTableDataSource.currentURL = rightTableData!.currentUrlDBValue!
+                rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
+                
+                if leftTableData!.showHiddenFiles {
+                    leftShowHiddenFiles.state = .on
+                }
+                if rightTableData!.showHiddenFiles {
+                    rightShowHiddenFiles.state = .on
+                }
+            } else {
+                createTableData()
             }
         } catch  {
             createTableData()
