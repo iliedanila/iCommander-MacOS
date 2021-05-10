@@ -9,9 +9,11 @@ import Cocoa
 
 class SearchViewController: NSViewController {
 
+    @IBOutlet var progressBar: NSProgressIndicator!
+    @IBOutlet var searchTextField: NSTextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
     }
     
 }

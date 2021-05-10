@@ -17,6 +17,7 @@ protocol FileOperationsDelegate {
     func startedFile(_ uuid: String, _ fileName: String)
     func copyUpdateProgress(_ uuid: String, _ fileProgress: Double, _ overallProgress: Double)
     func fileOperationCompleted(_ error: Error?)
+    func findStarted()
 }
 
 class FileOperations {
@@ -33,6 +34,10 @@ class FileOperations {
     var totalBytesToCopy: UInt64 = 0
     var uuid: String = ""
     var state: State = .Running
+    
+    func find() {
+        delegate?.findStarted()
+    }
     
     func copy(_ sourceItems: [URL], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {

@@ -47,6 +47,9 @@ class ViewController: NSViewController {
     var progressWindowController: ProgressWindowController? = nil
     var progressViewController: ProgressViewController? = nil
     
+    var searchWindowController: SearchWindowController? = nil
+    var searchViewController: SearchViewController? = nil
+    
     let context = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     @IBAction func showHiddenFilesToggled(_ sender: NSButton) {
@@ -63,7 +66,9 @@ class ViewController: NSViewController {
     }
     
     @IBAction func functionButtonClicked(_ sender: NSButton) {
-        if sender == F5CopyButton {
+        if sender == F3ViewButton {
+            handleF3()
+        }else if sender == F5CopyButton {
             handleF5()
         } else if sender == F6MoveButton {
             handleF6()

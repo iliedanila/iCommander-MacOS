@@ -12,6 +12,7 @@ protocol TableViewDelegate {
     func refreshDataSource(_ tableView: NSTableView)
     func focusNextTable(_ tableView: NSTableView)
     func handleEnterPressed(_ tableView: NSTableView, _ row: Int)
+    func handleF3()
     func handleF5()
     func handleF6()
     func handleF7()
@@ -55,6 +56,8 @@ class TableView: NSTableView {
             tableViewDelegate?.deleteItems(self, Array(selectedRowIndexes))
         } else if event.keyCode == Constants.KeyCodeR && event.modifierFlags.contains(.command){
             reloadData()
+        } else if event.keyCode == Constants.KeyCodeF3 {
+            tableViewDelegate?.handleF3()
         } else if event.keyCode == Constants.KeyCodeF5 {
             tableViewDelegate?.handleF5()
         } else if event.keyCode == Constants.KeyCodeF6 {

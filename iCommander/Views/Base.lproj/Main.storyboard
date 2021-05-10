@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="17008"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaDFRPlugin" version="18009"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="the Touch Bar" minToolsVersion="8.1" minSystemVersion="10.12.2" requiredIntegratedClassName="NSTouchBar"/>
     </dependencies>
@@ -703,6 +703,7 @@
                                 <viewController key="viewController" id="BZh-NU-hWU">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Yds-XP-cSa">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="View" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="P2b-jh-M4H">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -717,6 +718,7 @@
                                 <viewController key="viewController" id="7zl-is-fbL">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="24A-Gq-Jc2">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Edit" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Na8-pd-Jei">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -731,6 +733,7 @@
                                 <viewController key="viewController" id="Efc-ow-i6q">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MFD-44-UbT">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Copy" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="M1x-1c-jro">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -745,6 +748,7 @@
                                 <viewController key="viewController" id="r3N-SH-v2H">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="umm-r7-Xy8">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Move" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z4y-x7-N4o">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -759,6 +763,7 @@
                                 <viewController key="viewController" id="4bj-tg-vUF">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pVp-cg-cKI">
                                         <rect key="frame" x="0.0" y="0.0" width="108" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="New Folder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1xA-qQ-9ip">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -773,6 +778,7 @@
                                 <viewController key="viewController" id="JO0-Iu-ga4">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="enI-F8-QqU">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xPe-Pb-YhE">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -787,6 +793,7 @@
                                 <viewController key="viewController" id="0Iu-zE-GLd">
                                     <button key="view" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6VD-g5-RXl">
                                         <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="push" title="Search" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Sd9-Fi-Fbi">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" usesAppearanceFont="YES"/>
@@ -1506,12 +1513,12 @@ Gw
                                     </gridCell>
                                     <gridCell row="jYw-Mw-lSw" column="bLg-wC-f0G" id="GaO-Et-Shi">
                                         <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="E7Y-TX-ova">
-                                            <rect key="frame" x="255" y="35" width="100" height="18"/>
+                                            <rect key="frame" x="127" y="35" width="100" height="18"/>
                                         </progressIndicator>
                                     </gridCell>
                                     <gridCell row="jYw-Mw-lSw" column="Orh-zC-AnA" id="1w1-mL-0P1">
                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ond-EO-zUm">
-                                            <rect key="frame" x="380" y="36" width="41" height="16"/>
+                                            <rect key="frame" x="252" y="36" width="41" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="% File" id="mR3-iN-2Eq">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1531,12 +1538,12 @@ Gw
                                     </gridCell>
                                     <gridCell row="cMq-zK-Psk" column="bLg-wC-f0G" id="oIW-te-lvg">
                                         <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="mLp-FL-ssF">
-                                            <rect key="frame" x="255" y="-1" width="100" height="18"/>
+                                            <rect key="frame" x="127" y="-1" width="100" height="18"/>
                                         </progressIndicator>
                                     </gridCell>
                                     <gridCell row="cMq-zK-Psk" column="Orh-zC-AnA" id="fEY-3L-L7C">
                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mg9-YC-siO">
-                                            <rect key="frame" x="380" y="0.0" width="62" height="16"/>
+                                            <rect key="frame" x="252" y="0.0" width="62" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="% Overall" id="RrC-06-v5s">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1579,7 +1586,7 @@ Gw
         <!--Window Controller-->
         <scene sceneID="eoX-dD-Pe9">
             <objects>
-                <windowController id="Aee-Au-5iT" customClass="SearchWindowController" customModule="iCommander" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="SearchWindowController" id="Aee-Au-5iT" customClass="SearchWindowController" customModule="iCommander" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="LkH-tZ-eu0">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -1734,7 +1741,7 @@ Gw
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="y9i-1K-uMc">
-                                    <rect key="frame" x="1" y="118" width="238" height="16"/>
+                                    <rect key="frame" x="1" y="122" width="358" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="ati-Vc-pdF">
@@ -1770,6 +1777,10 @@ Gw
                             <constraint firstAttribute="trailing" secondItem="qKk-UV-dC2" secondAttribute="trailing" constant="20" symbolic="YES" id="zJt-vw-FB7"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="progressBar" destination="6L9-qC-VQI" id="6TI-Vz-tjI"/>
+                        <outlet property="searchTextField" destination="qKk-UV-dC2" id="wDK-yo-SDO"/>
+                    </connections>
                 </viewController>
                 <customObject id="lbm-wf-Bga" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

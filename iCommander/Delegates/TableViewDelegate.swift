@@ -216,6 +216,10 @@ extension ViewController: TableViewDelegate {
         }
     }
     
+    func handleF3() {
+        fileOperations.find()
+    }
+    
     func handleF5() {
         if let sourceTable = currentActiveTable {
             let destinationTable = sourceTable == leftTable ? rightTable : leftTable

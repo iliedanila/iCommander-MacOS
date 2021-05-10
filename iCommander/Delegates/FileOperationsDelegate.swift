@@ -15,6 +15,18 @@ extension ViewController: FileOperationsDelegate {
         }
     }
     
+    func findStarted() {
+        instantiateFindWindow()
+        
+        searchViewController?.progressBar.minValue = Double(0)
+        searchViewController?.progressBar.maxValue = Double(1)
+        searchViewController?.progressBar.doubleValue = Double(0)
+        
+        searchViewController?.searchTextField.stringValue = "Hello"
+        
+        searchWindowController?.showWindow(self)
+    }
+    
     func copyStarted(_ fileOperationsManager: FileOperations, _ uuid: String, _ totalBytes: UInt64) {
         instantiateProgressWindow()
         
@@ -60,6 +72,19 @@ extension ViewController: FileOperationsDelegate {
                 
         self.leftTable.reloadData()
         self.rightTable.reloadData()
+    }
+    
+    func instantiateFindWindow() {
+        if let _ = searchWindowController,
+           let _ = searchViewController { return }
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let sceneIdentifier = NSStoryboard.SceneIdentifier(stringLiteral: "SearchWindowController")
+        
+        guard   let windowController = storyboard.instantiateController(withIdentifier: sceneIdentifier) as? SearchWindowController,
+                let progressViewController = windowController.contentViewController as? SearchViewController else { return }
+
+        self.searchWindowController = windowController
+        self.searchViewController = progressViewController
     }
     
     func instantiateProgressWindow() {
