@@ -117,7 +117,6 @@ class ViewController: NSViewController {
         }
     }
     
-    
     @IBAction func pathEdited(_ sender: NSTextField) {
         let isPathValid = FileManager.default.fileExists(atPath: sender.stringValue)
         let tableView = sender == leftPath ? leftTable : rightTable

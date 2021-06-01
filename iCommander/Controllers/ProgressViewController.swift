@@ -9,6 +9,7 @@ import Cocoa
 
 class ProgressViewController: NSViewController {
 
+    @IBOutlet var folderName: NSTextField!
     @IBOutlet var currentFileName: NSTextField!
     @IBOutlet var fileProgressBar: NSProgressIndicator!
     @IBOutlet var overallProgressBar: NSProgressIndicator!
