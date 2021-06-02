@@ -27,11 +27,12 @@ extension ViewController: FileOperationsDelegate {
         searchWindowController?.showWindow(self)
     }
     
-    func copyStarted(_ fileOperationsManager: FileOperations, _ uuid: String, _ totalBytes: UInt64) {
+    func copyStarted(_ fileOperationsManager: FileOperations, _ paths: [String], _ totalBytes: UInt64) {
         instantiateProgressWindow()
         
         progressViewController?.fileOperationsManager = fileOperationsManager
 
+        progressViewController?.folderName.stringValue = paths[0]
         progressViewController?.overallProgressBar.minValue = Double(0)
         progressViewController?.overallProgressBar.maxValue = Double(1)
         progressViewController?.overallProgressBar.doubleValue = Double(0)
