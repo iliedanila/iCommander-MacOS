@@ -13,7 +13,7 @@ typealias SourceDestinationSize = (source: URL, destination: URL, size: UInt64)
 let chunkSize: Int = 1024 * 5
 
 protocol FileOperationsDelegate {
-    func copyStarted(_ fileOperationsManager: FileOperations, _ uuid: String, _ totalBytes: UInt64)
+    func copyStarted(_ fileOperationsManager: FileOperations, _ paths: [String], _ totalBytes: UInt64)
     func startedFile(_ uuid: String, _ fileName: String)
     func copyUpdateProgress(_ uuid: String, _ fileProgress: Double, _ overallProgress: Double)
     func fileOperationCompleted(_ error: Error?)
@@ -42,12 +42,15 @@ class FileOperations {
     func copy(_ sourceItems: [URL], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
             
-            self.uuid = UUID().uuidString
+            var paths : [String] = []
+            for sourceItem in sourceItems {
+                paths.append(sourceItem.lastPathComponent)
+            }
             
             var queue = self.prepareQueue(sourceItems, destinationDirectory, totalBytes: &self.totalBytesToCopy)
             
             DispatchQueue.main.async {
-                self.delegate?.copyStarted(self, self.uuid, self.totalBytesToCopy)
+                self.delegate?.copyStarted(self, paths, self.totalBytesToCopy)
             }
             
             self.processNextFileInQueue(&queue)
