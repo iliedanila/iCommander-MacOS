@@ -9,8 +9,14 @@ import Cocoa
 
 class SearchViewController: NSViewController {
 
-    @IBOutlet var progressBar: NSProgressIndicator!
     @IBOutlet var searchTextField: NSTextField!
+    @IBOutlet var progressBar: NSProgressIndicator!
+    
+    var fileOperationsManager: FileOperations? = nil
+  
+    @IBAction func cancelPressed(_ sender: NSButton) {
+        fileOperationsManager?.delegate?.findCompleted()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

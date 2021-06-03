@@ -17,7 +17,8 @@ protocol FileOperationsDelegate {
     func startedFile(_ uuid: String, _ fileName: String)
     func copyUpdateProgress(_ uuid: String, _ fileProgress: Double, _ overallProgress: Double)
     func fileOperationCompleted(_ error: Error?)
-    func findStarted()
+    func findStarted(_ fileOperationsManager: FileOperations)
+    func findCompleted()
 }
 
 class FileOperations {
@@ -36,7 +37,7 @@ class FileOperations {
     var state: State = .Running
     
     func find() {
-        delegate?.findStarted()
+        delegate?.findStarted(self)
     }
     
     func copy(_ sourceItems: [URL], _ destinationDirectory: URL) {

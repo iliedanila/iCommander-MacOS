@@ -15,8 +15,10 @@ extension ViewController: FileOperationsDelegate {
         }
     }
     
-    func findStarted() {
+    func findStarted(_ fileOperationsManager: FileOperations) {
         instantiateFindWindow()
+        
+        searchViewController?.fileOperationsManager = fileOperationsManager
         
         searchViewController?.progressBar.minValue = Double(0)
         searchViewController?.progressBar.maxValue = Double(1)
@@ -71,6 +73,13 @@ extension ViewController: FileOperationsDelegate {
         leftTableDataSource.checkPathIsStillValid()
         rightTableDataSource.checkPathIsStillValid()
                 
+        self.leftTable.reloadData()
+        self.rightTable.reloadData()
+    }
+    
+    func findCompleted() {
+        searchWindowController?.window?.close()
+        
         self.leftTable.reloadData()
         self.rightTable.reloadData()
     }
