@@ -1650,6 +1650,9 @@ Gw
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="textUpdated:" target="uJk-pf-YfE" id="ScU-Zm-2oc"/>
+                                </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tBg-RL-uN6">
                                 <rect key="frame" x="18" y="298" width="62" height="16"/>

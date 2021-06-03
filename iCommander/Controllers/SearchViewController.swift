@@ -13,9 +13,15 @@ class SearchViewController: NSViewController {
     @IBOutlet var progressBar: NSProgressIndicator!
     
     var fileOperationsManager: FileOperations? = nil
+    var currentFolder: URL? = nil
   
     @IBAction func cancelPressed(_ sender: NSButton) {
         fileOperationsManager?.delegate?.findCompleted()
+    }
+
+    @IBAction func textUpdated(_ sender: NSTextField) {
+        print("Search text updated: \(sender.stringValue)")
+        fileOperationsManager?.startSearch(sender.stringValue, currentFolder!)
     }
     
     override func viewDidLoad() {

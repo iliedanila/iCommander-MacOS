@@ -15,10 +15,11 @@ extension ViewController: FileOperationsDelegate {
         }
     }
     
-    func findStarted(_ fileOperationsManager: FileOperations) {
+    func findStarted(_ fileOperationsManager: FileOperations, _ currentFolder: URL) {
         instantiateFindWindow()
         
         searchViewController?.fileOperationsManager = fileOperationsManager
+        searchViewController?.currentFolder = currentFolder
         
         searchViewController?.progressBar.minValue = Double(0)
         searchViewController?.progressBar.maxValue = Double(1)

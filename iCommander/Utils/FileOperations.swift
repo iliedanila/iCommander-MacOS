@@ -17,7 +17,7 @@ protocol FileOperationsDelegate {
     func startedFile(_ uuid: String, _ fileName: String)
     func copyUpdateProgress(_ uuid: String, _ fileProgress: Double, _ overallProgress: Double)
     func fileOperationCompleted(_ error: Error?)
-    func findStarted(_ fileOperationsManager: FileOperations)
+    func findStarted(_ fileOperationsManager: FileOperations, _ currentFolder: URL)
     func findCompleted()
 }
 
@@ -36,19 +36,47 @@ class FileOperations {
     var uuid: String = ""
     var state: State = .Running
     
-    func find() {
-        delegate?.findStarted(self)
+    func find(_ currentFolder: URL) {
+        self.delegate?.findStarted(self, currentFolder)
+    }
+    
+    func startSearch(_ searchFor: String, _ inFolder: URL) {
+        DispatchQueue.global(qos: .background).async {
+            
+        }
     }
     
     func copy(_ sourceItems: [URL], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
             
             var paths : [String] = []
+            var copyURLs : [URL] = []
+
+            let homeVolumeUUID = self.getVolumeUUID(FileManager.default.homeDirectoryForCurrentUser)
+            let destinationVolumeUUID = self.getVolumeUUID(destinationDirectory)
             for sourceItem in sourceItems {
-                paths.append(sourceItem.lastPathComponent)
+                let volumeUUID = self.getVolumeUUID(sourceItem)
+                
+                if volumeUUID == homeVolumeUUID && volumeUUID == destinationVolumeUUID {
+                    do {
+                        let destinationURL = destinationDirectory.appendingPathComponent(sourceItem.lastPathComponent)
+                        try FileManager.default.copyItem(at: sourceItem, to: destinationURL)
+                        
+                        DispatchQueue.main.async {
+                            self.delegate?.fileOperationCompleted(nil)
+                        }
+                    } catch {
+                        print("Error while copying item \(sourceItem.lastPathComponent)")
+                    }
+                } else {
+                    paths.append(sourceItem.lastPathComponent)
+                    copyURLs.append(sourceItem)
+                }
             }
             
-            var queue = self.prepareQueue(sourceItems, destinationDirectory, totalBytes: &self.totalBytesToCopy)
+            if copyURLs.isEmpty { return }
+            
+            var queue = self.prepareQueue(copyURLs, destinationDirectory, totalBytes: &self.totalBytesToCopy)
             
             DispatchQueue.main.async {
                 self.delegate?.copyStarted(self, paths, self.totalBytesToCopy)
@@ -306,5 +334,15 @@ class FileOperations {
             print("Error while getting file size for: \(forURL.lastPathComponent)")
         }
         return 0
+    }
+    
+    func getVolumeUUID(_ forURL: URL) -> String? {
+        do {
+            let resourceValues = try forURL.resourceValues(forKeys: [.volumeUUIDStringKey])
+            return resourceValues.volumeUUIDString
+        } catch {
+            print("Error while getting volume UUID for: \(forURL.lastPathComponent)")
+        }
+        return nil
     }
 }

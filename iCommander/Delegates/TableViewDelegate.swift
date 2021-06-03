@@ -217,7 +217,10 @@ extension ViewController: TableViewDelegate {
     }
     
     func handleF3() {
-        fileOperations.find()
+        if let sourceTable = currentActiveTable {
+            let dataSource = tableToDataSource[sourceTable]!
+            fileOperations.find(dataSource.currentURL)
+        }
     }
     
     func handleF5() {
