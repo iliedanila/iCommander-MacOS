@@ -43,6 +43,26 @@ class FileOperations {
     func startSearch(_ searchFor: String, _ inFolder: URL) {
         DispatchQueue.global(qos: .background).async {
             
+            var URLs: [URL] = [inFolder]
+            var index = 0
+            while index < URLs.count {
+                let currentItem = URLs[index]
+
+                if (currentItem.lastPathComponent.range(of: searchFor) != nil) {
+                    print("Found \(currentItem.lastPathComponent) to be matching the search for \(searchFor).")
+                }
+
+                if (currentItem.hasDirectoryPath) {
+                    do {
+                        let directoryContents = try FileManager.default.contentsOfDirectory(at: currentItem, includingPropertiesForKeys: [], options: [.skipsSubdirectoryDescendants])
+                        URLs.append(contentsOf: directoryContents)
+                    } catch  {
+                        print("Failed to get the contents of directory \(currentItem)")
+                    }
+                }
+
+                index += 1
+            }
         }
     }
     
