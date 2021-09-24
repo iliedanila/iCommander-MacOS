@@ -131,14 +131,12 @@ extension ViewController: TableViewDelegate {
             leftTable.nextKeyView = rightTable
             view.window?.makeFirstResponder(rightTable)
             currentActiveTable = rightTable
-            refreshButtonsState(rightTable, rightTable.selectedRow)
             refreshAddRemoveFavButton(tableToDataSource[rightTable]!.currentURL)
         } else {
             // Focus left table
             rightTable.nextKeyView = leftTable
             view.window?.makeFirstResponder(leftTable)
             currentActiveTable = leftTable
-            refreshButtonsState(leftTable, leftTable.selectedRow)
             refreshAddRemoveFavButton(tableToDataSource[leftTable]!.currentURL)
         }
     }
@@ -181,39 +179,6 @@ extension ViewController: TableViewDelegate {
         textField.isEnabled = true
         let fontName = textField.font?.fontName ?? ""
         textField.font = NSFont(name: fontName, size: 15)
-    }
-    
-    func tableViewSelectionDidChange(_ notification: Notification) {
-        if let tableView = notification.object as? NSTableView {
-            refreshButtonsState(tableView, tableView.selectedRow)
-        }
-    }
-    
-    func refreshButtonsState(_ tableView: NSTableView, _ row: Int) {
-        if tableView.selectedRow == -1 {
-            return
-        }
-        
-        let dataSource = tableToDataSource[tableView]
-        
-        if let element = dataSource?.tableElements[tableView.selectedRow] {
-            switch element.isDirectory {
-            case true:
-                F3ViewButton.isEnabled = false
-                F4EditButton.isEnabled = false
-                F5CopyButton.isEnabled = true
-                F6MoveButton.isEnabled = true
-                F7NewFolderButton.isEnabled = true
-                F8DeleteButton.isEnabled = true
-            case false:
-                F3ViewButton.isEnabled = true
-                F4EditButton.isEnabled = true
-                F5CopyButton.isEnabled = true
-                F6MoveButton.isEnabled = true
-                F7NewFolderButton.isEnabled = true
-                F8DeleteButton.isEnabled = true
-            }
-        }
     }
     
     func handleF5() {

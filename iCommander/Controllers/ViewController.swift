@@ -13,12 +13,6 @@ class ViewController: NSViewController {
     @IBOutlet var leftTable: NSTableView!
     @IBOutlet var rightTable: NSTableView!
     @IBOutlet var tableMenu: NSMenu!
-    @IBOutlet var F3ViewButton: NSButton!
-    @IBOutlet var F4EditButton: NSButton!
-    @IBOutlet var F5CopyButton: NSButton!
-    @IBOutlet var F6MoveButton: NSButton!
-    @IBOutlet var F7NewFolderButton: NSButton!
-    @IBOutlet var F8DeleteButton: NSButton!
     @IBOutlet var leftShowHiddenFiles: NSButton!
     @IBOutlet var rightShowHiddenFiles: NSButton!
     @IBOutlet var leftVolumesStackView: NSStackView!
@@ -59,16 +53,6 @@ class ViewController: NSViewController {
             rightTableDataSource.showHiddenFiles = isOn
             rightTableData?.showHiddenFiles = isOn
             rightTable.reloadData()
-        }
-    }
-    
-    @IBAction func functionButtonClicked(_ sender: NSButton) {
-        if sender == F5CopyButton {
-            handleF5()
-        } else if sender == F6MoveButton {
-            handleF6()
-        } else if sender == F7NewFolderButton {
-            handleF7()
         }
     }
     
