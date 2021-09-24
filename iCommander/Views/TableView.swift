@@ -55,14 +55,6 @@ class TableView: NSTableView {
             tableViewDelegate?.deleteItems(self, Array(selectedRowIndexes))
         } else if event.keyCode == Constants.KeyCodeR && event.modifierFlags.contains(.command){
             reloadData()
-        } else if event.keyCode == Constants.KeyCodeF5 {
-            tableViewDelegate?.handleF5()
-        } else if event.keyCode == Constants.KeyCodeF6 {
-            tableViewDelegate?.handleF6()
-        } else if event.keyCode == Constants.KeyCodeF7 {
-            tableViewDelegate?.handleF7()
-        } else if event.keyCode == Constants.KeyCodeF8 {
-            tableViewDelegate?.handleF8()
         } else {
             super.keyDown(with: event)
         }
