@@ -117,6 +117,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
-
+    
+    func applicationDidBecomeActive(_ notification: Notification) {
+        if let application = notification.object as? NSApplication {
+            if let viewController = application.mainWindow?.contentViewController as? ViewController {
+                viewController.leftTable.reloadData()
+                viewController.rightTable.reloadData()
+            }
+        }
+    }
 }
-
