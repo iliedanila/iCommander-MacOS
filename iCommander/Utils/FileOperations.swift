@@ -105,9 +105,14 @@ class FileOperations {
             if currentUrl.hasDirectoryPath {
                 // Create proper directory at destination
                 let destinationUrl = destinationFolderUrl.appendingPathComponent(currentUrl.lastPathComponent)
+                var continueCopy = true
+                
                 if fileManager.fileExists(atPath: destinationUrl.path) {
-                    
-                    overwrite("Overwrite \(currentUrl.lastPathComponent)?", "A folder with the same name exists at the destination.")
+                    continueCopy = promptOverwrite("Overwrite \(currentUrl.lastPathComponent)?", "A folder with the same name exists at the destination.")
+                }
+                
+                guard continueCopy == true else {
+                    return []
                 }
                 
                 do {
@@ -172,7 +177,7 @@ class FileOperations {
             
             let fileManager = FileManager.default
             if fileManager.fileExists(atPath: destinationURL.path) {
-                overwrite("Overwrite \(sourceURL.lastPathComponent)?", "A file with the same name exists at the destination.")
+                promptOverwrite("Overwrite \(sourceURL.lastPathComponent)?", "A file with the same name exists at the destination.")
             }
             
             let fileSize = tuple.size
@@ -266,8 +271,10 @@ class FileOperations {
         }
     }
     
-    func overwrite(_ message: String, _ info: String) {
-        DispatchQueue.main.async {
+    func promptOverwrite(_ message: String, _ info: String) -> Bool {
+        var continueJob = false
+        
+        DispatchQueue.main.sync {
             let alert = NSAlert()
             alert.alertStyle = .informational
             alert.messageText = message
@@ -275,8 +282,9 @@ class FileOperations {
             alert.addButton(withTitle: "OK")
             alert.addButton(withTitle: "Cancel")
             
-            alert.runModal()// == NSApplication.ModalResponse.alertFirstButtonReturn
+            continueJob =  alert.runModal() == NSApplication.ModalResponse.alertFirstButtonReturn
         }
+        return continueJob
     }
     
     func getIsAlias(_ forURL: URL) -> Bool? {
