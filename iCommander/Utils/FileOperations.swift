@@ -109,6 +109,7 @@ class FileOperations {
                 
                 if fileManager.fileExists(atPath: destinationUrl.path) {
                     continueCopy = promptOverwrite("Overwrite \(currentUrl.lastPathComponent)?", "A folder with the same name exists at the destination.")
+                    print("Response: \(continueCopy)")
                 }
                 
                 guard continueCopy == true else {
@@ -176,8 +177,15 @@ class FileOperations {
             let destinationURL = tuple.destination
             
             let fileManager = FileManager.default
+            
+            var continueCopy = true
             if fileManager.fileExists(atPath: destinationURL.path) {
-                promptOverwrite("Overwrite \(sourceURL.lastPathComponent)?", "A file with the same name exists at the destination.")
+                continueCopy = promptOverwrite("Overwrite \(sourceURL.lastPathComponent)?", "A file with the same name exists at the destination.")
+                print("Response: \(continueCopy)")
+            }
+            
+            guard continueCopy == true else {
+                return
             }
             
             let fileSize = tuple.size
@@ -272,9 +280,7 @@ class FileOperations {
     }
     
     func promptOverwrite(_ message: String, _ info: String) -> Bool {
-        var continueJob = false
-        
-        DispatchQueue.main.sync {
+        return DispatchQueue.main.sync {
             let alert = NSAlert()
             alert.alertStyle = .informational
             alert.messageText = message
@@ -282,9 +288,8 @@ class FileOperations {
             alert.addButton(withTitle: "OK")
             alert.addButton(withTitle: "Cancel")
             
-            continueJob =  alert.runModal() == NSApplication.ModalResponse.alertFirstButtonReturn
+            return alert.runModal() == NSApplication.ModalResponse.alertFirstButtonReturn
         }
-        return continueJob
     }
     
     func getIsAlias(_ forURL: URL) -> Bool? {
