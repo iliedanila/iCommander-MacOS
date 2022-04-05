@@ -53,7 +53,7 @@ class FileOperations {
         DispatchQueue.global(qos: .background).async {
             do {
                 try FileManager.default.moveItem(at: sourceItem, to: currentDirectory.appendingPathComponent(newName))
-
+                
                 DispatchQueue.main.async {
                     self.delegate?.fileOperationCompleted(nil)
                 }
@@ -228,56 +228,56 @@ class FileOperations {
         _ bytesCopiedInFile: UInt64,
         _ fileSize: UInt64,
         _ queue: [SourceDestinationSize]) {
-        
-        if state == .Stopped {
-            DispatchQueue.main.async {
-                self.delegate?.fileOperationCompleted(nil)
-            }
-            state = .Running
-            return
-        } else if state == .Paused {
-            Thread.sleep(forTimeInterval: 0.1) //seconds
-            DispatchQueue.global(qos: .background).async {
-                self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedInFile, fileSize, queue)
-            }
-        } else if state == .Running {
-            if let inFile = FileHandle(forReadingAtPath: sourcePath),
-               let outFile = FileHandle(forWritingAtPath: destinationPath) {
-                do {
-                    try inFile.seek(toOffset: bytesCopiedInFile)
-                    
-                    if #available(OSX 10.15.4, *) {
-                        try outFile.seekToEnd()
-                    }
-                    
-                    let data = inFile.readData(ofLength: chunkSize)
-                    outFile.write(data)
-                    
-                    let bytesCopiedCount = bytesCopiedInFile + UInt64(data.count)
-                    totalBytesCopied += data.count
-                    
-                    DispatchQueue.main.async {
-                        let fileProgress = Double(bytesCopiedCount) / Double(fileSize)
-                        let overallProgress = Double(self.totalBytesCopied) / Double(self.totalBytesToCopy)
-                        self.delegate?.copyUpdateProgress(self.uuid, fileProgress, overallProgress)
-                    }
-                    
-                    if bytesCopiedCount < fileSize {
-                        DispatchQueue.global(qos: .background).async {
-                            self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedCount, fileSize, queue)
+            
+            if state == .Stopped {
+                DispatchQueue.main.async {
+                    self.delegate?.fileOperationCompleted(nil)
+                }
+                state = .Running
+                return
+            } else if state == .Paused {
+                Thread.sleep(forTimeInterval: 0.1) //seconds
+                DispatchQueue.global(qos: .background).async {
+                    self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedInFile, fileSize, queue)
+                }
+            } else if state == .Running {
+                if let inFile = FileHandle(forReadingAtPath: sourcePath),
+                   let outFile = FileHandle(forWritingAtPath: destinationPath) {
+                    do {
+                        try inFile.seek(toOffset: bytesCopiedInFile)
+                        
+                        if #available(OSX 10.15.4, *) {
+                            try outFile.seekToEnd()
                         }
-                    } else {
-                        DispatchQueue.global(qos: .background).async { [queue] in
-                            var mutableQueue = queue
-                            self.processNextFileInQueue(&mutableQueue)
+                        
+                        let data = inFile.readData(ofLength: chunkSize)
+                        outFile.write(data)
+                        
+                        let bytesCopiedCount = bytesCopiedInFile + UInt64(data.count)
+                        totalBytesCopied += data.count
+                        
+                        DispatchQueue.main.async {
+                            let fileProgress = Double(bytesCopiedCount) / Double(fileSize)
+                            let overallProgress = Double(self.totalBytesCopied) / Double(self.totalBytesToCopy)
+                            self.delegate?.copyUpdateProgress(self.uuid, fileProgress, overallProgress)
                         }
+                        
+                        if bytesCopiedCount < fileSize {
+                            DispatchQueue.global(qos: .background).async {
+                                self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedCount, fileSize, queue)
+                            }
+                        } else {
+                            DispatchQueue.global(qos: .background).async { [queue] in
+                                var mutableQueue = queue
+                                self.processNextFileInQueue(&mutableQueue)
+                            }
+                        }
+                    } catch {
+                        print(error)
                     }
-                } catch {
-                    print(error)
                 }
             }
         }
-    }
     
     func promptOverwrite(_ message: String, _ info: String) -> Bool {
         return DispatchQueue.main.sync {
