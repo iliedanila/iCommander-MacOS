@@ -9,7 +9,7 @@ import Cocoa
 
 // MARK: - NSViewController
 class ViewController: NSViewController {
-
+    
     @IBOutlet var leftTable: NSTableView!
     @IBOutlet var rightTable: NSTableView!
     @IBOutlet var tableMenu: NSMenu!
@@ -85,7 +85,7 @@ class ViewController: NSViewController {
             }
         }
     }
-
+    
     @IBAction func cellEditAction(_ sender: Any) {
         if let textField = sender as? NSTextField {
             let activeTable = currentActiveTable == leftTable ? leftTable : rightTable
@@ -184,12 +184,11 @@ class ViewController: NSViewController {
             
             if tableViewDataItems.count != 0 {
                 for tableViewDataItem in tableViewDataItems {
-                    if let tableData = tableViewDataItem as? TableViewData {
-                        if tableData.isOnLeftSide {
-                            leftTableData = tableData
-                        } else {
-                            rightTableData = tableData
-                        }
+                    let tableData = tableViewDataItem
+                    if tableData.isOnLeftSide {
+                        leftTableData = tableData
+                    } else {
+                        rightTableData = tableData
                     }
                 }
                 
@@ -216,10 +215,9 @@ class ViewController: NSViewController {
     func fetchFavorites() {
         do {
             let favoritesItems = try context.fetch(Favorites.fetchRequest())
-            if !favoritesItems.isEmpty,
-               let favoritesDB = favoritesItems[0] as? Favorites {
-                favorites = favoritesDB
-                addFavoritesButtons(favoritesDB)
+            if !favoritesItems.isEmpty {
+                favorites = favoritesItems[0]
+                addFavoritesButtons(favorites)
             } else {
                 addFavoritesButtons(nil)
                 saveContext()
@@ -243,7 +241,7 @@ class ViewController: NSViewController {
             favorites?.favURLs?.append(documentsFolderURL)
             favorites?.favURLs?.append(downloadsFolderURL)
         }
-
+        
         clearFavoritesStackView()
         
         for url in favorites!.favURLs! {
@@ -274,7 +272,7 @@ class ViewController: NSViewController {
         leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
         rightTableDataSource.currentURL = rightTableData!.currentUrlDBValue!
         rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
-
+        
     }
     
     func saveContext() {
@@ -390,7 +388,7 @@ class ViewController: NSViewController {
         
         return button
     }
-
+    
     func handleMaximize() {
         resizeTableViewColumns(leftTable)
         resizeTableViewColumns(rightTable)
