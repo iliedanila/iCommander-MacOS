@@ -21,6 +21,13 @@ class ViewController: NSViewController {
     @IBOutlet var leftPath: NSTextField!
     @IBOutlet var rightPath: NSTextField!
     @IBOutlet var addRemoveFavorite: NSButton!
+    @IBOutlet var F3ViewButton: NSButton!
+    @IBOutlet var F4EditButton: NSButton!
+    @IBOutlet var F5CopyButton: NSButton!
+    @IBOutlet var F6MoveButton: NSButton!
+    @IBOutlet var F7NewFolderButton: NSButton!
+    @IBOutlet var F8DeleteButton: NSButton!
+    
     
     var leftTableDataSource: TableDataSource = TableDataSource(.Left)
     var rightTableDataSource: TableDataSource = TableDataSource(.Right)
@@ -96,7 +103,6 @@ class ViewController: NSViewController {
         }
     }
     
-    
     @IBAction func pathEdited(_ sender: NSTextField) {
         let isPathValid = FileManager.default.fileExists(atPath: sender.stringValue)
         let tableView = sender == leftPath ? leftTable : rightTable
@@ -117,7 +123,6 @@ class ViewController: NSViewController {
             sender.stringValue = dataSource.currentURL.path
         }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -171,6 +176,10 @@ class ViewController: NSViewController {
             fetchFavorites()
             refreshAddRemoveFavButton(dataSource.currentURL)
         }
+    }
+    
+    @IBAction func handleFunctionButtonClicked(_ sender: NSButton) {
+        print("Button pressed: \(sender.title)")
     }
     
     func fetchFromContext() {
