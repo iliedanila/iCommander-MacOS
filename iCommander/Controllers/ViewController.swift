@@ -179,7 +179,13 @@ class ViewController: NSViewController {
     }
     
     @IBAction func handleFunctionButtonClicked(_ sender: NSButton) {
-        print("Button pressed: \(sender.title)")
+        if sender == F5CopyButton {
+            handleF5()
+        } else if sender == F6MoveButton {
+            handleF6()
+        } else if sender == F7NewFolderButton {
+            handleF7()
+        }
     }
     
     func fetchFromContext() {

@@ -1449,7 +1449,7 @@
                     </connections>
                 </menu>
             </objects>
-            <point key="canvasLocation" x="-79.5" y="1096"/>
+            <point key="canvasLocation" x="75" y="1091"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="ywc-4J-fNI">
@@ -1560,12 +1560,12 @@ Gw
                                     </gridCell>
                                     <gridCell row="jYw-Mw-lSw" column="bLg-wC-f0G" id="GaO-Et-Shi">
                                         <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="E7Y-TX-ova">
-                                            <rect key="frame" x="255" y="35" width="100" height="18"/>
+                                            <rect key="frame" x="127" y="35" width="100" height="18"/>
                                         </progressIndicator>
                                     </gridCell>
                                     <gridCell row="jYw-Mw-lSw" column="Orh-zC-AnA" id="1w1-mL-0P1">
                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ond-EO-zUm">
-                                            <rect key="frame" x="380" y="36" width="41" height="16"/>
+                                            <rect key="frame" x="252" y="36" width="41" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="% File" id="mR3-iN-2Eq">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1585,12 +1585,12 @@ Gw
                                     </gridCell>
                                     <gridCell row="cMq-zK-Psk" column="bLg-wC-f0G" id="oIW-te-lvg">
                                         <progressIndicator key="contentView" horizontalCompressionResistancePriority="999" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="mLp-FL-ssF">
-                                            <rect key="frame" x="255" y="-1" width="100" height="18"/>
+                                            <rect key="frame" x="127" y="-1" width="100" height="18"/>
                                         </progressIndicator>
                                     </gridCell>
                                     <gridCell row="cMq-zK-Psk" column="Orh-zC-AnA" id="fEY-3L-L7C">
                                         <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mg9-YC-siO">
-                                            <rect key="frame" x="380" y="0.0" width="62" height="16"/>
+                                            <rect key="frame" x="252" y="0.0" width="62" height="16"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="% Overall" id="RrC-06-v5s">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
