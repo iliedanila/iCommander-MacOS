@@ -185,6 +185,11 @@ class FileOperations {
             }
             
             guard continueCopy == true else {
+                state = .Stopped
+                DispatchQueue.global(qos: .background).async { [queue] in
+                    var mutableQueue = queue
+                    self.processNextFileInQueue(&mutableQueue)
+                }
                 return
             }
             
