@@ -201,7 +201,7 @@ class FileOperations {
             
             guard let isAlias = self.getIsAlias(tuple.source) else { return }
             
-            if isAlias {
+            if isAlias || self.isOnTheSameVolume(tuple.source, tuple.destination) {
                 do {
                     try FileManager.default.copyItem(at: tuple.source, to: tuple.destination)
                     DispatchQueue.global(qos: .background).async { [queue] in
@@ -315,5 +315,17 @@ class FileOperations {
             print("Error while getting file size for: \(forURL.lastPathComponent)")
         }
         return 0
+    }
+    
+    func isOnTheSameVolume(_ sourceURL: URL, _ destinationURL: URL) -> Bool {
+        do {
+            let sourceVolumeID = try sourceURL.resourceValues(forKeys: [.volumeIdentifierKey])
+            let destinationVolumeID = try destinationURL.deletingLastPathComponent().resourceValues(forKeys: [.volumeIdentifierKey])
+            
+            return sourceVolumeID.volumeIdentifier!.isEqual(destinationVolumeID.volumeIdentifier!)
+        } catch {
+            print("Error while getting the volume ID: \(error)")
+            return false
+        }
     }
 }
