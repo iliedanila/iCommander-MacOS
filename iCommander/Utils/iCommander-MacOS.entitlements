@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Enable App Sandbox (Required for Mac App Store) -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+	
+	<!-- File Access: User Selected Files (Read/Write) -->
+	<!-- This allows access to files the user explicitly selects -->
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+	
+	<!-- File Access: Downloads Folder (Read/Write) -->
+	<key>com.apple.security.files.downloads.read-write</key>
+	<true/>
+	
+	<!-- Network: Outgoing Connections (if you add update checking) -->
+	<!-- <key>com.apple.security.network.client</key>
+	<true/> -->
+	
+	<!-- Allow access to removable volumes -->
+	<key>com.apple.security.files.removable-volumes.read-write</key>
+	<true/>
+	
+	<!-- Temporary exception for testing - REMOVE before submission -->
+	<!-- <key>com.apple.security.temporary-exception.files.absolute-path.read-write</key>
+	<array>
+		<string>/</string>
+	</array> -->
+</dict>
+</plist>

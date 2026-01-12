@@ -27,6 +27,8 @@ class WindowController: NSWindowController {
         guard let viewController = window?.contentViewController as? ViewController else { return }
         
         switch sender.title {
+        case "View":
+            viewController.handleF3()
         case "Copy":
             viewController.handleF5()
         case "Move":
@@ -36,7 +38,7 @@ class WindowController: NSWindowController {
         case "Delete":
             viewController.handleF8()
         default:
-            print(sender.title)
+            NSLog("Unknown touch bar action: %@", sender.title)
             break
         }
     }

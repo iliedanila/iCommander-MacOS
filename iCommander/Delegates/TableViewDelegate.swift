@@ -6,37 +6,40 @@
 //
 
 import Cocoa
+import Quartz
 
 // MARK: - NSTableViewDelegate
 extension ViewController: NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        
-        let identifier = NSUserInterfaceItemIdentifier(rawValue: (tableColumn?.identifier.rawValue)!)
-        
-        if let cell = tableView.makeView(withIdentifier: identifier, owner: nil) as? NSTableCellView {
-            
-            let dataSource = tableToDataSource[tableView]
-            let element = dataSource!.tableElements[row]
-            
-            switch tableColumn?.title {
-            case Constants.NameColumn:
-                cell.textField?.stringValue = element.name
-                cell.imageView?.image = NSWorkspace.shared.icon(forFile: element.url.path)
-                if row == 0 {
-                    cell.textField?.isEditable = false
-                }
-            case Constants.SizeColumn:
-                cell.textField?.stringValue = element.sizeString
-            case Constants.DateColumn:
-                cell.textField?.stringValue = element.dateModified
-            default:
-                print("Column not recognized")
-            }
-            
-            return cell
+        guard let columnIdentifier = tableColumn?.identifier,
+              let dataSource = tableToDataSource[tableView],
+              row >= 0 && row < dataSource.tableElements.count else {
+            return nil
         }
-        return nil
+        
+        guard let cell = tableView.makeView(withIdentifier: columnIdentifier, owner: nil) as? NSTableCellView else {
+            return nil
+        }
+        
+        let element = dataSource.tableElements[row]
+        
+        switch tableColumn?.title {
+        case Constants.NameColumn:
+            cell.textField?.stringValue = element.name
+            cell.imageView?.image = NSWorkspace.shared.icon(forFile: element.url.path)
+            if row == 0 {
+                cell.textField?.isEditable = false
+            }
+        case Constants.SizeColumn:
+            cell.textField?.stringValue = element.sizeString
+        case Constants.DateColumn:
+            cell.textField?.stringValue = element.dateModified
+        default:
+            break
+        }
+        
+        return cell
     }
 }
 
@@ -93,7 +96,14 @@ extension ViewController: TableViewDelegate {
                     leftTable.reloadData()
                     rightTable.reloadData()
                 } catch {
-                    print(error)
+                    NSLog("Error deleting items: %@", error.localizedDescription)
+                    
+                    // Show error to user
+                    let alert = NSAlert()
+                    alert.messageText = "Could Not Delete Item"
+                    alert.informativeText = error.localizedDescription
+                    alert.alertStyle = .critical
+                    alert.runModal()
                 }
             }
         }
@@ -118,7 +128,7 @@ extension ViewController: TableViewDelegate {
         
         let element = dataSource.tableElements[forRow]
         
-        if element.isDirectory && !element.isPackage! {
+        if element.isDirectory && element.isPackage != true {
             dataSource.currentURL = element.url
         } else {
             NSWorkspace.shared.open(element.url)
@@ -131,13 +141,17 @@ extension ViewController: TableViewDelegate {
             leftTable.nextKeyView = rightTable
             view.window?.makeFirstResponder(rightTable)
             currentActiveTable = rightTable
-            refreshAddRemoveFavButton(tableToDataSource[rightTable]!.currentURL)
+            if let dataSource = tableToDataSource[rightTable] {
+                refreshAddRemoveFavButton(dataSource.currentURL)
+            }
         } else {
             // Focus left table
             rightTable.nextKeyView = leftTable
             view.window?.makeFirstResponder(leftTable)
             currentActiveTable = leftTable
-            refreshAddRemoveFavButton(tableToDataSource[leftTable]!.currentURL)
+            if let dataSource = tableToDataSource[leftTable] {
+                refreshAddRemoveFavButton(dataSource.currentURL)
+            }
         }
     }
     
@@ -181,37 +195,82 @@ extension ViewController: TableViewDelegate {
         textField.font = NSFont(name: fontName, size: 15)
     }
     
-    func handleF5() {
-        if let sourceTable = currentActiveTable {
-            let destinationTable = sourceTable == leftTable ? rightTable : leftTable
-            let dataSource = tableToDataSource[sourceTable]!
-            var sourceItems: [URL] = []
-            
-            for selectedRowIndex in sourceTable.selectedRowIndexes {
-                sourceItems.append(dataSource.tableElements[selectedRowIndex].url)
-            }
-            let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentURL
-            
-            fileOperations.copy(sourceItems, destinationFolderUrl)
-            
-            leftTable.reloadData()
-            rightTable.reloadData()
+    func handleF3() {
+        guard let sourceTable = currentActiveTable,
+              let sourceDataSource = tableToDataSource[sourceTable] else {
+            return
         }
+
+        // Collect selected file URLs (skip parent folder "..")
+        var selectedURLs: [URL] = []
+        for index in sourceTable.selectedRowIndexes {
+            guard index < sourceDataSource.tableElements.count else { continue }
+            let element = sourceDataSource.tableElements[index]
+            if element.name != ".." {
+                selectedURLs.append(element.url)
+            }
+        }
+
+        guard !selectedURLs.isEmpty else { return }
+
+        // Store for QLPreviewPanel data source
+        previewItems = selectedURLs
+
+        // Toggle Quick Look panel
+        if let panel = QLPreviewPanel.shared() {
+            if panel.isVisible {
+                panel.orderOut(nil)
+            } else {
+                panel.makeKeyAndOrderFront(nil)
+            }
+        }
+    }
+
+    func handleF5() {
+        guard let sourceTable = currentActiveTable,
+              let sourceDataSource = tableToDataSource[sourceTable] else {
+            return
+        }
+        
+        guard let destinationTable = sourceTable == leftTable ? rightTable : leftTable,
+              let destinationDataSource = tableToDataSource[destinationTable] else {
+            return
+        }
+        
+        var sourceItems: [URL] = []
+        for selectedRowIndex in sourceTable.selectedRowIndexes {
+            guard selectedRowIndex < sourceDataSource.tableElements.count else { continue }
+            sourceItems.append(sourceDataSource.tableElements[selectedRowIndex].url)
+        }
+        
+        guard !sourceItems.isEmpty else { return }
+        
+        fileOperations.copy(sourceItems, destinationDataSource.currentURL)
+        
+        leftTable.reloadData()
+        rightTable.reloadData()
     }
     
     func handleF6() {
-        guard let sourceTable = currentActiveTable else { return }
-        let destinationTable = sourceTable == leftTable ? rightTable : leftTable
-        let dataSource = tableToDataSource[sourceTable]!
+        guard let sourceTable = currentActiveTable,
+              let sourceDataSource = tableToDataSource[sourceTable] else {
+            return
+        }
+        
+        guard let destinationTable = sourceTable == leftTable ? rightTable : leftTable,
+              let destinationDataSource = tableToDataSource[destinationTable] else {
+            return
+        }
         
         var sourceItems: [TableElement] = []
         for index in sourceTable.selectedRowIndexes {
-            sourceItems.append(dataSource.tableElements[index])
+            guard index < sourceDataSource.tableElements.count else { continue }
+            sourceItems.append(sourceDataSource.tableElements[index])
         }
-
-        let destinationFolderUrl = tableToDataSource[destinationTable!]!.currentURL
         
-        fileOperations.move(sourceItems, destinationFolderUrl)
+        guard !sourceItems.isEmpty else { return }
+        
+        fileOperations.move(sourceItems, destinationDataSource.currentURL)
     }
     
     func getNewFolderName() -> String {
@@ -238,13 +297,24 @@ extension ViewController: TableViewDelegate {
     }
     
     func createFolder(_ tableView: NSTableView, _ folderName: String) {
-        let dataSource = tableToDataSource[tableView]!
+        guard let dataSource = tableToDataSource[tableView],
+              !folderName.isEmpty else {
+            return
+        }
+        
         let parentFolder = dataSource.currentURL
         
         do {
             try FileManager.default.createDirectory(at: parentFolder.appendingPathComponent(folderName), withIntermediateDirectories: false, attributes: nil)
         } catch {
-            print("Error in creating new folder: \(error)")
+            NSLog("Error in creating new folder: \(error)")
+            
+            // Show error to user
+            let alert = NSAlert()
+            alert.messageText = "Could Not Create Folder"
+            alert.informativeText = error.localizedDescription
+            alert.alertStyle = .warning
+            alert.runModal()
         }
     }
     

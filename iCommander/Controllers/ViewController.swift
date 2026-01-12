@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import Quartz
 
 // MARK: - NSViewController
 class ViewController: NSViewController {
@@ -47,8 +48,16 @@ class ViewController: NSViewController {
     
     var progressWindowController: ProgressWindowController? = nil
     var progressViewController: ProgressViewController? = nil
+
+    var previewItems: [URL] = []
     
-    let context = (NSApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var context: NSManagedObjectContext? {
+        guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {
+            NSLog("Unable to access AppDelegate")
+            return nil
+        }
+        return appDelegate.persistentContainer.viewContext
+    }
     
     @IBAction func showHiddenFilesToggled(_ sender: NSButton) {
         let isOn = sender.state == .on
@@ -66,15 +75,18 @@ class ViewController: NSViewController {
     @IBAction func tableClicked(_ sender: NSTableView) {
         if sender.clickedRow == -1 && sender.clickedColumn != -1 {
             if let tableData = tableToDataSource[sender] {
-                let sortDescriptor = sender.sortDescriptors[0]
-                if let key = sortDescriptor.key {
-                    tableData.sort(key, sortDescriptor.ascending)
+                guard let sortDescriptor = sender.sortDescriptors.first,
+                      let key = sortDescriptor.key else {
+                    return
                 }
+                tableData.sort(key, sortDescriptor.ascending)
                 sender.reloadData()
             }
         }
         currentActiveTable = sender
-        refreshAddRemoveFavButton(tableToDataSource[sender]!.currentURL)
+        if let dataSource = tableToDataSource[sender] {
+            refreshAddRemoveFavButton(dataSource.currentURL)
+        }
     }
     
     @IBAction func tableDoubleClick(_ sender: NSTableView) {
@@ -94,19 +106,22 @@ class ViewController: NSViewController {
     }
     
     @IBAction func cellEditAction(_ sender: Any) {
-        if let textField = sender as? NSTextField {
-            let activeTable = currentActiveTable == leftTable ? leftTable : rightTable
-            let dataSource = tableToDataSource[activeTable!]!
-            let element = dataSource.tableElements[activeTable!.selectedRow]
-            
-            fileOperations.rename(element.url, dataSource.currentURL, textField.stringValue)
+        guard let textField = sender as? NSTextField,
+              let activeTable = currentActiveTable,
+              let dataSource = tableToDataSource[activeTable],
+              activeTable.selectedRow >= 0,
+              activeTable.selectedRow < dataSource.tableElements.count else {
+            return
         }
+        
+        let element = dataSource.tableElements[activeTable.selectedRow]
+        fileOperations.rename(element.url, dataSource.currentURL, textField.stringValue)
     }
     
     @IBAction func pathEdited(_ sender: NSTextField) {
         let isPathValid = FileManager.default.fileExists(atPath: sender.stringValue)
-        let tableView = sender == leftPath ? leftTable : rightTable
-        let dataSource = tableToDataSource[tableView!]!
+        guard let tableView = (sender == leftPath ? leftTable : rightTable),
+              let dataSource = tableToDataSource[tableView] else { return }
         
         var isNewPathOK = false
         
@@ -157,29 +172,35 @@ class ViewController: NSViewController {
     }
     
     @IBAction func addRemoveFavorite(_ sender: Any) {
-        if let button = sender as? NSButton {
-            
-            let dataSource = tableToDataSource[currentActiveTable!]!
-            
-            switch button.title {
-            case "+":
-                favorites?.favURLs?.append(dataSource.currentURL)
-            case "-":
-                if let index = favorites?.favURLs?.firstIndex(of: dataSource.currentURL) {
-                    favorites?.favURLs?.remove(at: index)
-                }
-            default:
-                break;
-            }
-            
-            saveContext()
-            fetchFavorites()
-            refreshAddRemoveFavButton(dataSource.currentURL)
+        guard let button = sender as? NSButton,
+              let currentTable = currentActiveTable,
+              let dataSource = tableToDataSource[currentTable] else {
+            return
         }
+        
+        switch button.title {
+        case "+":
+            if favorites?.favURLs == nil {
+                favorites?.favURLs = []
+            }
+            favorites?.favURLs?.append(dataSource.currentURL)
+        case "-":
+            if let index = favorites?.favURLs?.firstIndex(of: dataSource.currentURL) {
+                favorites?.favURLs?.remove(at: index)
+            }
+        default:
+            break
+        }
+        
+        saveContext()
+        fetchFavorites()
+        refreshAddRemoveFavButton(dataSource.currentURL)
     }
     
     @IBAction func handleFunctionButtonClicked(_ sender: NSButton) {
-        if sender == F5CopyButton {
+        if sender == F3ViewButton {
+            handleF3()
+        } else if sender == F5CopyButton {
             handleF5()
         } else if sender == F6MoveButton {
             handleF6()
@@ -194,10 +215,11 @@ class ViewController: NSViewController {
     }
     
     func fetchTableData() {
+        guard let context = context else { return }
         do {
             let tableViewDataItems = try context.fetch(TableViewData.fetchRequest())
             
-            if tableViewDataItems.count != 0 {
+            if !tableViewDataItems.isEmpty {
                 for tableViewDataItem in tableViewDataItems {
                     let tableData = tableViewDataItem
                     if tableData.isOnLeftSide {
@@ -207,27 +229,34 @@ class ViewController: NSViewController {
                     }
                 }
                 
-                leftTableDataSource.currentURL = leftTableData!.currentUrlDBValue!
-                leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
-                rightTableDataSource.currentURL = rightTableData!.currentUrlDBValue!
-                rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
-                
-                if leftTableData!.showHiddenFiles {
-                    leftShowHiddenFiles.state = .on
+                if let leftData = leftTableData {
+                    leftTableDataSource.currentURL = leftData.currentUrlDBValue ?? FileManager.default.homeDirectoryForCurrentUser
+                    leftTableDataSource.showHiddenFiles = leftData.showHiddenFiles
+                    
+                    if leftData.showHiddenFiles {
+                        leftShowHiddenFiles.state = .on
+                    }
                 }
-                if rightTableData!.showHiddenFiles {
-                    rightShowHiddenFiles.state = .on
+                
+                if let rightData = rightTableData {
+                    rightTableDataSource.currentURL = rightData.currentUrlDBValue ?? FileManager.default.homeDirectoryForCurrentUser
+                    rightTableDataSource.showHiddenFiles = rightData.showHiddenFiles
+                    
+                    if rightData.showHiddenFiles {
+                        rightShowHiddenFiles.state = .on
+                    }
                 }
             } else {
                 createTableData()
             }
-        } catch  {
+        } catch {
             createTableData()
             self.saveContext()
         }
     }
     
     func fetchFavorites() {
+        guard let context = context else { return }
         do {
             let favoritesItems = try context.fetch(Favorites.fetchRequest())
             if !favoritesItems.isEmpty {
@@ -244,22 +273,21 @@ class ViewController: NSViewController {
     }
     
     func addFavoritesButtons(_ favoritesDB: Favorites?) {
-        if favoritesDB == nil {
+        if favoritesDB == nil, let context = context {
             favorites = Favorites(context: context)
             
-            let applicationsFolderURL = FileManager.default.urls(for: .applicationDirectory, in: .localDomainMask)[0]
-            let documentsFolderURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let downloadsFolderURL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)[0]
+            let applicationsFolderURL = FileManager.default.urls(for: .applicationDirectory, in: .localDomainMask).first
+            let documentsFolderURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            let downloadsFolderURL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
             
-            favorites?.favURLs = []
-            favorites?.favURLs?.append(applicationsFolderURL)
-            favorites?.favURLs?.append(documentsFolderURL)
-            favorites?.favURLs?.append(downloadsFolderURL)
+            favorites?.favURLs = [applicationsFolderURL, documentsFolderURL, downloadsFolderURL].compactMap { $0 }
         }
         
         clearFavoritesStackView()
         
-        for url in favorites!.favURLs! {
+        guard let favoriteURLs = favorites?.favURLs else { return }
+        
+        for url in favoriteURLs {
             favoritesStackView.addView(createFavButton(url), in: .trailing)
         }
     }
@@ -273,28 +301,41 @@ class ViewController: NSViewController {
     }
     
     func createTableData() {
+        guard let context = context else { return }
         leftTableData = TableViewData(context: context)
         leftTableData?.isOnLeftSide = true
         leftTableData?.showHiddenFiles = false
         leftTableData?.currentUrlDBValue = FileManager.default.homeDirectoryForCurrentUser
-        
+
         rightTableData = TableViewData(context: context)
         rightTableData?.isOnLeftSide = false
         rightTableData?.showHiddenFiles = false
         rightTableData?.currentUrlDBValue = FileManager.default.homeDirectoryForCurrentUser
         
-        leftTableDataSource.currentURL = leftTableData!.currentUrlDBValue!
-        leftTableDataSource.showHiddenFiles = leftTableData!.showHiddenFiles
-        rightTableDataSource.currentURL = rightTableData!.currentUrlDBValue!
-        rightTableDataSource.showHiddenFiles = rightTableData!.showHiddenFiles
+        if let leftData = leftTableData {
+            leftTableDataSource.currentURL = leftData.currentUrlDBValue ?? FileManager.default.homeDirectoryForCurrentUser
+            leftTableDataSource.showHiddenFiles = leftData.showHiddenFiles
+        }
         
+        if let rightData = rightTableData {
+            rightTableDataSource.currentURL = rightData.currentUrlDBValue ?? FileManager.default.homeDirectoryForCurrentUser
+            rightTableDataSource.showHiddenFiles = rightData.showHiddenFiles
+        }
     }
     
     func saveContext() {
+        guard let context = context else { return }
         do {
             try context.save()
         } catch {
-            print(error.localizedDescription)
+            NSLog("Error saving Core Data context: %@", error.localizedDescription)
+            
+            // Show error to user
+            let alert = NSAlert()
+            alert.messageText = "Could Not Save Settings"
+            alert.informativeText = error.localizedDescription
+            alert.alertStyle = .warning
+            alert.runModal()
         }
     }
     
@@ -384,7 +425,7 @@ class ViewController: NSViewController {
                     let resourceValues = try volumeUrl.resourceValues(forKeys: keys)
                     result.append(resourceValues)
                 } catch {
-                    print(error)
+                    NSLog("Error getting resource values for volume: %@", error.localizedDescription)
                 }
             }
         }
@@ -392,13 +433,19 @@ class ViewController: NSViewController {
     }
     
     func createDriveButton(_ resourceValues: URLResourceValues, _ locationOnScreen: LocationOnScreen) -> DriveButton {
+        guard let volumeName = resourceValues.volumeName,
+              let icon = resourceValues.effectiveIcon as? NSImage,
+              let path = resourceValues.path else {
+            // Return a placeholder button if essential properties are missing
+            return DriveButton(title: "Unknown", image: NSImage(), target: nil, action: nil)
+        }
         
-        let button = DriveButton(title: resourceValues.volumeName!, image: resourceValues.effectiveIcon as! NSImage, target: self, action: #selector(driveButtonPressed(_:)))
+        let button = DriveButton(title: volumeName, image: icon, target: self, action: #selector(driveButtonPressed(_:)))
         button.imagePosition = .imageLeading
         button.setButtonType(.momentaryPushIn)
         button.isBordered = true
         button.state = .off
-        button.path = resourceValues.path
+        button.path = path
         button.locationOnScreen = locationOnScreen
         
         return button
@@ -430,21 +477,55 @@ class ViewController: NSViewController {
     }
     
     @objc func pathButtonPressed(_ sender: Any?) {
-        if let button = sender as? ButtonWithPath {
-            let dataSource = tableToDataSource[currentActiveTable!]!
-            dataSource.currentURL = URL(fileURLWithPath: button.path!)
+        guard let button = sender as? ButtonWithPath,
+              let path = button.path,
+              let currentTable = currentActiveTable,
+              let dataSource = tableToDataSource[currentTable] else {
+            return
         }
+        
+        dataSource.currentURL = URL(fileURLWithPath: path)
     }
     
-    @objc func driveButtonPressed(_ sender: Any?)
-    {
-        if let button = sender as? DriveButton,
-           let locationOnScreen = button.locationOnScreen {
-            
-            let tableView = locationOnScreen == .Left ? leftTable : rightTable
-            let dataSource = tableToDataSource[tableView!]!
-            dataSource.currentURL = URL(fileURLWithPath: button.path!)
+    @objc func driveButtonPressed(_ sender: Any?) {
+        guard let button = sender as? DriveButton,
+              let locationOnScreen = button.locationOnScreen,
+              let path = button.path,
+              let tableView = (locationOnScreen == .Left ? leftTable : rightTable),
+              let dataSource = tableToDataSource[tableView] else {
+            return
         }
+
+        dataSource.currentURL = URL(fileURLWithPath: path)
+    }
+}
+
+// MARK: - QLPreviewPanel Support
+extension ViewController: QLPreviewPanelDataSource, QLPreviewPanelDelegate {
+
+    override func acceptsPreviewPanelControl(_ panel: QLPreviewPanel!) -> Bool {
+        return true
+    }
+
+    override func beginPreviewPanelControl(_ panel: QLPreviewPanel!) {
+        panel.dataSource = self
+        panel.delegate = self
+    }
+
+    override func endPreviewPanelControl(_ panel: QLPreviewPanel!) {
+        panel.dataSource = nil
+        panel.delegate = nil
+    }
+
+    func numberOfPreviewItems(in panel: QLPreviewPanel!) -> Int {
+        return previewItems.count
+    }
+
+    func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> (any QLPreviewItem)! {
+        guard index >= 0 && index < previewItems.count else {
+            return nil
+        }
+        return previewItems[index] as NSURL
     }
 }
 
