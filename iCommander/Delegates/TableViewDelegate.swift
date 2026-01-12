@@ -226,12 +226,29 @@ extension ViewController: TableViewDelegate {
         }
     }
 
+    func handleF4() {
+        guard let sourceTable = currentActiveTable,
+              let sourceDataSource = tableToDataSource[sourceTable] else {
+            return
+        }
+
+        for index in sourceTable.selectedRowIndexes {
+            guard index < sourceDataSource.tableElements.count else { continue }
+            let element = sourceDataSource.tableElements[index]
+
+            // Skip parent folder and directories
+            if element.name != ".." && !element.isDirectory {
+                NSWorkspace.shared.open(element.url)
+            }
+        }
+    }
+
     func handleF5() {
         guard let sourceTable = currentActiveTable,
               let sourceDataSource = tableToDataSource[sourceTable] else {
             return
         }
-        
+
         guard let destinationTable = sourceTable == leftTable ? rightTable : leftTable,
               let destinationDataSource = tableToDataSource[destinationTable] else {
             return

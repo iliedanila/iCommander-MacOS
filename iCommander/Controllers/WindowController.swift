@@ -29,6 +29,8 @@ class WindowController: NSWindowController {
         switch sender.title {
         case "View":
             viewController.handleF3()
+        case "Edit":
+            viewController.handleF4()
         case "Copy":
             viewController.handleF5()
         case "Move":

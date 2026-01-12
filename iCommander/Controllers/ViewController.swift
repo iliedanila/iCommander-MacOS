@@ -200,6 +200,8 @@ class ViewController: NSViewController {
     @IBAction func handleFunctionButtonClicked(_ sender: NSButton) {
         if sender == F3ViewButton {
             handleF3()
+        } else if sender == F4EditButton {
+            handleF4()
         } else if sender == F5CopyButton {
             handleF5()
         } else if sender == F6MoveButton {
