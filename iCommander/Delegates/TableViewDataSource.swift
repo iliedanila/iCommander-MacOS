@@ -54,7 +54,7 @@ extension ViewController: NSTableViewDataSource {
             }
         }
         
-        print("Drop operation on: \(dropOperation == .on)")
+        // Drop operation completed
         
         if !sourceURLs.isEmpty {
             let dataSource = tableToDataSource[tableView]!

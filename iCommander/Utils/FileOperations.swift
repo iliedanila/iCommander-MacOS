@@ -34,6 +34,10 @@ class FileOperations {
     var uuid: String = ""
     var state: State = .Running
     
+    // Use a serial queue to manage state changes
+    private let stateQueue = DispatchQueue(label: "com.icommander.fileoperations.state")
+    private var operationQueue = DispatchQueue(label: "com.icommander.fileoperations", qos: .background)
+    
     func copy(_ sourceItems: [URL], _ destinationDirectory: URL) {
         DispatchQueue.global(qos: .background).async {
             
@@ -58,7 +62,10 @@ class FileOperations {
                     self.delegate?.fileOperationCompleted(nil)
                 }
             } catch {
-                print("Error while renaming item: \(error)")
+                NSLog("Error while renaming item: %@", error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.delegate?.fileOperationCompleted(error)
+                }
             }
         }
     }
@@ -74,7 +81,10 @@ class FileOperations {
                     self.delegate?.fileOperationCompleted(nil)
                 }
             } catch {
-                print("Error while moving item: \(error)")
+                NSLog("Error while moving item: %@", error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.delegate?.fileOperationCompleted(error)
+                }
             }
         }
     }
@@ -84,7 +94,8 @@ class FileOperations {
             try FileManager.default.trashItem(at: item.url, resultingItemURL: nil)
             self.delegate?.fileOperationCompleted(nil)
         } catch {
-            print("Error while deleting element: \(error)")
+            NSLog("Error while deleting element: %@", error.localizedDescription)
+            self.delegate?.fileOperationCompleted(error)
         }
     }
     
@@ -109,7 +120,6 @@ class FileOperations {
                 
                 if fileManager.fileExists(atPath: destinationUrl.path) {
                     continueCopy = promptOverwrite("Overwrite \(currentUrl.lastPathComponent)?", "A folder with the same name exists at the destination.")
-                    print("Response: \(continueCopy)")
                 }
                 
                 guard continueCopy == true else {
@@ -119,7 +129,7 @@ class FileOperations {
                 do {
                     try fileManager.createDirectory(at: destinationUrl, withIntermediateDirectories: true, attributes: [:])
                 } catch {
-                    print("Error while creating directory: \(error)")
+                    NSLog("Error while creating directory: %@", error.localizedDescription)
                 }
                 
                 // Add all contents to urlList
@@ -129,7 +139,7 @@ class FileOperations {
                         urlList.append((url, destinationUrl))
                     }
                 } catch {
-                    print("Error while getting contents of directory: \(error)")
+                    NSLog("Error while getting contents of directory: %@", error.localizedDescription)
                 }
             } else {
                 let fileSize = getFileSize(currentUrl)
@@ -181,7 +191,6 @@ class FileOperations {
             var continueCopy = true
             if fileManager.fileExists(atPath: destinationURL.path) {
                 continueCopy = promptOverwrite("Overwrite \(sourceURL.lastPathComponent)?", "A file with the same name exists at the destination.")
-                print("Response: \(continueCopy)")
             }
             
             guard continueCopy == true else {
@@ -209,7 +218,10 @@ class FileOperations {
                         self.processNextFileInQueue(&mutableQueue)
                     }
                 } catch {
-                    print("Error while copying file: \(tuple.source.lastPathComponent) - Error: \(error)")
+                    NSLog("Error while copying file: %@ - Error: %@", tuple.source.lastPathComponent, error.localizedDescription)
+                    DispatchQueue.main.async {
+                        self.delegate?.fileOperationCompleted(error)
+                    }
                 }
             } else {
                 do {
@@ -221,7 +233,10 @@ class FileOperations {
                         self.processNextChuckInFile(sourceURL.path, destinationURL.path, 0, fileSize, queue)
                     }
                 } catch {
-                    print(error)
+                    NSLog("Error preparing file for copy: %@", error.localizedDescription)
+                    DispatchQueue.main.async {
+                        self.delegate?.fileOperationCompleted(error)
+                    }
                 }
             }
         }
@@ -246,39 +261,54 @@ class FileOperations {
                     self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedInFile, fileSize, queue)
                 }
             } else if state == .Running {
-                if let inFile = FileHandle(forReadingAtPath: sourcePath),
-                   let outFile = FileHandle(forWritingAtPath: destinationPath) {
-                    do {
-                        try inFile.seek(toOffset: bytesCopiedInFile)
-                        
-                        if #available(OSX 10.15.4, *) {
-                            try outFile.seekToEnd()
+                guard let inFile = FileHandle(forReadingAtPath: sourcePath),
+                      let outFile = FileHandle(forWritingAtPath: destinationPath) else {
+                    NSLog("Error: Unable to open file handles for %@", sourcePath)
+                    DispatchQueue.main.async {
+                        self.delegate?.fileOperationCompleted(NSError(domain: "FileOperations", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to open files"]))
+                    }
+                    return
+                }
+                
+                // Ensure files are closed when we're done
+                defer {
+                    try? inFile.close()
+                    try? outFile.close()
+                }
+                
+                do {
+                    try inFile.seek(toOffset: bytesCopiedInFile)
+                    
+                    if #available(OSX 10.15.4, *) {
+                        try outFile.seekToEnd()
+                    }
+                    
+                    let data = inFile.readData(ofLength: chunkSize)
+                    outFile.write(data)
+                    
+                    let bytesCopiedCount = bytesCopiedInFile + UInt64(data.count)
+                    totalBytesCopied += data.count
+                    
+                    DispatchQueue.main.async {
+                        let fileProgress = Double(bytesCopiedCount) / Double(fileSize)
+                        let overallProgress = Double(self.totalBytesCopied) / Double(self.totalBytesToCopy)
+                        self.delegate?.copyUpdateProgress(self.uuid, fileProgress, overallProgress)
+                    }
+                    
+                    if bytesCopiedCount < fileSize {
+                        DispatchQueue.global(qos: .background).async {
+                            self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedCount, fileSize, queue)
                         }
-                        
-                        let data = inFile.readData(ofLength: chunkSize)
-                        outFile.write(data)
-                        
-                        let bytesCopiedCount = bytesCopiedInFile + UInt64(data.count)
-                        totalBytesCopied += data.count
-                        
-                        DispatchQueue.main.async {
-                            let fileProgress = Double(bytesCopiedCount) / Double(fileSize)
-                            let overallProgress = Double(self.totalBytesCopied) / Double(self.totalBytesToCopy)
-                            self.delegate?.copyUpdateProgress(self.uuid, fileProgress, overallProgress)
+                    } else {
+                        DispatchQueue.global(qos: .background).async { [queue] in
+                            var mutableQueue = queue
+                            self.processNextFileInQueue(&mutableQueue)
                         }
-                        
-                        if bytesCopiedCount < fileSize {
-                            DispatchQueue.global(qos: .background).async {
-                                self.processNextChuckInFile(sourcePath, destinationPath, bytesCopiedCount, fileSize, queue)
-                            }
-                        } else {
-                            DispatchQueue.global(qos: .background).async { [queue] in
-                                var mutableQueue = queue
-                                self.processNextFileInQueue(&mutableQueue)
-                            }
-                        }
-                    } catch {
-                        print(error)
+                    }
+                } catch {
+                    NSLog("File copy error: %@", error.localizedDescription)
+                    DispatchQueue.main.async {
+                        self.delegate?.fileOperationCompleted(error)
                     }
                 }
             }
@@ -300,9 +330,9 @@ class FileOperations {
     func getIsAlias(_ forURL: URL) -> Bool? {
         do {
             let resourceValues = try forURL.resourceValues(forKeys: [.isAliasFileKey])
-            return  resourceValues.isAliasFile
+            return resourceValues.isAliasFile
         } catch {
-            print("Error while getting resource value isAliasFile: \(error)")
+            NSLog("Error while getting resource value isAliasFile: \(error)")
             return nil
         }
     }
@@ -310,9 +340,9 @@ class FileOperations {
     func getFileSize(_ forURL: URL) -> UInt64 {
         do {
             let resourceValues = try forURL.resourceValues(forKeys: [.fileSizeKey])
-            return UInt64(resourceValues.fileSize!)
+            return UInt64(resourceValues.fileSize ?? 0)
         } catch {
-            print("Error while getting file size for: \(forURL.lastPathComponent)")
+            NSLog("Error while getting file size for: \(forURL.lastPathComponent)")
         }
         return 0
     }
@@ -322,9 +352,14 @@ class FileOperations {
             let sourceVolumeID = try sourceURL.resourceValues(forKeys: [.volumeIdentifierKey])
             let destinationVolumeID = try destinationURL.deletingLastPathComponent().resourceValues(forKeys: [.volumeIdentifierKey])
             
-            return sourceVolumeID.volumeIdentifier!.isEqual(destinationVolumeID.volumeIdentifier!)
+            guard let sourceID = sourceVolumeID.volumeIdentifier,
+                  let destID = destinationVolumeID.volumeIdentifier else {
+                return false
+            }
+            
+            return sourceID.isEqual(destID)
         } catch {
-            print("Error while getting the volume ID: \(error)")
+            NSLog("Error while getting the volume ID: \(error)")
             return false
         }
     }

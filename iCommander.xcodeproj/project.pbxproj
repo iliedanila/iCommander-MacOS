@@ -24,6 +24,11 @@
 		4B95597C25DD19CD00B5EC7C /* Favorites+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B95597A25DD19CD00B5EC7C /* Favorites+CoreDataProperties.swift */; };
 		4B986768259A605D003AD5F7 /* DriveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B986767259A605D003AD5F7 /* DriveButton.swift */; };
 		4BA3D29925741A0C00C6891A /* ProgressWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */; };
+		4BD331422F1453C10020C5FF /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331412F1453C10020C5FF /* Logger.swift */; };
+		4BD331452F1453D70020C5FF /* SandboxHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331442F1453D70020C5FF /* SandboxHelper.swift */; };
+		4BD331472F1453E40020C5FF /* FileOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331462F1453E40020C5FF /* FileOperationsTests.swift */; };
+		4BD331492F1453EF0020C5FF /* Info-Template.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BD331482F1453EF0020C5FF /* Info-Template.plist */; };
+		4BD3314B2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md in Resources */ = {isa = PBXBuildFile; fileRef = 4BD3314A2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md */; };
 		4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06932523B59D00DF1AFF /* AppDelegate.swift */; };
 		4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06952523B59D00DF1AFF /* ViewController.swift */; };
 		4BDC06992523B59D00DF1AFF /* iCommander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06972523B59D00DF1AFF /* iCommander.xcdatamodeld */; };
@@ -51,6 +56,12 @@
 		4B95597A25DD19CD00B5EC7C /* Favorites+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Favorites+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4B986767259A605D003AD5F7 /* DriveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriveButton.swift; sourceTree = "<group>"; };
 		4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressWindowController.swift; sourceTree = "<group>"; };
+		4BD331412F1453C10020C5FF /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		4BD331432F1453CB0020C5FF /* iCommander-MacOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iCommander-MacOS.entitlements"; sourceTree = "<group>"; };
+		4BD331442F1453D70020C5FF /* SandboxHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxHelper.swift; sourceTree = "<group>"; };
+		4BD331462F1453E40020C5FF /* FileOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOperationsTests.swift; sourceTree = "<group>"; };
+		4BD331482F1453EF0020C5FF /* Info-Template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Template.plist"; sourceTree = "<group>"; };
+		4BD3314A2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = IMPROVEMENTS_SUMMARY.md; sourceTree = "<group>"; };
 		4BDC06902523B59D00DF1AFF /* iCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BDC06932523B59D00DF1AFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BDC06952523B59D00DF1AFF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +95,7 @@
 				4BDC06932523B59D00DF1AFF /* AppDelegate.swift */,
 				4B62BCD0256452B300C883DA /* FileOperationsDelegate.swift */,
 				4BFDB12C2589774C009E02D5 /* WindowDelegate.swift */,
+				4BD3314A2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -137,6 +149,7 @@
 				4B5DFBCD254F607F000B45BB /* WindowController.swift */,
 				4B3CCA832573B1D600F1AEEF /* ProgressViewController.swift */,
 				4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */,
+				4BD331412F1453C10020C5FF /* Logger.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -151,6 +164,10 @@
 				4BE9FC192523D913001E5A33 /* Constants.swift */,
 				4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */,
 				4B94F7072563124C00BABFEE /* FileOperations.swift */,
+				4BD331432F1453CB0020C5FF /* iCommander-MacOS.entitlements */,
+				4BD331442F1453D70020C5FF /* SandboxHelper.swift */,
+				4BD331462F1453E40020C5FF /* FileOperationsTests.swift */,
+				4BD331482F1453EF0020C5FF /* Info-Template.plist */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -213,6 +230,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BD3314B2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md in Resources */,
+				4BD331492F1453EF0020C5FF /* Info-Template.plist in Resources */,
 				4BDC069B2523B59E00DF1AFF /* Assets.xcassets in Resources */,
 				4BDC069E2523B59E00DF1AFF /* Main.storyboard in Resources */,
 			);
@@ -234,9 +253,11 @@
 				4B986768259A605D003AD5F7 /* DriveButton.swift in Sources */,
 				4BA3D29925741A0C00C6891A /* ProgressWindowController.swift in Sources */,
 				4B94F7082563124C00BABFEE /* FileOperations.swift in Sources */,
+				4BD331422F1453C10020C5FF /* Logger.swift in Sources */,
 				4B89F3A1253F50F4008CDE5C /* TableDataSource.swift in Sources */,
 				4B72162D25C8894F008FD7E3 /* TableViewData+CoreDataProperties.swift in Sources */,
 				4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */,
+				4BD331452F1453D70020C5FF /* SandboxHelper.swift in Sources */,
 				4B5DFBD12550B639000B45BB /* MenuDelegate.swift in Sources */,
 				4B5DFBDD2550B78E000B45BB /* DataSourceDelegate.swift in Sources */,
 				4B1765A12535C1FA00B9C8E2 /* TableView.swift in Sources */,
@@ -246,6 +267,7 @@
 				4B95597B25DD19CD00B5EC7C /* Favorites+CoreDataClass.swift in Sources */,
 				4B3CCA842573B1D600F1AEEF /* ProgressViewController.swift in Sources */,
 				4BDC06992523B59D00DF1AFF /* iCommander.xcdatamodeld in Sources */,
+				4BD331472F1453E40020C5FF /* FileOperationsTests.swift in Sources */,
 				4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +413,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = iCommander/iCommander.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
@@ -415,6 +438,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = iCommander/iCommander.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;

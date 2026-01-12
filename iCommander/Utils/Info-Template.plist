@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- App Information -->
+	<key>CFBundleName</key>
+	<string>iCommander</string>
+	<key>CFBundleDisplayName</key>
+	<string>iCommander</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	
+	<!-- Minimum macOS Version -->
+	<key>LSMinimumSystemVersion</key>
+	<string>10.15</string>
+	
+	<!-- App Category for Mac App Store -->
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
+	
+	<!-- Copyright -->
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2024. All rights reserved.</string>
+	
+	<!-- Privacy Descriptions (if needed) -->
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>iCommander needs access to browse and manage files on your Desktop.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>iCommander needs access to browse and manage files in your Documents folder.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>iCommander needs access to browse and manage files in your Downloads folder.</string>
+	<key>NSRemovableVolumesUsageDescription</key>
+	<string>iCommander needs access to browse and manage files on external drives.</string>
+	
+	<!-- App Transport Security (if you add network features) -->
+	<!-- <key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+	</dict> -->
+	
+	<!-- High Resolution Support -->
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSMainStoryboardFile</key>
+	<string>Main</string>
+</dict>
+</plist>

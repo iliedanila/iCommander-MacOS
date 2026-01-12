@@ -113,7 +113,7 @@ class TableDataSource {
                         isPackage: isPackage))
             }
         } catch {
-            print("Error while getting folder contents: \(error).")
+            NSLog("Error while getting folder contents: %@", error.localizedDescription)
         }
     }
     
@@ -122,7 +122,7 @@ class TableDataSource {
             let resourceValues = try forURL.resourceValues(forKeys: [.volumeIdentifierKey])
             return  resourceValues.volumeIdentifier
         } catch {
-            print("Error retrieving volume ID: \(error)")
+            NSLog("Error retrieving volume ID: %@", error.localizedDescription)
             return nil
         }
     }
@@ -133,7 +133,7 @@ class TableDataSource {
             let resourceValues = try forURL.resourceValues(forKeys: [.fileSizeKey])
             return  resourceValues.fileSize
         } catch {
-            print("Error while getting the file size: \(error)")
+            NSLog("Error while getting file size: %@", error.localizedDescription)
             return nil
         }
     }
@@ -143,7 +143,7 @@ class TableDataSource {
             let resourceValues = try forURL.resourceValues(forKeys: [.isPackageKey])
             return  resourceValues.isPackage
         } catch {
-            print("Error while getting resource value isPackage: \(error)")
+            NSLog("Error while getting resource value isPackage: %@", error.localizedDescription)
             return nil
         }
     }
@@ -158,7 +158,7 @@ class TableDataSource {
                 return dateString
             }
         } catch {
-            print("Error while getting file date: \(error)")
+            NSLog("Error while getting file date: %@", error.localizedDescription)
         }
         return ""
     }

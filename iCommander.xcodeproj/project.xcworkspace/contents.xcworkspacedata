@@ -2,6 +2,15 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/ilie/workspace/iCommander/iCommander.xcodeproj">
+      location = "self:">
+   </FileRef>
+   <FileRef
+      location = "group:FileManagerService.swift">
+   </FileRef>
+   <FileRef
+      location = "group:PreferencesManager.swift">
+   </FileRef>
+   <FileRef
+      location = "group:FileOperationCoordinator.swift">
    </FileRef>
 </Workspace>
