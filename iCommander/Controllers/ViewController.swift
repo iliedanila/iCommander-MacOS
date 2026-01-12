@@ -51,9 +51,10 @@ class ViewController: NSViewController {
 
     var previewItems: [URL] = []
     
-    var context: NSManagedObjectContext {
+    var context: NSManagedObjectContext? {
         guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {
-            fatalError("Unable to access AppDelegate")
+            NSLog("Unable to access AppDelegate")
+            return nil
         }
         return appDelegate.persistentContainer.viewContext
     }
@@ -119,8 +120,8 @@ class ViewController: NSViewController {
     
     @IBAction func pathEdited(_ sender: NSTextField) {
         let isPathValid = FileManager.default.fileExists(atPath: sender.stringValue)
-        let tableView = sender == leftPath ? leftTable : rightTable
-        guard let dataSource = tableToDataSource[tableView!] else { return }
+        guard let tableView = (sender == leftPath ? leftTable : rightTable),
+              let dataSource = tableToDataSource[tableView] else { return }
         
         var isNewPathOK = false
         
@@ -214,6 +215,7 @@ class ViewController: NSViewController {
     }
     
     func fetchTableData() {
+        guard let context = context else { return }
         do {
             let tableViewDataItems = try context.fetch(TableViewData.fetchRequest())
             
@@ -254,6 +256,7 @@ class ViewController: NSViewController {
     }
     
     func fetchFavorites() {
+        guard let context = context else { return }
         do {
             let favoritesItems = try context.fetch(Favorites.fetchRequest())
             if !favoritesItems.isEmpty {
@@ -270,7 +273,7 @@ class ViewController: NSViewController {
     }
     
     func addFavoritesButtons(_ favoritesDB: Favorites?) {
-        if favoritesDB == nil {
+        if favoritesDB == nil, let context = context {
             favorites = Favorites(context: context)
             
             let applicationsFolderURL = FileManager.default.urls(for: .applicationDirectory, in: .localDomainMask).first
@@ -298,11 +301,12 @@ class ViewController: NSViewController {
     }
     
     func createTableData() {
+        guard let context = context else { return }
         leftTableData = TableViewData(context: context)
         leftTableData?.isOnLeftSide = true
         leftTableData?.showHiddenFiles = false
         leftTableData?.currentUrlDBValue = FileManager.default.homeDirectoryForCurrentUser
-        
+
         rightTableData = TableViewData(context: context)
         rightTableData?.isOnLeftSide = false
         rightTableData?.showHiddenFiles = false
@@ -320,6 +324,7 @@ class ViewController: NSViewController {
     }
     
     func saveContext() {
+        guard let context = context else { return }
         do {
             try context.save()
         } catch {
@@ -485,13 +490,12 @@ class ViewController: NSViewController {
     @objc func driveButtonPressed(_ sender: Any?) {
         guard let button = sender as? DriveButton,
               let locationOnScreen = button.locationOnScreen,
-              let path = button.path else {
+              let path = button.path,
+              let tableView = (locationOnScreen == .Left ? leftTable : rightTable),
+              let dataSource = tableToDataSource[tableView] else {
             return
         }
-        
-        let tableView = locationOnScreen == .Left ? leftTable : rightTable
-        guard let dataSource = tableToDataSource[tableView!] else { return }
-        
+
         dataSource.currentURL = URL(fileURLWithPath: path)
     }
 }
@@ -518,6 +522,9 @@ extension ViewController: QLPreviewPanelDataSource, QLPreviewPanelDelegate {
     }
 
     func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> (any QLPreviewItem)! {
+        guard index >= 0 && index < previewItems.count else {
+            return nil
+        }
         return previewItems[index] as NSURL
     }
 }

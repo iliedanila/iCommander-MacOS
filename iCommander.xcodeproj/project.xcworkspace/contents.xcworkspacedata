@@ -4,13 +4,4 @@
    <FileRef
       location = "self:">
    </FileRef>
-   <FileRef
-      location = "group:FileManagerService.swift">
-   </FileRef>
-   <FileRef
-      location = "group:PreferencesManager.swift">
-   </FileRef>
-   <FileRef
-      location = "group:FileOperationCoordinator.swift">
-   </FileRef>
 </Workspace>

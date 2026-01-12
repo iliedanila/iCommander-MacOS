@@ -1054,6 +1054,9 @@
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <connections>
+                                            <action selector="handleFunctionButtonClicked:" target="XfG-lQ-9wD" id="cF3-vw-ACT"/>
+                                        </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YsK-gR-pwg">
                                         <rect key="frame" x="147" y="0.0" width="118" height="24"/>

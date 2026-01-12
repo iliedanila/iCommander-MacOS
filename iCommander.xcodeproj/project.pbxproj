@@ -267,7 +267,6 @@
 				4B95597B25DD19CD00B5EC7C /* Favorites+CoreDataClass.swift in Sources */,
 				4B3CCA842573B1D600F1AEEF /* ProgressViewController.swift in Sources */,
 				4BDC06992523B59D00DF1AFF /* iCommander.xcdatamodeld in Sources */,
-				4BD331472F1453E40020C5FF /* FileOperationsTests.swift in Sources */,
 				4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
