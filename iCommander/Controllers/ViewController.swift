@@ -50,6 +50,9 @@ class ViewController: NSViewController {
     var progressViewController: ProgressViewController? = nil
 
     var previewItems: [URL] = []
+
+    var fileSearch: FileSearch?
+    var searchingDataSource: TableDataSource?
     
     var context: NSManagedObjectContext? {
         guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {

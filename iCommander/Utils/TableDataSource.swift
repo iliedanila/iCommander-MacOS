@@ -24,7 +24,7 @@ protocol DataSourceDelegate {
 }
 
 class TableDataSource {
-    
+
     var delegate: DataSourceDelegate?
     var location: LocationOnScreen
     var sortColumn: String? = nil
@@ -35,6 +35,12 @@ class TableDataSource {
             refreshData()
         }
     }
+
+    // Search mode properties
+    var isInSearchMode: Bool = false
+    var searchQuery: String = ""
+    var searchRootURL: URL?
+    private var originalURL: URL?
     
     init(_ aLocation: LocationOnScreen) {
         location = aLocation
@@ -50,11 +56,15 @@ class TableDataSource {
     }
     
     func refreshData() {
-        
+        // Don't refresh if in search mode - preserve search results
+        if isInSearchMode {
+            return
+        }
+
         tableElements = []
         addParentFolder(currentURL)
         addFolderContents(currentURL)
-        
+
         if let column = sortColumn, let ascending = isAscending {
             sort(column, ascending)
         }
@@ -220,12 +230,80 @@ class TableDataSource {
         while !FileManager.default.fileExists(atPath: tempURL.path) {
             tempURL = tempURL.deletingLastPathComponent()
         }
-        
+
         if !FileManager.default.fileExists(atPath: tempURL.path) ||
             tempURL.path == "/Volumes" { // current url was on a removed drive
             currentURL = FileManager.default.homeDirectoryForCurrentUser
         } else {
             currentURL = tempURL
         }
+    }
+
+    // MARK: - Search Mode
+
+    func enterSearchMode(query: String, rootURL: URL) {
+        originalURL = currentURL
+        searchRootURL = rootURL
+        searchQuery = query
+        isInSearchMode = true
+        tableElements = []
+    }
+
+    func addSearchResults(_ results: [SearchResult]) {
+        for result in results {
+            let sizeString = result.isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(result.size ?? 0))
+
+            let element = TableElement(
+                name: result.relativePath,
+                url: result.url,
+                size: result.size,
+                sizeString: sizeString,
+                dateModified: result.dateModified,
+                isDirectory: result.isDirectory,
+                volumeID: nil,
+                isPackage: false
+            )
+            tableElements.append(element)
+        }
+
+        if let column = sortColumn, let ascending = isAscending {
+            sort(column, ascending)
+        }
+    }
+
+    func exitSearchMode() {
+        isInSearchMode = false
+        searchQuery = ""
+        searchRootURL = nil
+
+        if let original = originalURL {
+            currentURL = original
+            originalURL = nil
+        } else {
+            refreshData()
+        }
+    }
+
+    func navigateToSearchResult(at index: Int) -> URL? {
+        guard isInSearchMode,
+              index >= 0,
+              index < tableElements.count else {
+            return nil
+        }
+
+        let element = tableElements[index]
+        let targetURL = element.url
+
+        // Exit search mode first
+        isInSearchMode = false
+        searchQuery = ""
+        searchRootURL = nil
+        originalURL = nil
+
+        // Navigate to the parent folder of the selected item
+        let parentFolder = targetURL.deletingLastPathComponent()
+        currentURL = parentFolder
+
+        return targetURL
     }
 }
