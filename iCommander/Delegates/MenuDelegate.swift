@@ -23,7 +23,7 @@ extension ViewController: NSMenuDelegate {
             }
             
             // Copy
-            menu.addItem(withTitle: "Copy", action: nil, keyEquivalent: "")
+            menu.addItem(withTitle: "Copy", action: #selector(copyToClipboard), keyEquivalent: "")
         }
         
         menu.addItem(withTitle: "Open in Finder", action: #selector(openInFinder), keyEquivalent: "")
@@ -31,7 +31,7 @@ extension ViewController: NSMenuDelegate {
         menu.addItem(withTitle: "Open Terminal", action: #selector(openTerminal), keyEquivalent: "")
         
         // Paste
-        menu.addItem(withTitle: "Paste", action: nil, keyEquivalent: "")
+        menu.addItem(withTitle: "Paste", action: #selector(pasteFromClipboard), keyEquivalent: "")
         
         // New... -> Text Document
         let newMenuItem = NSMenuItem(title: "New...", action: nil, keyEquivalent: "")
@@ -83,5 +83,63 @@ extension ViewController: NSMenuDelegate {
     }
     
     @objc func doNothing() {
+    }
+
+    @objc func copyToClipboard() {
+        guard let tableView = tableViewForActivatedMenu,
+              let dataSource = tableToDataSource[tableView] else {
+            return
+        }
+
+        var urlsToCopy: [URL] = []
+
+        // If right-clicked on a specific row, copy that item
+        if rowIndexForContexMenu >= 0 && rowIndexForContexMenu < dataSource.tableElements.count {
+            let element = dataSource.tableElements[rowIndexForContexMenu]
+            if element.name != ".." {
+                urlsToCopy.append(element.url)
+            }
+        }
+
+        guard !urlsToCopy.isEmpty else { return }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.writeObjects(urlsToCopy as [NSURL])
+    }
+
+    @objc func pasteFromClipboard() {
+        guard let tableView = tableViewForActivatedMenu,
+              let dataSource = tableToDataSource[tableView] else {
+            return
+        }
+
+        let pasteboard = NSPasteboard.general
+        guard let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL],
+              !urls.isEmpty else {
+            return
+        }
+
+        let destinationURL = dataSource.currentURL
+
+        for sourceURL in urls {
+            let destinationPath = destinationURL.appendingPathComponent(sourceURL.lastPathComponent)
+
+            do {
+                try FileManager.default.copyItem(at: sourceURL, to: destinationPath)
+            } catch {
+                NSLog("Error pasting file: %@", error.localizedDescription)
+
+                let alert = NSAlert()
+                alert.messageText = "Could Not Paste File"
+                alert.informativeText = "\(sourceURL.lastPathComponent): \(error.localizedDescription)"
+                alert.alertStyle = .warning
+                alert.runModal()
+            }
+        }
+
+        // Refresh both tables
+        leftTable.reloadData()
+        rightTable.reloadData()
     }
 }
