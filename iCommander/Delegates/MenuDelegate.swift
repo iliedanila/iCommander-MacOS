@@ -23,7 +23,7 @@ extension ViewController: NSMenuDelegate {
             }
             
             // Copy
-            menu.addItem(withTitle: "Copy", action: nil, keyEquivalent: "")
+            menu.addItem(withTitle: "Copy", action: #selector(copyToClipboard), keyEquivalent: "")
         }
         
         menu.addItem(withTitle: "Open in Finder", action: #selector(openInFinder), keyEquivalent: "")
@@ -31,7 +31,7 @@ extension ViewController: NSMenuDelegate {
         menu.addItem(withTitle: "Open Terminal", action: #selector(openTerminal), keyEquivalent: "")
         
         // Paste
-        menu.addItem(withTitle: "Paste", action: nil, keyEquivalent: "")
+        menu.addItem(withTitle: "Paste", action: #selector(pasteFromClipboard), keyEquivalent: "")
         
         // New... -> Text Document
         let newMenuItem = NSMenuItem(title: "New...", action: nil, keyEquivalent: "")
@@ -83,5 +83,97 @@ extension ViewController: NSMenuDelegate {
     }
     
     @objc func doNothing() {
+    }
+
+    @objc func copyToClipboard() {
+        guard let tableView = tableViewForActivatedMenu,
+              let dataSource = tableToDataSource[tableView] else {
+            return
+        }
+
+        var urlsToCopy: [URL] = []
+
+        // If right-clicked on a specific row, copy that item
+        if rowIndexForContexMenu >= 0 && rowIndexForContexMenu < dataSource.tableElements.count {
+            let element = dataSource.tableElements[rowIndexForContexMenu]
+            if element.name != ".." {
+                urlsToCopy.append(element.url)
+            }
+        }
+
+        guard !urlsToCopy.isEmpty else { return }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.writeObjects(urlsToCopy as [NSURL])
+    }
+
+    @objc func pasteFromClipboard() {
+        guard let tableView = tableViewForActivatedMenu,
+              let dataSource = tableToDataSource[tableView] else {
+            return
+        }
+
+        let pasteboard = NSPasteboard.general
+        guard let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL],
+              !urls.isEmpty else {
+            return
+        }
+
+        let destinationURL = dataSource.currentURL
+        var didCopyAnyItem = false
+        var errorMessages: [String] = []
+
+        for sourceURL in urls {
+            let destinationPath = destinationURL.appendingPathComponent(sourceURL.lastPathComponent)
+
+            // Check if file already exists
+            if FileManager.default.fileExists(atPath: destinationPath.path) {
+                let alert = NSAlert()
+                alert.messageText = "File Already Exists"
+                alert.informativeText = "Do you want to replace \"\(sourceURL.lastPathComponent)\"?"
+                alert.alertStyle = .warning
+                alert.addButton(withTitle: "Replace")
+                alert.addButton(withTitle: "Skip")
+
+                let response = alert.runModal()
+                if response == .alertSecondButtonReturn {
+                    // User chose Skip
+                    continue
+                }
+
+                // User chose Replace - remove existing file first
+                do {
+                    try FileManager.default.removeItem(at: destinationPath)
+                } catch {
+                    NSLog("Error removing existing file: %@", error.localizedDescription)
+                    errorMessages.append("\(sourceURL.lastPathComponent): Could not replace existing file")
+                    continue
+                }
+            }
+
+            do {
+                try FileManager.default.copyItem(at: sourceURL, to: destinationPath)
+                didCopyAnyItem = true
+            } catch {
+                NSLog("Error pasting file: %@", error.localizedDescription)
+                errorMessages.append("\(sourceURL.lastPathComponent): \(error.localizedDescription)")
+            }
+        }
+
+        // Show single alert with all errors
+        if !errorMessages.isEmpty {
+            let alert = NSAlert()
+            alert.messageText = errorMessages.count == 1 ? "Could Not Paste File" : "Some Files Could Not Be Pasted"
+            alert.informativeText = errorMessages.joined(separator: "\n")
+            alert.alertStyle = .warning
+            alert.runModal()
+        }
+
+        // Only refresh if something was copied
+        if didCopyAnyItem {
+            leftTable.reloadData()
+            rightTable.reloadData()
+        }
     }
 }
