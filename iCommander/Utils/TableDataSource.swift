@@ -25,6 +25,9 @@ protocol DataSourceDelegate {
 
 class TableDataSource {
 
+    // Cached formatter for performance
+    private static let byteCountFormatter = ByteCountFormatter()
+
     var delegate: DataSourceDelegate?
     var location: LocationOnScreen
     var sortColumn: String? = nil
@@ -251,7 +254,7 @@ class TableDataSource {
 
     func addSearchResults(_ results: [SearchResult]) {
         for result in results {
-            let sizeString = result.isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(result.size ?? 0))
+            let sizeString = result.isDirectory ? "Dir" : TableDataSource.byteCountFormatter.string(fromByteCount: Int64(result.size ?? 0))
 
             let element = TableElement(
                 name: result.relativePath,

@@ -28,11 +28,32 @@ class FileSearch {
     }
 
     weak var delegate: FileSearchDelegate?
-    var state: State = .stopped
     var maxResults: Int = 10000
 
+    private var _state: State = .stopped
+    private let stateLock = NSLock()
     private let searchQueue = DispatchQueue(label: "com.icommander.search", qos: .userInitiated)
     private let batchSize = 100
+
+    // Cached DateFormatter for performance
+    private static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        return formatter
+    }()
+
+    var state: State {
+        get {
+            stateLock.lock()
+            defer { stateLock.unlock() }
+            return _state
+        }
+        set {
+            stateLock.lock()
+            defer { stateLock.unlock() }
+            _state = newValue
+        }
+    }
 
     func search(query: String, in directory: URL, showHiddenFiles: Bool) {
         state = .running
@@ -56,7 +77,16 @@ class FileSearch {
                 return
             }
 
+            // Compile regex once for performance
             let pattern = self.globToRegex(query)
+            let regex: NSRegularExpression?
+            do {
+                regex = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
+            } catch {
+                regex = nil
+            }
+
+            let basePath = directory.path
             var results: [SearchResult] = []
             var totalFound = 0
 
@@ -71,11 +101,17 @@ class FileSearch {
 
                 let fileName = url.lastPathComponent
 
-                if self.matches(fileName: fileName, pattern: pattern) {
-                    let relativePath = url.path.replacingOccurrences(
-                        of: directory.path + "/",
-                        with: ""
-                    )
+                if self.matches(fileName: fileName, regex: regex) {
+                    // Robust relative path computation
+                    var relativePath: String
+                    if url.path.hasPrefix(basePath) {
+                        relativePath = String(url.path.dropFirst(basePath.count))
+                        if relativePath.hasPrefix("/") {
+                            relativePath = String(relativePath.dropFirst())
+                        }
+                    } else {
+                        relativePath = fileName
+                    }
 
                     let isDirectory = url.hasDirectoryPath
                     let size = self.getFileSize(url)
@@ -146,15 +182,13 @@ class FileSearch {
         return regex
     }
 
-    private func matches(fileName: String, pattern: String) -> Bool {
-        do {
-            let regex = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-            let range = NSRange(fileName.startIndex..., in: fileName)
-            return regex.firstMatch(in: fileName, options: [], range: range) != nil
-        } catch {
-            // If regex fails, fall back to simple contains check
-            return fileName.lowercased().contains(pattern.lowercased())
+    private func matches(fileName: String, regex: NSRegularExpression?) -> Bool {
+        guard let regex = regex else {
+            // If regex compilation failed, treat as no match
+            return false
         }
+        let range = NSRange(fileName.startIndex..., in: fileName)
+        return regex.firstMatch(in: fileName, options: [], range: range) != nil
     }
 
     // MARK: - File Attributes
@@ -172,9 +206,7 @@ class FileSearch {
         do {
             let resourceValues = try forURL.resourceValues(forKeys: [.contentModificationDateKey])
             if let dateModified = resourceValues.contentModificationDate {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
-                return dateFormatter.string(from: dateModified)
+                return FileSearch.dateFormatter.string(from: dateModified)
             }
         } catch {
             // Ignore error
