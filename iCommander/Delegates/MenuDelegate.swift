@@ -121,25 +121,59 @@ extension ViewController: NSMenuDelegate {
         }
 
         let destinationURL = dataSource.currentURL
+        var didCopyAnyItem = false
+        var errorMessages: [String] = []
 
         for sourceURL in urls {
             let destinationPath = destinationURL.appendingPathComponent(sourceURL.lastPathComponent)
 
+            // Check if file already exists
+            if FileManager.default.fileExists(atPath: destinationPath.path) {
+                let alert = NSAlert()
+                alert.messageText = "File Already Exists"
+                alert.informativeText = "Do you want to replace \"\(sourceURL.lastPathComponent)\"?"
+                alert.alertStyle = .warning
+                alert.addButton(withTitle: "Replace")
+                alert.addButton(withTitle: "Skip")
+
+                let response = alert.runModal()
+                if response == .alertSecondButtonReturn {
+                    // User chose Skip
+                    continue
+                }
+
+                // User chose Replace - remove existing file first
+                do {
+                    try FileManager.default.removeItem(at: destinationPath)
+                } catch {
+                    NSLog("Error removing existing file: %@", error.localizedDescription)
+                    errorMessages.append("\(sourceURL.lastPathComponent): Could not replace existing file")
+                    continue
+                }
+            }
+
             do {
                 try FileManager.default.copyItem(at: sourceURL, to: destinationPath)
+                didCopyAnyItem = true
             } catch {
                 NSLog("Error pasting file: %@", error.localizedDescription)
-
-                let alert = NSAlert()
-                alert.messageText = "Could Not Paste File"
-                alert.informativeText = "\(sourceURL.lastPathComponent): \(error.localizedDescription)"
-                alert.alertStyle = .warning
-                alert.runModal()
+                errorMessages.append("\(sourceURL.lastPathComponent): \(error.localizedDescription)")
             }
         }
 
-        // Refresh both tables
-        leftTable.reloadData()
-        rightTable.reloadData()
+        // Show single alert with all errors
+        if !errorMessages.isEmpty {
+            let alert = NSAlert()
+            alert.messageText = errorMessages.count == 1 ? "Could Not Paste File" : "Some Files Could Not Be Pasted"
+            alert.informativeText = errorMessages.joined(separator: "\n")
+            alert.alertStyle = .warning
+            alert.runModal()
+        }
+
+        // Only refresh if something was copied
+        if didCopyAnyItem {
+            leftTable.reloadData()
+            rightTable.reloadData()
+        }
     }
 }
