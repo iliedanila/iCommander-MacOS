@@ -10,7 +10,6 @@ This document tracks the remaining work needed before publishing to the Mac App 
 - [ ] **Privacy Policy** - Create and host a privacy policy URL
 
 ### Fix Non-Functional Features
-- [ ] **F4 Edit** - Implement open file in default text editor
 - [ ] **Context Menu Copy/Paste** - Implement clipboard operations in MenuDelegate.swift
 - [ ] **Context Menu "New Text Document"** - Create empty text file
 - [ ] **Context Menu "Rename"** - Trigger inline editing from context menu
@@ -78,6 +77,7 @@ This document tracks the remaining work needed before publishing to the Mac App 
 ## Completed
 
 - [x] Quick Look preview (F3)
+- [x] Open file in default app (F4)
 - [x] Remove force unwraps
 - [x] Replace fatalError() with error alerts
 - [x] Convert print() to NSLog()
