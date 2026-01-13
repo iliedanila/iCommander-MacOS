@@ -21,6 +21,18 @@ xcodebuild -project iCommander.xcodeproj -scheme iCommander-MacOS clean
 
 The project can also be opened and built directly in Xcode: `open iCommander.xcodeproj`
 
+## Git Workflow
+
+**Never commit directly to the main branch.** Always create a feature branch for your changes:
+
+```bash
+git checkout -b feature/your-feature-name
+# make changes
+git add -A && git commit -m "Your commit message"
+git push -u origin feature/your-feature-name
+# create PR via: gh pr create
+```
+
 ## Architecture
 
 ### Core Components
@@ -55,8 +67,8 @@ Core Data stores user state:
 ### Key Keyboard Shortcuts
 
 Defined in Constants.swift:
-- F3 (99): View - not implemented
-- F4 (118): Edit - not implemented
+- F3 (99): Quick Look preview
+- F4 (118): Open file in default application
 - F5 (96): Copy files to opposite panel
 - F6 (97): Move files to opposite panel
 - F7 (98): Create new folder
