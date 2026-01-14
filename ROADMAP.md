@@ -17,7 +17,7 @@ This document tracks the remaining work needed before publishing to the Mac App 
 
 ### Search & Filter
 - [ ] Real-time filtering within current directory (type to filter)
-- [ ] Recursive search across subdirectories
+- [x] Recursive search across subdirectories (Cmd+F)
 - [ ] Search by name, extension, size, date range
 
 ### Batch Rename
@@ -75,6 +75,7 @@ This document tracks the remaining work needed before publishing to the Mac App 
 
 ## Completed
 
+- [x] Recursive file search with glob patterns (Cmd+F)
 - [x] Quick Look preview (F3)
 - [x] Open file in default app (F4)
 - [x] Context menu Copy/Paste with overwrite confirmation
