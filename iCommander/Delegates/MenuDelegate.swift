@@ -159,8 +159,8 @@ extension ViewController: NSMenuDelegate {
         currentActiveTable = tableView
 
         // Get the name column and begin editing
-        if let nameColumnIndex = tableView.column(withIdentifier: NSUserInterfaceItemIdentifier("Name")) as Int?,
-           nameColumnIndex >= 0 {
+        let nameColumnIndex = tableView.column(withIdentifier: NSUserInterfaceItemIdentifier("Name"))
+        if nameColumnIndex >= 0 {
             // Small delay to ensure the row is selected before editing
             DispatchQueue.main.async {
                 tableView.editColumn(nameColumnIndex, row: self.rowIndexForContexMenu, with: nil, select: true)
