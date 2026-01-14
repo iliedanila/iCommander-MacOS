@@ -144,27 +144,34 @@ extension ViewController: NSMenuDelegate {
 
     @objc func renameFromContextMenu() {
         guard let tableView = tableViewForActivatedMenu,
-              let dataSource = tableToDataSource[tableView],
-              rowIndexForContexMenu >= 0,
-              rowIndexForContexMenu < dataSource.tableElements.count else {
+              let dataSource = tableToDataSource[tableView] else {
             return
         }
 
-        let element = dataSource.tableElements[rowIndexForContexMenu]
+        let targetRow = rowIndexForContexMenu >= 0 ? rowIndexForContexMenu : tableView.clickedRow
+        guard targetRow >= 0, targetRow < dataSource.tableElements.count else { return }
+        rowIndexForContexMenu = targetRow
+
+        let element = dataSource.tableElements[targetRow]
         guard element.name != ".." else { return }
 
         // Select the row and make the table first responder
-        tableView.selectRowIndexes([rowIndexForContexMenu], byExtendingSelection: false)
+        tableView.selectRowIndexes([targetRow], byExtendingSelection: false)
+        tableView.scrollRowToVisible(targetRow)
         view.window?.makeFirstResponder(tableView)
         currentActiveTable = tableView
 
-        // Get the name column and begin editing
-        let nameColumnIndex = tableView.column(withIdentifier: NSUserInterfaceItemIdentifier("Name"))
-        if nameColumnIndex >= 0 {
-            // Small delay to ensure the row is selected before editing
-            DispatchQueue.main.async {
-                tableView.editColumn(nameColumnIndex, row: self.rowIndexForContexMenu, with: nil, select: true)
-            }
+        // Get the name column index (identifier may be unset in some tables).
+        var nameColumnIndex = tableView.column(withIdentifier: NSUserInterfaceItemIdentifier(Constants.NameColumn))
+        if nameColumnIndex < 0,
+           let index = tableView.tableColumns.firstIndex(where: { $0.title == Constants.NameColumn }) {
+            nameColumnIndex = index
+        }
+        guard nameColumnIndex >= 0 else { return }
+
+        // Start editing the name cell after the menu closes.
+        DispatchQueue.main.async {
+            tableView.editColumn(nameColumnIndex, row: targetRow, with: nil, select: true)
         }
     }
 
