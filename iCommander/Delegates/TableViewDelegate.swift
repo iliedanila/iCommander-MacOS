@@ -120,14 +120,30 @@ extension ViewController: TableViewDelegate {
     
     func handleEnterPressed(_ tableView: NSTableView, _ forRow: Int) {
         guard let dataSource = tableToDataSource[tableView] else { return }
-        
-        if forRow == 0 && urlHasParent(dataSource.currentURL){
+
+        // Handle search mode: navigate to the file's folder and select the file
+        if dataSource.isInSearchMode {
+            if let targetURL = dataSource.navigateToSearchResult(at: forRow) {
+                fileSearch?.cancel()
+                fileSearch = nil
+                searchingDataSource = nil
+
+                // Find and select the file in the refreshed table
+                if let index = dataSource.tableElements.firstIndex(where: { $0.url == targetURL }) {
+                    tableView.selectRowIndexes([index], byExtendingSelection: false)
+                    tableView.scrollRowToVisible(index)
+                }
+            }
+            return
+        }
+
+        if forRow == 0 && urlHasParent(dataSource.currentURL) {
             parentFolderRequested(tableView)
             return
         }
-        
+
         let element = dataSource.tableElements[forRow]
-        
+
         if element.isDirectory && element.isPackage != true {
             dataSource.currentURL = element.url
         } else {
@@ -347,5 +363,102 @@ extension ViewController: TableViewDelegate {
     func handleF8() {
         guard let sourceTable = currentActiveTable else { return }
         deleteItems(sourceTable, Array(sourceTable.selectedRowIndexes))
+    }
+
+    func handleSearch() {
+        guard let sourceTable = currentActiveTable,
+              let sourceDataSource = tableToDataSource[sourceTable] else {
+            return
+        }
+
+        // If already in search mode, exit first
+        if sourceDataSource.isInSearchMode {
+            handleEscape()
+            return
+        }
+
+        // Show search dialog
+        let alert = NSAlert()
+        alert.messageText = "Search Files"
+        alert.informativeText = "Enter search pattern (use * for wildcards):"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Search")
+        alert.addButton(withTitle: "Cancel")
+
+        let textField = NSTextField(frame: NSRect(x: 0, y: 0, width: 300, height: 24))
+        textField.placeholderString = "*.swift"
+        alert.accessoryView = textField
+        alert.window.initialFirstResponder = textField
+
+        let response = alert.runModal()
+        guard response == .alertFirstButtonReturn else { return }
+
+        let query = textField.stringValue.trimmingCharacters(in: .whitespaces)
+        guard !query.isEmpty else { return }
+
+        // Cancel any existing search
+        fileSearch?.cancel()
+
+        // Start new search
+        let rootURL = sourceDataSource.currentURL
+        sourceDataSource.enterSearchMode(query: query, rootURL: rootURL)
+
+        // Update path label
+        let pathLabel = sourceDataSource.location == .Left ? leftPath : rightPath
+        pathLabel?.stringValue = "Search: \(query) in \(rootURL.path)"
+
+        searchingDataSource = sourceDataSource
+        sourceTable.reloadData()
+
+        fileSearch = FileSearch()
+        fileSearch?.delegate = self
+        fileSearch?.search(query: query, in: rootURL, showHiddenFiles: sourceDataSource.showHiddenFiles)
+    }
+
+    func handleEscape() {
+        guard let sourceTable = currentActiveTable,
+              let sourceDataSource = tableToDataSource[sourceTable] else {
+            return
+        }
+
+        // If in search mode, exit it
+        if sourceDataSource.isInSearchMode {
+            fileSearch?.cancel()
+            fileSearch = nil
+            searchingDataSource = nil
+            sourceDataSource.exitSearchMode()
+            sourceTable.reloadData()
+        }
+    }
+}
+
+// MARK: - FileSearchDelegate
+extension ViewController: FileSearchDelegate {
+    func searchFoundResults(_ results: [SearchResult]) {
+        guard let dataSource = searchingDataSource,
+              let tableView = dataSource.location == .Left ? leftTable : rightTable else {
+            return
+        }
+
+        dataSource.addSearchResults(results)
+        tableView.reloadData()
+    }
+
+    func searchCompleted(totalFound: Int, error: Error?) {
+        guard let dataSource = searchingDataSource else { return }
+
+        let pathLabel = dataSource.location == .Left ? leftPath : rightPath
+
+        if let searchRoot = dataSource.searchRootURL {
+            pathLabel?.stringValue = "Search: \(dataSource.searchQuery) in \(searchRoot.path) (\(totalFound) found)"
+        }
+
+        if let error = error {
+            let alert = NSAlert()
+            alert.messageText = "Search Error"
+            alert.informativeText = error.localizedDescription
+            alert.alertStyle = .warning
+            alert.runModal()
+        }
     }
 }

@@ -18,6 +18,8 @@ protocol TableViewDelegate {
     func handleF6()
     func handleF7()
     func handleF8()
+    func handleSearch()
+    func handleEscape()
     func deleteItems(_ tableView: NSTableView, _ rows: [Int])
     var rowIndexForActivatedMenu: Int { get set }
     var tableViewForActivatedMenu: NSTableView? { get set }
@@ -46,17 +48,21 @@ class TableView: NSTableView {
     }
     
     override func keyDown(with event: NSEvent) {
-        
+
         if event.keyCode == Constants.KeyCodeEnter {
             tableViewDelegate?.handleEnterPressed(self, selectedRow)
         } else if event.keyCode == Constants.KeyCodeUp && event.modifierFlags.contains(.command) {
             tableViewDelegate?.parentFolderRequested(self)
         } else if event.keyCode == Constants.KeyCodeTab {
             tableViewDelegate?.focusNextTable(self)
-        } else if event.keyCode == Constants.KeyCodeDelete && event.modifierFlags.contains(.command){
+        } else if event.keyCode == Constants.KeyCodeDelete && event.modifierFlags.contains(.command) {
             tableViewDelegate?.deleteItems(self, Array(selectedRowIndexes))
-        } else if event.keyCode == Constants.KeyCodeR && event.modifierFlags.contains(.command){
+        } else if event.keyCode == Constants.KeyCodeR && event.modifierFlags.contains(.command) {
             reloadData()
+        } else if event.keyCode == Constants.KeyCodeF && event.modifierFlags.contains(.command) {
+            tableViewDelegate?.handleSearch()
+        } else if event.keyCode == Constants.KeyCodeEscape {
+            tableViewDelegate?.handleEscape()
         } else if event.keyCode == Constants.KeyCodeF3 {
             tableViewDelegate?.handleF3()
         } else if event.keyCode == Constants.KeyCodeF4 {

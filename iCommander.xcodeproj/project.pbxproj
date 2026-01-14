@@ -27,6 +27,7 @@
 		4BD331422F1453C10020C5FF /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331412F1453C10020C5FF /* Logger.swift */; };
 		4BD331452F1453D70020C5FF /* SandboxHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331442F1453D70020C5FF /* SandboxHelper.swift */; };
 		4BD331472F1453E40020C5FF /* FileOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331462F1453E40020C5FF /* FileOperationsTests.swift */; };
+		4BD3314C2F1455800020C5FF /* FileSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD3314D2F1455800020C5FF /* FileSearch.swift */; };
 		4BD331492F1453EF0020C5FF /* Info-Template.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BD331482F1453EF0020C5FF /* Info-Template.plist */; };
 		4BD3314B2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md in Resources */ = {isa = PBXBuildFile; fileRef = 4BD3314A2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md */; };
 		4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06932523B59D00DF1AFF /* AppDelegate.swift */; };
@@ -60,6 +61,7 @@
 		4BD331432F1453CB0020C5FF /* iCommander-MacOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iCommander-MacOS.entitlements"; sourceTree = "<group>"; };
 		4BD331442F1453D70020C5FF /* SandboxHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxHelper.swift; sourceTree = "<group>"; };
 		4BD331462F1453E40020C5FF /* FileOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOperationsTests.swift; sourceTree = "<group>"; };
+		4BD3314D2F1455800020C5FF /* FileSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSearch.swift; sourceTree = "<group>"; };
 		4BD331482F1453EF0020C5FF /* Info-Template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Template.plist"; sourceTree = "<group>"; };
 		4BD3314A2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = IMPROVEMENTS_SUMMARY.md; sourceTree = "<group>"; };
 		4BDC06902523B59D00DF1AFF /* iCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,6 +166,7 @@
 				4BE9FC192523D913001E5A33 /* Constants.swift */,
 				4B89F3A0253F50F4008CDE5C /* TableDataSource.swift */,
 				4B94F7072563124C00BABFEE /* FileOperations.swift */,
+				4BD3314D2F1455800020C5FF /* FileSearch.swift */,
 				4BD331432F1453CB0020C5FF /* iCommander-MacOS.entitlements */,
 				4BD331442F1453D70020C5FF /* SandboxHelper.swift */,
 				4BD331462F1453E40020C5FF /* FileOperationsTests.swift */,
@@ -268,6 +271,7 @@
 				4B3CCA842573B1D600F1AEEF /* ProgressViewController.swift in Sources */,
 				4BDC06992523B59D00DF1AFF /* iCommander.xcdatamodeld in Sources */,
 				4BE9FC1A2523D913001E5A33 /* Constants.swift in Sources */,
+				4BD3314C2F1455800020C5FF /* FileSearch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
