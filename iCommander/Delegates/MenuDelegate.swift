@@ -37,13 +37,16 @@ extension ViewController: NSMenuDelegate {
         let newMenuItem = NSMenuItem(title: "New...", action: nil, keyEquivalent: "")
         menu.addItem(newMenuItem)
         let submenu = NSMenu(title: "New...")
-        let newTextFile = NSMenuItem(title: "Text Document", action: #selector(doNothing), keyEquivalent: "")
+        let newTextFile = NSMenuItem(title: "Text Document", action: #selector(createNewTextDocument), keyEquivalent: "")
         submenu.addItem(newTextFile)
         menu.setSubmenu(submenu, for: newMenuItem)
-        
+
         // Rename
         if rowIndexForContexMenu != -1 {
-            menu.addItem(withTitle: "Rename", action: #selector(doNothing), keyEquivalent: "")
+            let element = dataSource.tableElements[rowIndexForContexMenu]
+            if element.name != ".." {
+                menu.addItem(withTitle: "Rename", action: #selector(renameFromContextMenu), keyEquivalent: "")
+            }
         }
     }
     
@@ -82,7 +85,87 @@ extension ViewController: NSMenuDelegate {
         dataSource.currentURL = element.url
     }
     
-    @objc func doNothing() {
+    @objc func createNewTextDocument() {
+        guard let tableView = tableViewForActivatedMenu,
+              let dataSource = tableToDataSource[tableView] else {
+            return
+        }
+
+        // Prompt for filename
+        let alert = NSAlert()
+        alert.messageText = "New Text Document"
+        alert.informativeText = "Enter a name for the new file:"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "Create")
+        alert.addButton(withTitle: "Cancel")
+
+        let textField = NSTextField(frame: NSRect(x: 0, y: 0, width: 300, height: 24))
+        textField.stringValue = "Untitled.txt"
+        alert.accessoryView = textField
+        alert.window.initialFirstResponder = textField
+
+        let response = alert.runModal()
+        guard response == .alertFirstButtonReturn else { return }
+
+        var fileName = textField.stringValue.trimmingCharacters(in: .whitespaces)
+        guard !fileName.isEmpty else { return }
+
+        // Add .txt extension if no extension provided
+        if !fileName.contains(".") {
+            fileName += ".txt"
+        }
+
+        let fileURL = dataSource.currentURL.appendingPathComponent(fileName)
+
+        // Check if file already exists
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            let errorAlert = NSAlert()
+            errorAlert.messageText = "File Already Exists"
+            errorAlert.informativeText = "A file named \"\(fileName)\" already exists in this location."
+            errorAlert.alertStyle = .warning
+            errorAlert.runModal()
+            return
+        }
+
+        // Create empty file
+        do {
+            try "".write(to: fileURL, atomically: true, encoding: .utf8)
+            leftTable.reloadData()
+            rightTable.reloadData()
+        } catch {
+            NSLog("Error creating new text document: %@", error.localizedDescription)
+            let errorAlert = NSAlert()
+            errorAlert.messageText = "Could Not Create File"
+            errorAlert.informativeText = error.localizedDescription
+            errorAlert.alertStyle = .warning
+            errorAlert.runModal()
+        }
+    }
+
+    @objc func renameFromContextMenu() {
+        guard let tableView = tableViewForActivatedMenu,
+              let dataSource = tableToDataSource[tableView],
+              rowIndexForContexMenu >= 0,
+              rowIndexForContexMenu < dataSource.tableElements.count else {
+            return
+        }
+
+        let element = dataSource.tableElements[rowIndexForContexMenu]
+        guard element.name != ".." else { return }
+
+        // Select the row and make the table first responder
+        tableView.selectRowIndexes([rowIndexForContexMenu], byExtendingSelection: false)
+        view.window?.makeFirstResponder(tableView)
+        currentActiveTable = tableView
+
+        // Get the name column and begin editing
+        if let nameColumnIndex = tableView.column(withIdentifier: NSUserInterfaceItemIdentifier("Name")) as Int?,
+           nameColumnIndex >= 0 {
+            // Small delay to ensure the row is selected before editing
+            DispatchQueue.main.async {
+                tableView.editColumn(nameColumnIndex, row: self.rowIndexForContexMenu, with: nil, select: true)
+            }
+        }
     }
 
     @objc func copyToClipboard() {
