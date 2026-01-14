@@ -109,6 +109,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return false
+    }
+
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if !flag {
+            if let window = sender.windows.first(where: { $0.windowController is WindowController })
+                ?? sender.windows.first(where: { $0.contentViewController is ViewController })
+                ?? sender.windows.first {
+                window.makeKeyAndOrderFront(self)
+            } else {
+                let storyboard = NSStoryboard(name: "Main", bundle: nil)
+                if let windowController = storyboard.instantiateInitialController() as? NSWindowController {
+                    windowController.showWindow(self)
+                }
+            }
+        }
         return true
     }
     
