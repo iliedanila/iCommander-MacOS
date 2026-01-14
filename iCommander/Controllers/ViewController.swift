@@ -53,6 +53,7 @@ class ViewController: NSViewController {
 
     var fileSearch: FileSearch?
     var searchingDataSource: TableDataSource?
+    var sandboxAccessURLs: [URL] = []
     
     var context: NSManagedObjectContext? {
         guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else {
@@ -152,6 +153,7 @@ class ViewController: NSViewController {
         rightTableDataSource.delegate = self
         fileOperations.delegate = self
         
+        restoreSandboxAccess()
         fetchFromContext()
         
         if let leftTableView = leftTable as? TableView, let rightTableView = rightTable as? TableView {
@@ -172,6 +174,12 @@ class ViewController: NSViewController {
         notificationCenter.addObserver(self, selector: #selector(handleDriveChange), name: NSWorkspace.didUnmountNotification, object: nil)
         
         focusNextTable(rightTable)
+    }
+
+    deinit {
+        for url in sandboxAccessURLs {
+            SandboxHelper.shared.stopAccessingSecurityScopedResource(url)
+        }
     }
     
     @IBAction func addRemoveFavorite(_ sender: Any) {
@@ -217,6 +225,27 @@ class ViewController: NSViewController {
     func fetchFromContext() {
         fetchTableData()
         fetchFavorites()
+    }
+
+    private func restoreSandboxAccess() {
+        let bookmarks = PreferencesManager.shared.sandboxBookmarks
+        guard !bookmarks.isEmpty else { return }
+
+        for bookmark in bookmarks {
+            if let url = SandboxHelper.shared.resolveBookmark(bookmark) {
+                addSandboxAccess(for: url)
+            }
+        }
+    }
+
+    func addSandboxAccess(for url: URL) {
+        let normalizedURL = url.standardizedFileURL
+        if sandboxAccessURLs.contains(where: { $0.standardizedFileURL == normalizedURL }) {
+            return
+        }
+        if SandboxHelper.shared.startAccessingSecurityScopedResource(normalizedURL) {
+            sandboxAccessURLs.append(normalizedURL)
+        }
     }
     
     func fetchTableData() {
@@ -280,11 +309,11 @@ class ViewController: NSViewController {
     func addFavoritesButtons(_ favoritesDB: Favorites?) {
         if favoritesDB == nil, let context = context {
             favorites = Favorites(context: context)
-            
-            let applicationsFolderURL = FileManager.default.urls(for: .applicationDirectory, in: .localDomainMask).first
-            let documentsFolderURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-            let downloadsFolderURL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
-            
+
+            let applicationsFolderURL = getRealStandardDirectory(.applicationDirectory)
+            let documentsFolderURL = getRealStandardDirectory(.documentDirectory)
+            let downloadsFolderURL = getRealStandardDirectory(.downloadsDirectory)
+
             favorites?.favURLs = [applicationsFolderURL, documentsFolderURL, downloadsFolderURL].compactMap { $0 }
         }
         
@@ -402,8 +431,42 @@ class ViewController: NSViewController {
         }
     }
     
+    /// Returns the real home directory, even when running in App Sandbox
+    /// In sandbox mode, FileManager.homeDirectoryForCurrentUser returns the container path
+    func getRealHomeDirectory() -> URL {
+        let homeDir = FileManager.default.homeDirectoryForCurrentUser
+        // If running in sandbox container, get the real home directory
+        if homeDir.path.contains("/Library/Containers/") {
+            return URL(fileURLWithPath: "/Users/\(NSUserName())")
+        }
+        return homeDir
+    }
+
+    /// Returns the real path for a standard directory (Documents, Downloads, etc.)
+    /// In sandbox mode, FileManager returns container paths instead of real user folders
+    func getRealStandardDirectory(_ directory: FileManager.SearchPathDirectory) -> URL? {
+        let realHome = getRealHomeDirectory()
+        switch directory {
+        case .documentDirectory:
+            return realHome.appendingPathComponent("Documents")
+        case .downloadsDirectory:
+            return realHome.appendingPathComponent("Downloads")
+        case .desktopDirectory:
+            return realHome.appendingPathComponent("Desktop")
+        case .musicDirectory:
+            return realHome.appendingPathComponent("Music")
+        case .picturesDirectory:
+            return realHome.appendingPathComponent("Pictures")
+        case .moviesDirectory:
+            return realHome.appendingPathComponent("Movies")
+        default:
+            // For non-user directories (like Applications), use the standard path
+            return FileManager.default.urls(for: directory, in: .localDomainMask).first
+        }
+    }
+
     func createHomeButton(_ locationOnScreen: LocationOnScreen) -> DriveButton {
-        let homeURL = FileManager.default.homeDirectoryForCurrentUser
+        let homeURL = getRealHomeDirectory()
         let homeImage = NSWorkspace.shared.icon(forFile: homeURL.path)
         let button = DriveButton(title: "Home", image: homeImage, target: self, action: #selector(driveButtonPressed(_:)))
         button.imagePosition = .imageLeading
@@ -533,4 +596,3 @@ extension ViewController: QLPreviewPanelDataSource, QLPreviewPanelDelegate {
         return previewItems[index] as NSURL
     }
 }
-

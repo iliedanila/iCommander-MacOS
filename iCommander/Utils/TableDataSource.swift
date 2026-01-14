@@ -19,8 +19,13 @@ struct TableElement {
     let isPackage: Bool?
 }
 
-protocol DataSourceDelegate {
+protocol DataSourceDelegate: AnyObject {
     func handlePathChanged(_ dataSource: TableDataSource, _ newUrl: URL)
+    func handleAccessDenied(_ dataSource: TableDataSource, _ url: URL)
+}
+
+extension DataSourceDelegate {
+    func handleAccessDenied(_ dataSource: TableDataSource, _ url: URL) {}
 }
 
 class TableDataSource {
@@ -44,6 +49,7 @@ class TableDataSource {
     var searchQuery: String = ""
     var searchRootURL: URL?
     private var originalURL: URL?
+    private var lastDeniedURL: URL?
     
     init(_ aLocation: LocationOnScreen) {
         location = aLocation
@@ -98,17 +104,28 @@ class TableDataSource {
     func addFolderContents(_ url: URL) {
         do {
             let fileManager = FileManager.default
-            
+
+            if !fileManager.fileExists(atPath: url.path) {
+                NSLog("Path does not exist: %@", url.path)
+                return
+            }
+
+            if !fileManager.isReadableFile(atPath: url.path) {
+                notifyAccessDenied(url)
+                return
+            }
+
             var searchOptions: FileManager.DirectoryEnumerationOptions = [.skipsSubdirectoryDescendants]
             if !showHiddenFiles {
                 searchOptions.insert(.skipsHiddenFiles)
             }
             
             let fileURLs = try fileManager.contentsOfDirectory(at: currentURL, includingPropertiesForKeys: nil, options: searchOptions)
+            lastDeniedURL = nil
             
             for url in fileURLs {
                 let name = url.lastPathComponent
-                let isDirectory = url.hasDirectoryPath
+                let isDirectory = isDirectoryURL(url)
                 let fileSize = isDirectory ? nil : getFileSize(url)
                 let fileSizeString = isDirectory ? "Dir" : ByteCountFormatter().string(fromByteCount: Int64(fileSize!))
                 let dateModified = getFileModifiedDate(url)
@@ -126,7 +143,23 @@ class TableDataSource {
                         isPackage: isPackage))
             }
         } catch {
-            NSLog("Error while getting folder contents: %@", error.localizedDescription)
+            let nsError = error as NSError
+            if nsError.domain == NSCocoaErrorDomain && nsError.code == NSFileReadNoPermissionError {
+                notifyAccessDenied(url)
+            } else {
+                NSLog("Error while getting folder contents: %@", error.localizedDescription)
+            }
+        }
+    }
+
+    private func notifyAccessDenied(_ url: URL) {
+        if lastDeniedURL?.path == url.path {
+            return
+        }
+        lastDeniedURL = url
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.delegate?.handleAccessDenied(self, url)
         }
     }
     
@@ -160,7 +193,19 @@ class TableDataSource {
             return nil
         }
     }
-    
+
+    /// Checks if URL points to a directory, properly following symlinks
+    /// Uses resourceValues which resolves symlinks, unlike url.hasDirectoryPath
+    private func isDirectoryURL(_ url: URL) -> Bool {
+        do {
+            let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey])
+            return resourceValues.isDirectory ?? false
+        } catch {
+            // Fallback to hasDirectoryPath if we can't get resource values
+            return url.hasDirectoryPath
+        }
+    }
+
     func getFileModifiedDate(_ forURL: URL) -> String {
         do {
             let resourceValues = try forURL.resourceValues(forKeys: [.contentModificationDateKey])
