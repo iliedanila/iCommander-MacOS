@@ -37,7 +37,7 @@ extension ViewController: DataSourceDelegate {
         let message = "iCommander needs permission to access \"\(url.path)\". Select a folder to grant access."
 
         guard let selectedURL = SandboxHelper.shared.requestFolderAccess(message: message, initialURL: initialURL) else {
-            if let fallback = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first {
+            if let fallback = getRealStandardDirectory(.downloadsDirectory) {
                 dataSource.currentURL = fallback
             }
             return

@@ -136,9 +136,21 @@ class PreferencesManager {
 
     func addSandboxBookmark(_ bookmark: Data) {
         var bookmarks = sandboxBookmarks
-        if bookmarks.contains(bookmark) {
+
+        // Resolve the new bookmark to get its URL path
+        guard let newURL = SandboxHelper.shared.resolveBookmark(bookmark) else {
             return
         }
+        let newPath = newURL.standardizedFileURL.path
+
+        // Check if we already have a bookmark for this path
+        for existingBookmark in bookmarks {
+            if let existingURL = SandboxHelper.shared.resolveBookmark(existingBookmark),
+               existingURL.standardizedFileURL.path == newPath {
+                return
+            }
+        }
+
         bookmarks.append(bookmark)
         sandboxBookmarks = bookmarks
     }

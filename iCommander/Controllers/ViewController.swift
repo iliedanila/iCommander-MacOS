@@ -231,10 +231,18 @@ class ViewController: NSViewController {
         let bookmarks = PreferencesManager.shared.sandboxBookmarks
         guard !bookmarks.isEmpty else { return }
 
+        var validBookmarks: [Data] = []
+
         for bookmark in bookmarks {
             if let url = SandboxHelper.shared.resolveBookmark(bookmark) {
                 addSandboxAccess(for: url)
+                validBookmarks.append(bookmark)
             }
+        }
+
+        // Remove stale bookmarks that failed to resolve
+        if validBookmarks.count != bookmarks.count {
+            PreferencesManager.shared.sandboxBookmarks = validBookmarks
         }
     }
 
@@ -245,6 +253,8 @@ class ViewController: NSViewController {
         }
         if SandboxHelper.shared.startAccessingSecurityScopedResource(normalizedURL) {
             sandboxAccessURLs.append(normalizedURL)
+        } else {
+            AppLogger.info("Failed to start accessing security-scoped resource: \(normalizedURL.path)", category: .fileOperations)
         }
     }
     
@@ -435,9 +445,11 @@ class ViewController: NSViewController {
     /// In sandbox mode, FileManager.homeDirectoryForCurrentUser returns the container path
     func getRealHomeDirectory() -> URL {
         let homeDir = FileManager.default.homeDirectoryForCurrentUser
-        // If running in sandbox container, get the real home directory
+        // If running in sandbox container, get the real home directory using FileManager
         if homeDir.path.contains("/Library/Containers/") {
-            return URL(fileURLWithPath: "/Users/\(NSUserName())")
+            if let realHomeDir = FileManager.default.homeDirectory(forUser: NSUserName()) {
+                return realHomeDir
+            }
         }
         return homeDir
     }
