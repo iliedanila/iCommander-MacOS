@@ -5,13 +5,13 @@ This document tracks the remaining work needed before publishing to the Mac App 
 ## Critical (Must Complete)
 
 ### App Store Requirements
-- [ ] **Enable App Sandbox** - Add entitlements in Xcode Signing & Capabilities (template ready at `iCommander/Utils/iCommander-MacOS.entitlements`)
+- [x] **Enable App Sandbox** - Sandbox enabled with security-scoped bookmarks for persistent access
 - [ ] **App Icon** - Create app icon in all required sizes (16, 32, 128, 256, 512, 1024px)
 - [ ] **Privacy Policy** - Create and host a privacy policy URL
 
 ### Fix Non-Functional Features
-- [ ] **Context Menu "New Text Document"** - Create empty text file
-- [ ] **Context Menu "Rename"** - Trigger inline editing from context menu
+- [x] **Context Menu "New Text Document"** - Create empty text file
+- [x] **Context Menu "Rename"** - Trigger inline editing from context menu
 
 ## High Priority (Competitive Features)
 
@@ -79,6 +79,11 @@ This document tracks the remaining work needed before publishing to the Mac App 
 - [x] Quick Look preview (F3)
 - [x] Open file in default app (F4)
 - [x] Context menu Copy/Paste with overwrite confirmation
+- [x] Context menu New Text Document
+- [x] Context menu Rename (inline editing)
+- [x] App Sandbox with security-scoped bookmarks
+- [x] Real home/Documents/Downloads navigation in sandbox
+- [x] Symlink directory detection fix for sandbox
 - [x] Remove force unwraps
 - [x] Replace fatalError() with error alerts
 - [x] Convert print() to NSLog()
@@ -95,8 +100,8 @@ This document tracks the remaining work needed before publishing to the Mac App 
 
 When ready to submit:
 
-- [ ] Enable App Sandbox in Xcode
-- [ ] Test all features with sandbox enabled
+- [x] Enable App Sandbox in Xcode
+- [x] Test all features with sandbox enabled
 - [ ] Configure code signing certificates
 - [ ] Create App Store Connect listing
 - [ ] Upload app icon and screenshots
