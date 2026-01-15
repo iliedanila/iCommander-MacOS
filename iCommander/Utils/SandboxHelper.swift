@@ -14,13 +14,16 @@ class SandboxHelper {
     private init() {}
     
     /// Request access to a folder from the user
-    func requestFolderAccess(message: String = "Please grant access to browse files") -> URL? {
+    func requestFolderAccess(message: String = "Please grant access to browse files", initialURL: URL? = nil) -> URL? {
         let openPanel = NSOpenPanel()
         openPanel.message = message
         openPanel.canChooseFiles = false
         openPanel.canChooseDirectories = true
         openPanel.allowsMultipleSelection = false
         openPanel.canCreateDirectories = false
+        if let initialURL = initialURL {
+            openPanel.directoryURL = initialURL
+        }
         
         if openPanel.runModal() == .OK {
             return openPanel.url

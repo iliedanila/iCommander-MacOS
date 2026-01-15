@@ -32,4 +32,22 @@ extension ViewController: DataSourceDelegate {
         tableView?.reloadData()
     }
 
+    func handleAccessDenied(_ dataSource: TableDataSource, _ url: URL) {
+        let initialURL = url.hasDirectoryPath ? url : url.deletingLastPathComponent()
+        let message = "iCommander needs permission to access \"\(url.path)\". Select a folder to grant access."
+
+        guard let selectedURL = SandboxHelper.shared.requestFolderAccess(message: message, initialURL: initialURL) else {
+            if let fallback = getRealStandardDirectory(.downloadsDirectory) {
+                dataSource.currentURL = fallback
+            }
+            return
+        }
+
+        if let bookmark = SandboxHelper.shared.createBookmark(for: selectedURL) {
+            PreferencesManager.shared.addSandboxBookmark(bookmark)
+        }
+
+        addSandboxAccess(for: selectedURL)
+        dataSource.currentURL = selectedURL
+    }
 }

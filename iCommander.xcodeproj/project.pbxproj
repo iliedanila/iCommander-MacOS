@@ -26,10 +26,10 @@
 		4BA3D29925741A0C00C6891A /* ProgressWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA3D29825741A0C00C6891A /* ProgressWindowController.swift */; };
 		4BD331422F1453C10020C5FF /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331412F1453C10020C5FF /* Logger.swift */; };
 		4BD331452F1453D70020C5FF /* SandboxHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331442F1453D70020C5FF /* SandboxHelper.swift */; };
-		4BD331472F1453E40020C5FF /* FileOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD331462F1453E40020C5FF /* FileOperationsTests.swift */; };
-		4BD3314C2F1455800020C5FF /* FileSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD3314D2F1455800020C5FF /* FileSearch.swift */; };
 		4BD331492F1453EF0020C5FF /* Info-Template.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BD331482F1453EF0020C5FF /* Info-Template.plist */; };
 		4BD3314B2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md in Resources */ = {isa = PBXBuildFile; fileRef = 4BD3314A2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md */; };
+		4BD3314C2F1455800020C5FF /* FileSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD3314D2F1455800020C5FF /* FileSearch.swift */; };
+		4BD331502F1456AA0020C5FF /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD3314F2F1456AA0020C5FF /* PreferencesManager.swift */; };
 		4BDC06942523B59D00DF1AFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06932523B59D00DF1AFF /* AppDelegate.swift */; };
 		4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06952523B59D00DF1AFF /* ViewController.swift */; };
 		4BDC06992523B59D00DF1AFF /* iCommander.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC06972523B59D00DF1AFF /* iCommander.xcdatamodeld */; };
@@ -61,9 +61,10 @@
 		4BD331432F1453CB0020C5FF /* iCommander-MacOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "iCommander-MacOS.entitlements"; sourceTree = "<group>"; };
 		4BD331442F1453D70020C5FF /* SandboxHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxHelper.swift; sourceTree = "<group>"; };
 		4BD331462F1453E40020C5FF /* FileOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileOperationsTests.swift; sourceTree = "<group>"; };
-		4BD3314D2F1455800020C5FF /* FileSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSearch.swift; sourceTree = "<group>"; };
 		4BD331482F1453EF0020C5FF /* Info-Template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Template.plist"; sourceTree = "<group>"; };
 		4BD3314A2F1455720020C5FF /* IMPROVEMENTS_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = IMPROVEMENTS_SUMMARY.md; sourceTree = "<group>"; };
+		4BD3314D2F1455800020C5FF /* FileSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSearch.swift; sourceTree = "<group>"; };
+		4BD3314F2F1456AA0020C5FF /* PreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
 		4BDC06902523B59D00DF1AFF /* iCommander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCommander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BDC06932523B59D00DF1AFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BDC06952523B59D00DF1AFF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +170,7 @@
 				4BD3314D2F1455800020C5FF /* FileSearch.swift */,
 				4BD331432F1453CB0020C5FF /* iCommander-MacOS.entitlements */,
 				4BD331442F1453D70020C5FF /* SandboxHelper.swift */,
+				4BD3314F2F1456AA0020C5FF /* PreferencesManager.swift */,
 				4BD331462F1453E40020C5FF /* FileOperationsTests.swift */,
 				4BD331482F1453EF0020C5FF /* Info-Template.plist */,
 			);
@@ -261,6 +263,7 @@
 				4B72162D25C8894F008FD7E3 /* TableViewData+CoreDataProperties.swift in Sources */,
 				4BDC06962523B59D00DF1AFF /* ViewController.swift in Sources */,
 				4BD331452F1453D70020C5FF /* SandboxHelper.swift in Sources */,
+				4BD331502F1456AA0020C5FF /* PreferencesManager.swift in Sources */,
 				4B5DFBD12550B639000B45BB /* MenuDelegate.swift in Sources */,
 				4B5DFBDD2550B78E000B45BB /* DataSourceDelegate.swift in Sources */,
 				4B1765A12535C1FA00B9C8E2 /* TableView.swift in Sources */,
@@ -421,7 +424,18 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = NDU642L3S2;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = YES;
 				INFOPLIST_FILE = iCommander/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -446,7 +460,18 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = NDU642L3S2;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = YES;
 				INFOPLIST_FILE = iCommander/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

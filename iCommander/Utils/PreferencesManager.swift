@@ -19,6 +19,7 @@ class PreferencesManager {
         static let leftShowHidden = "leftShowHiddenFiles"
         static let rightShowHidden = "rightShowHiddenFiles"
         static let favoriteURLs = "favoriteURLs"
+        static let sandboxBookmarks = "sandboxBookmarks"
     }
     
     private init() {}
@@ -108,6 +109,50 @@ class PreferencesManager {
                 defaults.set(data, forKey: Keys.favoriteURLs)
             }
         }
+    }
+
+    // MARK: - Sandbox Access
+
+    var sandboxBookmarks: [Data] {
+        get {
+            guard let data = defaults.data(forKey: Keys.sandboxBookmarks),
+                  let bookmarks = try? NSKeyedUnarchiver.unarchivedObject(
+                    ofClasses: [NSArray.self, NSData.self],
+                    from: data
+                  ) as? [Data] else {
+                return []
+            }
+            return bookmarks
+        }
+        set {
+            if let data = try? NSKeyedArchiver.archivedData(
+                withRootObject: newValue,
+                requiringSecureCoding: true
+            ) {
+                defaults.set(data, forKey: Keys.sandboxBookmarks)
+            }
+        }
+    }
+
+    func addSandboxBookmark(_ bookmark: Data) {
+        var bookmarks = sandboxBookmarks
+
+        // Resolve the new bookmark to get its URL path
+        guard let newURL = SandboxHelper.shared.resolveBookmark(bookmark) else {
+            return
+        }
+        let newPath = newURL.standardizedFileURL.path
+
+        // Check if we already have a bookmark for this path
+        for existingBookmark in bookmarks {
+            if let existingURL = SandboxHelper.shared.resolveBookmark(existingBookmark),
+               existingURL.standardizedFileURL.path == newPath {
+                return
+            }
+        }
+
+        bookmarks.append(bookmark)
+        sandboxBookmarks = bookmarks
     }
     
     private func defaultFavorites() -> [URL] {
